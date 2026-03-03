@@ -1,12 +1,20 @@
-# BURÓ Panamá Workspace
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-Proyecto de gestión de espacios de coworking, membresías y comunidad.
+# Run and deploy your AI Studio app
 
-## Tecnologías
-- React
-- Supabase
-- Tailwind CSS
-- Vite
+This contains everything you need to run your app locally.
 
-## Roadmap
-Consulta [PLAN.md](PLAN.md) para ver el progreso del proyecto.
+View your app in AI Studio: https://ai.studio/apps/drive/1IdbZTW2AP7MdFpXUWQjpPX0rso4gS5aL
+
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
