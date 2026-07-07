@@ -41,7 +41,7 @@ const SplashScreen: React.FC = () => {
               {isAdmin ? 'B' : <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>rocket_launch</span>}
             </div>
             <h1 className="font-display text-4xl md:text-5xl font-extrabold text-white tracking-tight">
-              {isAdmin ? 'Buró Panamá' : 'CoworkFlow'}
+              {isAdmin ? 'Buró Panamá' : 'Buró Workspace'}
             </h1>
           </div>
         </div>
@@ -94,7 +94,7 @@ const SplashScreen: React.FC = () => {
         {/* Footer Section: Secondary Links & Copyright */}
         <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 text-white/50 animate-fade-in-up" style={{ animationDelay: '0.8s', opacity: 0, animationFillMode: 'forwards' }}>
           <div className="text-sm">
-            © 2026 {isAdmin ? 'Buró Workspace Co.' : 'CoworkFlow'} Todos los derechos reservados.
+            © 2026 {isAdmin ? 'Buró Workspace Co.' : 'Buró Workspace'} Todos los derechos reservados.
           </div>
           <div className="flex items-center gap-6">
             <a className="text-sm hover:text-white transition-colors" href="#">Términos</a>

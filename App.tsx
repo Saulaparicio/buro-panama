@@ -378,6 +378,13 @@ const App: React.FC = () => {
     fetchProfile().then(() => setLoading(false));
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        fetchProfile();
+      } else if (event === 'SIGNED_OUT') {
+        setProfile(null);
+        setUserRole('member');
+      }
+
       if (event === 'PASSWORD_RECOVERY') {
         window.location.hash = '/reset-password';
       }
