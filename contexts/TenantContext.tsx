@@ -25,7 +25,10 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                 let slug = 'buro-panama';
                 const host = window.location.hostname;
                 if (!host.includes('localhost') && host.split('.').length > 2) {
-                    slug = host.split('.')[0];
+                    const subdomain = host.split('.')[0];
+                    if (subdomain !== 'workspace' && subdomain !== 'www') {
+                        slug = subdomain;
+                    }
                 }
 
                 const { data, error: fetchError } = await supabase
