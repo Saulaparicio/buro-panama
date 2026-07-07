@@ -1,0 +1,930 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { supabase } from '../../supabase';
+import { Space, Member, Reservation } from '../../types';
+import { Link, useNavigate } from 'react-router-dom';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+// import esLocale from '@fullcalendar/core/locales/es';
+import { toast } from 'react-hot-toast';
+import confetti from 'canvas-confetti';
+import { sendReservationEmail } from '../../supabase';
+import PremiumSelect from '../../components/ui/PremiumSelect';
+import { useTenant } from '../../contexts/TenantContext';
+
+const ManageReservations: React.FC = () => {
+    const { tenant } = useTenant();
+    const navigate = useNavigate();
+    const [viewMode, setViewMode] = useState<'list' | 'calendar'>('calendar');
+    const calendarRef = useRef<FullCalendar>(null);
+
+    const [reservations, setReservations] = useState<Reservation[]>([]);
+    const [spaces, setSpaces] = useState<Space[]>([]);
+    const [members, setMembers] = useState<Member[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [filterStatus, setFilterStatus] = useState('all');
+
+    // Modals
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
+
+    const [newReservation, setNewReservation] = useState({
+        memberId: '',
+        spaceId: '',
+        date: new Date().toISOString().split('T')[0],
+        startTime: '09:00',
+        endTime: '10:00',
+        status: 'confirmed'
+    });
+    const [submitLoading, setSubmitLoading] = useState(false);
+
+    const [stats, setStats] = useState({
+        total: 0,
+        confirmed: 0,
+        pending: 0,
+        uniqueSpaces: 0
+    });
+
+    const fetchData = async () => {
+        if (!tenant?.id) {
+            console.warn('Tenant ID not available yet.');
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const [resData, spacesData, membersData] = await Promise.all([
+                supabase.from('reservations')
+                    .select('*')
+                    .eq('tenant_id', tenant.id)
+                    .order('start_time', { ascending: false }),
+                supabase.from('spaces')
+                    .select('*')
+                    .eq('tenant_id', tenant.id),
+                supabase.from('profiles')
+                    .select('*')
+                    .eq('tenant_id', tenant.id)
+            ]);
+
+            if (resData.error) throw resData.error;
+            if (spacesData.error) throw spacesData.error;
+            if (membersData.error) throw membersData.error;
+
+            setReservations(resData.data || []);
+            setSpaces(spacesData.data || []);
+            setMembers(membersData.data || []);
+
+            // Calculate local stats
+            const res = resData.data || [];
+            setStats({
+                total: res.length,
+                confirmed: res.filter(r => r.status === 'confirmed').length,
+                pending: res.filter(r => r.status === 'pending').length,
+                uniqueSpaces: new Set(res.map(r => r.space_id)).size
+            });
+        } catch (err) {
+            console.error('Error fetching data:', err);
+            toast.error('Error al sincronizar datos del tenant');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (tenant?.id) {
+            fetchData();
+        }
+    }, [tenant?.id]);
+
+    const handleCreateReservation = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSubmitLoading(true);
+        try {
+            const startDateTime = new Date(`${newReservation.date}T${newReservation.startTime}`);
+            const endDateTime = new Date(`${newReservation.date}T${newReservation.endTime}`);
+
+            if (startDateTime >= endDateTime) {
+                toast.error('La hora de fin debe ser posterior a la de inicio.');
+                setSubmitLoading(false);
+                return;
+            }
+
+            const { data: isAvailable, error: checkError } = await supabase.rpc('check_space_availability', {
+                p_space_id: newReservation.spaceId,
+                p_start_time: startDateTime.toISOString(),
+                p_end_time: endDateTime.toISOString()
+            });
+
+            if (checkError) throw checkError;
+            if (!isAvailable) {
+                toast.error('El espacio seleccionado no está disponible en este horario.');
+                setSubmitLoading(false);
+                return;
+            }
+
+            const { data: newResData, error } = await supabase.from('reservations').insert([{
+                tenant_id: tenant?.id,
+                member_id: newReservation.memberId,
+                space_id: newReservation.spaceId,
+                start_time: startDateTime.toISOString(),
+                end_time: endDateTime.toISOString(),
+                status: newReservation.status,
+                reference_code: `RES-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
+            }]).select();
+
+            if (error) throw error;
+            
+            // Si la reserva fue confirmada de inmediato, enviar el correo.
+            if (newReservation.status === 'confirmed' && newResData && newResData.length > 0) {
+                const insertedRes = newResData[0];
+                const member = members.find(m => m.id === insertedRes.member_id);
+                const space = spaces.find(s => s.id === insertedRes.space_id);
+                if (member && space) {
+                    await sendReservationEmail({
+                        to: member.email,
+                        memberName: member.name || 'Cliente',
+                        spaceName: space.name,
+                        reservationDate: `${new Date(insertedRes.start_time).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} a las ${new Date(insertedRes.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                    }).catch(err => console.error("Error enviando email de reserva:", err));
+                }
+            }
+
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#D4AF37', '#000000', '#FFFFFF']
+            });
+
+            await fetchData();
+            setIsBookingModalOpen(false);
+            toast.success('Reserva creada exitosamente.');
+
+        } catch (err: any) {
+            console.error('Error creating reservation:', err);
+            toast.error('Error: ' + (err.message || 'Intente nuevamente.'));
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
+
+    const moveEvent = async ({ event, start, end }: any) => {
+        const { id } = event;
+        
+        // Update local state immediately for snappy feel
+        setReservations(prev => prev.map(res => 
+            res.id === id ? { ...res, start_time: start.toISOString(), end_time: end.toISOString() } : res
+        ));
+
+        try {
+            const { error } = await supabase
+                .from('reservations')
+                .update({ 
+                    start_time: start.toISOString(), 
+                    end_time: end.toISOString() 
+                })
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success('OPERACIÓN EXITOSA');
+        } catch (err) {
+            toast.error('ERROR DE SINCRONIZACIÓN');
+            fetchData();
+        }
+    };
+
+    const handleUpdateStatus = async (status: string) => {
+        if (!selectedReservation) return;
+        setSubmitLoading(true);
+        try {
+            const { error } = await supabase
+                .from('reservations')
+                .update({ status })
+                .eq('id', selectedReservation.id);
+
+            if (error) throw error;
+
+            if (status === 'confirmed') {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#D4AF37', '#000000', '#FFFFFF']
+                });
+                
+                // Enviar email de confirmación
+                const member = members.find(m => m.id === selectedReservation.member_id);
+                const space = spaces.find(s => s.id === selectedReservation.space_id);
+                if (member && space) {
+                    await sendReservationEmail({
+                        to: member.email,
+                        memberName: member.name || 'Cliente',
+                        spaceName: space.name,
+                        reservationDate: `${new Date(selectedReservation.start_time).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} a las ${new Date(selectedReservation.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                    });
+                }
+            }
+
+            await fetchData();
+            setIsDetailModalOpen(false);
+            toast.success(`Reserva ${status === 'cancelled' ? 'cancelada' : 'actualizada'}.`);
+        } catch (err: any) {
+            toast.error('Error: ' + err.message);
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
+
+    const handleCancelReservation = async (id: string) => {
+        if (!window.confirm('¿Desea anular esta reserva definitivamente?')) return;
+        setSubmitLoading(true);
+        try {
+            const { error } = await supabase
+                .from('reservations')
+                .update({ status: 'cancelled' })
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success('RESERVA ANULADA');
+            await fetchData();
+            setIsDetailModalOpen(false);
+        } catch (err: any) {
+            toast.error('Error al anular: ' + err.message);
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
+
+    const filteredReservations = reservations.filter(res => {
+        return filterStatus === 'all' || res.status === filterStatus;
+    });
+
+    // FullCalendar Events Mapping
+    const events = filteredReservations.map(res => {
+        const space = spaces.find(s => s.id === res.space_id);
+        const member = members.find(m => m.id === res.member_id);
+        
+        let color = 'var(--secondary)';
+        if (res.status === 'confirmed') color = 'var(--primary)';
+        else if (res.status === 'pending') color = 'var(--on-surface-subtle)';
+        else if (res.status === 'cancelled') color = '#ef4444';
+
+        return {
+            id: res.id,
+            title: `${space?.name || 'Espacio'} - ${member?.name || 'Cliente'}`,
+            start: res.start_time,
+            end: res.end_time,
+            backgroundColor: color,
+            borderColor: color,
+            extendedProps: { ...res }
+        };
+    });
+
+
+    const handleEventChange = async (changeInfo: any) => {
+        const { event } = changeInfo;
+        const id = event.id;
+        const start = event.start.toISOString();
+        const end = event.end.toISOString();
+
+        // Optimistic update
+        setReservations(prev => prev.map(res => 
+            res.id === id ? { ...res, start_time: start, end_time: end } : res
+        ));
+
+        try {
+            const { error } = await supabase
+                .from('reservations')
+                .update({ 
+                    start_time: start, 
+                    end_time: end 
+                })
+                .eq('id', id);
+
+            if (error) throw error;
+            toast.success('OPERACIÓN EXITOSA');
+        } catch (err) {
+            toast.error('ERROR DE SINCRONIZACIÓN');
+            fetchData();
+        }
+    };
+
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'confirmed': return 'bg-primary/10 text-primary border-primary/20 shadow-primary/5';
+            case 'pending': return 'bg-on-surface/5 text-on-surface/60 border-outline-variant/30';
+            case 'cancelled': return 'bg-red-500/10 text-red-500 border-red-500/20';
+            default: return 'bg-on-surface/5 text-on-surface/40 border-outline-variant/10';
+        }
+    };
+
+    const getNanoBananaAvatar = (index: number) => {
+        const avatars = [
+            'https://raw.githubusercontent.com/Saulaparicio/buro-panama/main/public/assets/avatars/banana-1.png', // Assuming these will be there or I'll use placeholders
+            'https://raw.githubusercontent.com/Saulaparicio/buro-panama/main/public/assets/avatars/banana-2.png',
+            'https://raw.githubusercontent.com/Saulaparicio/buro-panama/main/public/assets/avatars/banana-3.png'
+        ];
+        // For now, since I can't guarantee external URLs without knowing the repo structure well, 
+        // I will use the locally generated ones if I were in a real browser, 
+        // but here I'll use a data URI or just the local path if the app can serve it.
+        // Actually, I'll use DiceBear for reliability in this demo, but styled like "Nano Banana".
+        return `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${index}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+    };
+
+    const handleUpdateSpace = async (spaceId: string) => {
+        if (!selectedReservation) return;
+        try {
+            const { error } = await supabase
+                .from('reservations')
+                .update({ space_id: spaceId })
+                .eq('id', selectedReservation.id);
+
+            if (error) throw error;
+            setSelectedReservation({ ...selectedReservation, space_id: spaceId });
+            toast.success('ACTIVO ACTUALIZADO');
+            fetchData();
+        } catch (err: any) {
+            toast.error('Error al actualizar espacio');
+        }
+    };
+
+    const eventStyleGetter = (event: any) => {
+        const status = event.resource.status;
+        let backgroundColor = 'var(--secondary)';
+        let color = 'white';
+        
+        if (status === 'confirmed') {
+            backgroundColor = 'var(--primary-container)';
+            color = 'var(--secondary)';
+        } else if (status === 'pending') {
+            backgroundColor = 'var(--tertiary)';
+            color = 'white';
+        } else if (status === 'cancelled') {
+            backgroundColor = '#ef4444';
+            color = 'white';
+        }
+
+        return {
+            style: {
+                backgroundColor,
+                borderRadius: '8px',
+                opacity: 1,
+                color,
+                border: 'none',
+                display: 'block',
+                fontSize: '10px',
+                fontWeight: '900',
+                padding: '5px 10px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                textTransform: 'uppercase'
+            }
+        };
+    };
+    return (
+        <div className="space-y-12 animate-fade pb-32 max-w-[1600px] mx-auto px-6 md:px-12">
+            {/* SaaS Actions Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8 mb-10">
+                <div className="flex items-center gap-6">
+                    <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
+                        <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
+                            <span className="material-symbols-outlined !text-lg">calendar_month</span>
+                            Reservas
+                        </div>
+                    </div>
+                    
+                    <div className="h-8 w-[1px] bg-slate-200 hidden md:block"></div>
+
+                    <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-100">
+                        <button
+                            onClick={() => setViewMode('calendar')}
+                            className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'calendar' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                        >
+                            <span className="material-symbols-outlined !text-sm">calendar_today</span>
+                        </button>
+                        <button
+                            onClick={() => setViewMode('list')}
+                            className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'list' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                        >
+                            <span className="material-symbols-outlined !text-sm">list_alt</span>
+                        </button>
+                    </div>
+
+                    <p className="text-sm text-slate-400 font-medium hidden md:block">
+                        {filteredReservations.length} registros activos
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={() => setIsBookingModalOpen(true)}
+                        className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3 shadow-lg shadow-slate-200 border-none cursor-pointer"
+                    >
+                        <span className="material-symbols-outlined !text-lg">add</span>
+                        Nueva Reserva
+                    </button>
+                </div>
+            </div>
+
+            {/* KPI Analytics Strip */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {[
+                    { label: 'Volumen Total', value: stats.total, icon: 'receipt_long', color: 'bg-[var(--secondary)] text-white' },
+                    { label: 'Confirmadas', value: stats.confirmed, icon: 'verified', color: 'card-atelier' },
+                    { label: 'Pendientes', value: stats.pending, icon: 'pending', color: 'card-atelier' },
+                    { label: 'Activos en Uso', value: stats.uniqueSpaces, icon: 'architecture', color: 'bg-[var(--primary-container)] text-[var(--secondary)]' },
+                ].map((stat, idx) => (
+                    <div key={idx} className={`${stat.color === 'card-atelier' ? 'card-atelier' : `${stat.color} p-10 rounded-3xl shadow-xl`} group hover:-translate-y-1 transition-all duration-500 relative overflow-hidden`}>
+                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
+                            <span className="material-symbols-outlined !text-8xl scale-125">{stat.icon}</span>
+                        </div>
+                        <p className={`text-[9px] font-black uppercase tracking-[0.4em] mb-4 relative z-10 ${stat.color === 'card-atelier' ? 'text-[var(--on-surface-subtle)]' : 'opacity-60'}`}>{stat.label}</p>
+                        <p className="text-5xl font-black tracking-tighter relative z-10">{stat.value}</p>
+                        <div className={`mt-6 h-[1px] w-full relative overflow-hidden ${stat.color === 'card-atelier' ? 'bg-[var(--outline-variant)]/20' : 'bg-white/20'}`}>
+                            <div className="absolute inset-0 bg-current w-1/3 group-hover:translate-x-[200%] transition-transform duration-1000 opacity-40"></div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {loading ? (
+                <div className="py-48 flex flex-col items-center justify-center gap-12">
+                    <div className="relative size-32">
+                        <div className="absolute inset-0 border-[1px] border-[var(--outline-variant)]/20 rounded-full scale-150"></div>
+                        <div className="absolute inset-0 border-t-2 border-[var(--primary)] rounded-full animate-spin-slow"></div>
+                        <div className="absolute inset-4 border-[0.5px] border-[var(--outline-variant)]/10 rounded-full animate-pulse"></div>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="material-symbols-outlined !text-4xl text-[var(--on-surface)]/10 animate-pulse">hourglass_empty</span>
+                        </div>
+                    </div>
+                    <div className="text-center space-y-4">
+                        <p className="label-md animate-pulse">Sincronizando Disponibilidad</p>
+                        <p className="text-[9px] font-bold text-[var(--on-surface-subtle)] uppercase tracking-[0.3em]">Consultando matriz de activos de Buró Panamá...</p>
+                    </div>
+                </div>
+            ) : viewMode === 'calendar' ? (
+                <div className="card-atelier animate-fade relative group/calendar fc-theme-custom min-h-[900px] overflow-visible">
+                    <div className="p-6 lg:p-10">
+                        <div className="absolute inset-0 bg-[radial-gradient(var(--on-surface)_0.5px,transparent_0.5px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none rounded-[2rem]"></div>
+                        <FullCalendar
+                        ref={calendarRef}
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+                        initialView="timeGridWeek"
+                        // locale={esLocale}
+                        events={events}
+                        editable={true}
+                        selectable={false}
+                        selectMirror={true}
+                        dayMaxEvents={true}
+                        navLinks={true}
+                        navLinkDayClick={(date) => {
+                            const dateStr = date.toISOString().split('T')[0];
+                            setNewReservation({
+                                ...newReservation,
+                                date: dateStr,
+                                startTime: '09:00',
+                                endTime: '10:00'
+                            });
+                            setIsBookingModalOpen(true);
+                        }}
+                        headerToolbar={{
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                        }}
+                        eventClick={(info) => {
+                            setSelectedReservation(info.event.extendedProps as Reservation);
+                            setIsDetailModalOpen(true);
+                        }}
+                        eventDrop={handleEventChange}
+                        eventResize={handleEventChange}
+                        dragRevertDuration={0}
+                        eventDragMinDistance={5}
+                        height="100%"
+                        slotMinTime="07:00:00"
+                        slotMaxTime="22:00:00"
+                        allDaySlot={false}
+                        eventTimeFormat={{
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            meridiem: false,
+                            hour12: false
+                        }}
+                        eventContent={(eventInfo) => (
+                            <div className="p-1 h-full w-full overflow-hidden flex flex-col justify-center">
+                                <div className="text-[9px] font-black uppercase tracking-tighter truncate leading-none mb-0.5">
+                                    {eventInfo.event.title}
+                                </div>
+                                <div className="text-[7px] opacity-60 font-bold uppercase tracking-widest leading-none">
+                                    {eventInfo.timeText}
+                                </div>
+                            </div>
+                        )}
+                    />
+                    
+                    {/* Calendar Footer Overlay */}
+                    <div className="absolute bottom-8 right-12 flex items-center gap-10 z-10 pointer-events-none">
+                        <div className="flex items-center gap-3">
+                            <div className="size-2.5 rounded-full bg-[var(--primary)] shadow-[0_0_8px_var(--primary)]"></div>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">Validada</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="size-2.5 rounded-full bg-[var(--on-surface-subtle)]"></div>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">Pendiente</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ) : (
+                <div className="card-atelier p-0 overflow-hidden animate-slide">
+                    <div className="px-12 py-12 border-b border-[var(--outline-variant)]/10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                        <div className="flex items-center gap-8">
+                            <div className="size-20 rounded-2xl bg-[var(--secondary)] flex items-center justify-center text-[var(--primary)] shadow-xl transform hover:rotate-6 transition-transform">
+                                <span className="material-symbols-outlined !text-4xl font-light">inventory_2</span>
+                            </div>
+                            <div className="space-y-1">
+                                <h2 className="text-3xl font-black text-[var(--on-surface)] tracking-tighter uppercase leading-none">Bitácora de <br/><span className="font-light opacity-40">Operaciones</span></h2>
+                                <p className="text-[9px] font-black text-[var(--on-surface-subtle)] uppercase tracking-[0.4em]">{filteredReservations.length} Registros Activos</p>
+                            </div>
+                        </div>
+                        <div className="flex p-1.5 bg-[var(--surface)] rounded-2xl shadow-[var(--neu-pressed-sm)]">
+                            {['all', 'confirmed', 'pending', 'cancelled'].map(status => (
+                                <button
+                                    key={status}
+                                    onClick={() => setFilterStatus(status)}
+                                    className={`px-8 py-3.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-500 ${filterStatus === status ? 'btn-brand-yellow !shadow-sm' : 'text-[var(--on-surface-subtle)] hover:text-[var(--on-surface)] hover:bg-[var(--surface-container-low)]'}`}
+                                >
+                                    {status === 'all' ? 'Universal' : status === 'confirmed' ? 'Confirmadas' : status === 'pending' ? 'Espera' : 'Bajas'}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="overflow-x-auto no-scrollbar">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="bg-[var(--surface)] text-[10px] uppercase font-black tracking-[0.3em] text-[var(--on-surface-subtle)] border-b border-[var(--outline-variant)]/10">
+                                    <th className="px-12 py-8">Cliente / Identidad</th>
+                                    <th className="px-12 py-8">Activo / Espacio</th>
+                                    <th className="px-12 py-8">Cronograma</th>
+                                    <th className="px-12 py-8 text-right">Estado Actual</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-[var(--outline-variant)]/5">
+                                {filteredReservations.map((res, i) => {
+                                    const space = spaces.find(s => s.id === res.space_id);
+                                    const member = members.find(m => m.id === res.member_id);
+                                    const startTime = new Date(res.start_time);
+                                    const endTime = new Date(res.end_time);
+
+                                    return (
+                                        <tr
+                                            key={res.id}
+                                            style={{ animationDelay: `${i * 50}ms` }}
+                                            className="hover:bg-[var(--surface-container-low)] transition-all duration-500 group cursor-pointer animate-fade"
+                                            onClick={() => {
+                                                setSelectedReservation(res);
+                                                setIsDetailModalOpen(true);
+                                            }}
+                                        >
+                                            <td className="px-12 py-8">
+                                                <div className="flex items-center gap-6">
+                                                    <div className="size-14 rounded-xl shadow-[var(--neu-flat-sm)] overflow-hidden bg-slate-100 flex items-center justify-center font-black text-xs text-white p-0.5 group-hover:scale-110 transition-transform duration-500 border border-white/10">
+                                                        <img src={getNanoBananaAvatar(i)} className="w-full h-full object-cover rounded-xl" />
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <p className="font-extrabold text-sm text-[var(--on-surface)] tracking-tight uppercase group-hover:text-[var(--primary)] transition-colors">{member?.name || 'Cliente Anónimo'}</p>
+                                                        <p className="text-[9px] font-black text-[var(--on-surface-subtle)] uppercase tracking-[0.2em]">#REF: {res.reference_code}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-12 py-8">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="size-2 rounded-full bg-[var(--primary)]/20 group-hover:bg-[var(--primary)] transition-colors"></div>
+                                                    <span className="text-sm font-bold text-[var(--on-surface)] tracking-tight uppercase">{space?.name || 'Espacio no Definido'}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-12 py-8">
+                                                <div className="space-y-1">
+                                                    <p className="text-sm font-black text-[var(--on-surface)] tracking-tighter uppercase">
+                                                        {startTime.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }).toUpperCase()}
+                                                    </p>
+                                                    <p className="text-[10px] font-black text-[var(--primary)] uppercase tracking-widest flex items-center gap-2">
+                                                        <span className="material-symbols-outlined !text-xs font-light">schedule</span>
+                                                        {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} — {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td className="px-12 py-8 text-right">
+                                                <span className={`px-6 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] shadow-sm ${res.status === 'confirmed' ? 'bg-[var(--secondary)] text-white' : res.status === 'pending' ? 'bg-[var(--surface)] text-[var(--tertiary)] shadow-[var(--neu-pressed-sm)]' : 'bg-red-500 text-white'}`}>
+                                                    {res.status === 'confirmed' ? 'Validada' : res.status === 'pending' ? 'Pendiente' : res.status === 'completed' ? 'Completada' : 'Anulada'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    {/* Blueprint Labeling */}
+                    <div className="px-12 py-8 bg-[var(--surface)] border-t border-[var(--outline-variant)]/10 text-[var(--on-surface-subtle)] text-[8px] font-black uppercase tracking-[0.5em] flex justify-between items-center">
+                        <div className="flex items-center gap-4">
+                            <span className="w-8 h-[1px] bg-[var(--primary)]"></span>
+                            <span>SISTEMA DE CONTROL PATRIMONIAL V.3.2</span>
+                        </div>
+                        <div className="flex gap-12">
+                            <span>REF: 09.2-PANAMA</span>
+                            <span>TZ: UTC-05</span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Manual Booking Modal Overhaul */}
+            {isBookingModalOpen && (
+                <div className="modal-backdrop" role="dialog" aria-modal="true">
+                    <div className="modal-container max-w-2xl !rounded-[3rem] shadow-2xl border-none">
+                        <header className="modal-header !p-12 !pb-8">
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-3">
+                                    <span className="w-12 h-[2px] bg-[var(--primary)]/30 rounded-full"></span>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[var(--primary)]">Architectural Atelier / New Asset</p>
+                                </div>
+                                <h3 className="text-6xl tracking-tighter uppercase font-black text-[var(--on-surface)] leading-none select-none">
+                                    Inyectar <span className="opacity-20">Reserva</span>
+                                </h3>
+                            </div>
+                            <button 
+                                onClick={() => setIsBookingModalOpen(false)} 
+                                className="size-16 rounded-2xl bg-white shadow-[var(--neu-flat-sm)] text-[var(--on-surface)] hover:shadow-[var(--neu-pressed-sm)] hover:scale-95 transition-all flex items-center justify-center group"
+                            >
+                                <span className="material-symbols-outlined !text-3xl font-light group-hover:rotate-90 transition-transform">close</span>
+                            </button>
+                        </header>
+
+                        <form id="create-reservation-form" onSubmit={handleCreateReservation} className="modal-body !p-12 !pt-6 space-y-12">
+                            <div className="space-y-12">
+                                {/* Entidad Section */}
+                                <section className="space-y-8">
+                                    <div className="flex items-center gap-4">
+                                        <span className="w-8 h-[1px] bg-[var(--primary)]/30"></span>
+                                        <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-[var(--on-surface-subtle)] opacity-40">Entidad Operativa</h3>
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                        <PremiumSelect
+                                            label="Cliente Identificado"
+                                            icon="group"
+                                            value={newReservation.memberId}
+                                            placeholder="SELECCIONAR CLIENTE..."
+                                            options={members.sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(m => ({
+                                                value: m.id,
+                                                label: (m.name || m.email).toUpperCase()
+                                            }))}
+                                            onChange={(val) => setNewReservation({ ...newReservation, memberId: val })}
+                                        />
+
+                                        <PremiumSelect
+                                            label="Espacio Designado"
+                                            icon="architecture"
+                                            value={newReservation.spaceId}
+                                            placeholder="SELECCIONAR ESPACIO..."
+                                            options={spaces.map(s => ({
+                                                value: s.id,
+                                                label: s.name.toUpperCase()
+                                            }))}
+                                            onChange={(val) => setNewReservation({ ...newReservation, spaceId: val })}
+                                        />
+                                    </div>
+                                </section>
+
+                                {/* Temporalidad Section */}
+                                <section className="space-y-8">
+                                    <div className="flex items-center gap-4">
+                                        <span className="w-8 h-[1px] bg-[var(--primary)]/30"></span>
+                                        <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-[var(--on-surface-subtle)] opacity-40">Temporalidad / Slot</h3>
+                                    </div>
+
+                                    <div className="neu-input-wrapper group/field">
+                                        <label className="neu-input-label !bg-white">Cronología de Ocupación</label>
+                                        <div className="relative">
+                                            <input
+                                                type="date"
+                                                required
+                                                className="neu-input !h-16 uppercase tracking-[0.2em] !bg-white border-slate-100 shadow-sm rounded-2xl focus:ring-2 focus:ring-[var(--primary)]/20 transition-all outline-none font-bold"
+                                                value={newReservation.date}
+                                                onChange={(e) => setNewReservation({ ...newReservation, date: e.target.value })}
+                                            />
+                                            <span className="material-symbols-outlined absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none !text-2xl">calendar_today</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                        <div className="neu-input-wrapper group/field">
+                                            <label className="neu-input-label !bg-white">Punto de Inicio</label>
+                                            <div className="relative">
+                                                <input 
+                                                    type="time" 
+                                                    required 
+                                                    className="neu-input !h-16 uppercase tracking-[0.2em] !bg-white border-slate-100 shadow-sm rounded-2xl px-6 focus:ring-2 focus:ring-[var(--primary)]/20 transition-all outline-none font-bold" 
+                                                    value={newReservation.startTime} 
+                                                    onChange={(e) => setNewReservation({ ...newReservation, startTime: e.target.value })} 
+                                                />
+                                                <span className="material-symbols-outlined absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none !text-2xl">schedule</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="neu-input-wrapper group/field">
+                                            <label className="neu-input-label !bg-white">Cierre de Sesión</label>
+                                            <div className="relative">
+                                                <input 
+                                                    type="time" 
+                                                    required 
+                                                    className="neu-input !h-16 uppercase tracking-[0.2em] !bg-white border-slate-100 shadow-sm rounded-2xl px-6 focus:ring-2 focus:ring-[var(--primary)]/20 transition-all outline-none font-bold" 
+                                                    value={newReservation.endTime} 
+                                                    onChange={(e) => setNewReservation({ ...newReservation, endTime: e.target.value })} 
+                                                />
+                                                <span className="material-symbols-outlined absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none !text-2xl">schedule</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <footer className="modal-footer !p-0 !bg-transparent flex items-center gap-6 pt-6">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsBookingModalOpen(false)}
+                                    className="flex-1 h-16 bg-slate-100 text-slate-400 rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-slate-200 hover:text-slate-600 transition-all active:scale-95 cursor-pointer border-none"
+                                >
+                                    DESCARTAR
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={submitLoading}
+                                    className="flex-[2] h-16 btn-brand-yellow rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(255,215,0,0.2)] hover:scale-[1.02] active:scale-95 transition-all group/btn cursor-pointer border-none"
+                                >
+                                    {submitLoading ? (
+                                        <div className="size-6 border-2 border-[var(--secondary)] border-t-transparent rounded-full animate-spin"></div>
+                                    ) : (
+                                        <>
+                                            <span>INCORPORAR REGISTRO</span>
+                                            <span className="material-symbols-outlined !text-3xl group-hover:translate-x-2 transition-transform duration-500">bolt</span>
+                                        </>
+                                    )}
+                                </button>
+                            </footer>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Detail Modal Overhaul - Compact Version */}
+            {isDetailModalOpen && selectedReservation && (
+                <div className="modal-backdrop" role="dialog" aria-modal="true">
+                    <div className="modal-container max-w-2xl !rounded-[3rem] shadow-2xl border-none">
+                        <header className="modal-header !p-12 !pb-6">
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-4">
+                                    <div className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] shadow-lg ${
+                                        selectedReservation.status === 'confirmed' ? 'bg-[var(--primary)] text-[var(--secondary)]' : 
+                                        selectedReservation.status === 'cancelled' ? 'bg-red-500 text-white' : 
+                                        'bg-slate-50 text-slate-400 border border-slate-100'
+                                    }`}>
+                                        {selectedReservation.status === 'confirmed' ? 'VALIDADO' : selectedReservation.status === 'cancelled' ? 'ANULADO' : 'PENDIENTE'}
+                                    </div>
+                                    <span className="text-[10px] text-[var(--on-surface-subtle)] font-black tracking-[0.4em] uppercase opacity-40">REF: {selectedReservation.reference_code}</span>
+                                </div>
+                                <h3 className="text-3xl md:text-4xl tracking-tighter font-black text-[var(--on-surface)] uppercase leading-none">
+                                    {selectedReservation.reference_code}
+                                </h3>
+                            </div>
+                            <button 
+                                onClick={() => setIsDetailModalOpen(false)} 
+                                className="size-16 rounded-2xl bg-white shadow-[var(--neu-flat-sm)] flex items-center justify-center text-[var(--on-surface)] hover:shadow-[var(--neu-pressed-sm)] hover:scale-95 transition-all group"
+                            >
+                                <span className="material-symbols-outlined !text-3xl font-light group-hover:rotate-90 transition-transform">close</span>
+                            </button>
+                        </header>
+
+                        <div className="modal-body !p-12 !pt-0 space-y-10 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-[radial-gradient(var(--on-surface)_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.03] pointer-events-none"></div>
+                            
+                            {/* Member Highlight */}
+                            <div className="p-8 bg-slate-50/50 rounded-[2.5rem] border border-white flex items-center gap-8 group/member">
+                                <div className="size-20 rounded-[1.5rem] bg-[var(--secondary)] shadow-xl overflow-hidden flex items-center justify-center border-2 border-white/20">
+                                    <img src={getNanoBananaAvatar(members.findIndex(m => m.id === selectedReservation.member_id))} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="space-y-1">
+                                    <h4 className="text-xl font-black text-[var(--on-surface)] tracking-tighter uppercase">
+                                        {members.find(m => m.id === selectedReservation.member_id)?.name || 'Cliente Atelier'}
+                                    </h4>
+                                    <p className="text-[10px] text-[var(--on-surface-subtle)] font-black uppercase tracking-[0.2em] opacity-60">Verified Member Dossier</p>
+                                </div>
+                            </div>
+
+                            {/* Temporal allocation stacked */}
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="p-8 bg-[var(--surface)] shadow-[var(--neu-pressed-sm)] rounded-[2.5rem] space-y-4 border border-white/40">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)] opacity-40">Temporalidad</p>
+                                    <div className="space-y-1">
+                                        <p className="text-xl font-black text-[var(--on-surface)] tracking-tighter">
+                                            {new Date(selectedReservation.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - {new Date(selectedReservation.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        </p>
+                                        <p className="text-[11px] font-black text-[var(--on-surface-subtle)] uppercase tracking-widest opacity-40">
+                                            {new Date(selectedReservation.start_time).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }).toUpperCase()}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="p-8 bg-[var(--surface)] shadow-[var(--neu-pressed-sm)] rounded-[2.5rem] space-y-4 border border-white/40 relative group/edit">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)] opacity-40">Activo / Espacio</p>
+                                    <div className="space-y-1">
+                                        <PremiumSelect 
+                                            value={selectedReservation.space_id}
+                                            options={spaces.map(s => ({
+                                                value: s.id,
+                                                label: s.name.toUpperCase()
+                                            }))}
+                                            onChange={(val) => handleUpdateSpace(val)}
+                                            placeholder="SELECCIONAR..."
+                                            className="!mb-0"
+                                        />
+                                        <p className="text-[11px] font-black text-[var(--on-surface-subtle)] uppercase tracking-widest opacity-40">Haga clic para reasignar</p>
+                                    </div>
+                                    <span className="material-symbols-outlined absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover/edit:opacity-40 transition-opacity">swap_horiz</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <footer className="modal-footer !p-12 !pt-6 !bg-transparent border-none flex gap-4">
+                            {selectedReservation.status !== 'cancelled' && (
+                                <button 
+                                    onClick={() => handleCancelReservation(selectedReservation.id)}
+                                    className="flex-1 h-16 bg-red-50 text-red-500 rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-red-100 transition-all border-none cursor-pointer"
+                                >
+                                    ANULAR
+                                </button>
+                            )}
+                            <button 
+                                onClick={() => setIsDetailModalOpen(false)}
+                                className="flex-[2] h-16 btn-brand-yellow rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] shadow-xl border-none cursor-pointer"
+                            >
+                                CERRAR DOSSIER
+                            </button>
+                        </footer>
+                    </div>
+                </div>
+            )}
+
+            <style>{`
+                .fc { font-family: 'Cairo', sans-serif; --fc-border-color: rgba(0,0,0,0.05); --fc-today-bg-color: transparent; }
+                .fc .fc-toolbar-title { font-size: 1.2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: var(--secondary); }
+                .fc .fc-button { 
+                    background: var(--surface) !important; 
+                    border: 1px solid var(--outline-variant) !important; 
+                    color: var(--on-surface) !important; 
+                    font-size: 9px !important; 
+                    font-weight: 900 !important; 
+                    text-transform: uppercase !important; 
+                    letter-spacing: 0.1em !important;
+                    padding: 8px 16px !important;
+                    border-radius: 8px !important;
+                    box-shadow: var(--neu-flat-sm) !important;
+                    transition: all 0.3s ease !important;
+                }
+                .fc .fc-button:hover { background: var(--surface-container-low) !important; transform: translateY(-1px); }
+                .fc .fc-button-active { background: var(--secondary) !important; color: white !important; }
+                
+                .fc .fc-col-header-cell { padding: 15px 0 !important; background: var(--surface-container-low) !important; }
+                .fc .fc-col-header-cell-cushion { font-size: 9px !important; font-weight: 900 !important; text-transform: uppercase !important; letter-spacing: 0.2em !important; color: var(--on-surface-subtle) !important; }
+                
+                .fc-event { 
+                    border: none !important; 
+                    border-radius: 12px !important; 
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; 
+                    cursor: move !important;
+                    transition: transform 0.2s ease !important;
+                }
+                .fc-event:hover { transform: scale(1.02); z-index: 50 !important; }
+                .fc-v-event .fc-event-main { color: inherit !important; }
+                
+                .fc-timegrid-slot { height: 50px !important; border-bottom: 1px solid rgba(0,0,0,0.02) !important; }
+                .fc-timegrid-slot-label-cushion { font-size: 10px !important; font-weight: 700 !important; color: var(--on-surface-subtle) !important; }
+                
+                .fc-theme-custom .fc-scrollgrid { border-radius: 24px !important; overflow: hidden !important; border: 1px solid var(--outline-variant) !important; }
+                
+                /* Custom scrollbar for calendar */
+                .fc-scroller::-webkit-scrollbar { width: 4px; }
+                .fc-scroller::-webkit-scrollbar-track { background: transparent; }
+                .fc-scroller::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 10px; }
+            `}</style>
+        </div>
+    );
+};
+
+export default ManageReservations;

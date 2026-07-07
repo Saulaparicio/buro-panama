@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=BURO&background=FDE910&color=111111&size=192">
+    <link rel="manifest" href="/manifest.json">
+    <title>BURÓ Panamá | Workspace</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Manrope', sans-serif;
+        }
+        .dark body {
+            background-color: #11171D;
+            color: #ffffff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Hide scrollbars but keep functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "rgb(var(--primary-rgb) / <alpha-value>)",
+                        "primary-container": "rgb(var(--primary-container-rgb) / <alpha-value>)",
+                        "on-primary-fixed": "rgb(var(--on-primary-fixed-rgb) / <alpha-value>)",
+                        secondary: "rgb(var(--secondary-rgb) / <alpha-value>)",
+                        tertiary: "rgb(var(--tertiary-rgb) / <alpha-value>)",
+                        surface: "rgb(var(--surface-rgb) / <alpha-value>)",
+                        "surface-container": "rgb(var(--surface-container-rgb) / <alpha-value>)",
+                        "on-surface": "rgb(var(--on-surface-rgb) / <alpha-value>)",
+                        "on-surface-variant": "rgb(var(--on-surface-variant-rgb) / <alpha-value>)",
+                        "on-surface-subtle": "rgb(var(--on-surface-subtle-rgb) / <alpha-value>)",
+                        "outline-variant": "rgb(var(--outline-variant-rgb) / <alpha-value>)",
+                        
+                        accent: "#3d4ad8",
+                        "buro-teal": "#0EA5E9",
+                        "buro-black": "#1b1a23",
+                        "buro-secondary": "#454655",
+                        "buro-sand": "#fbf8ff",
+                        "buro-olive": "#3d4ad8",
+                        "background-light": "#fbf8ff"
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        heading: ['Manrope', 'sans-serif'],
+                        mono: ['ui-monospace', 'monospace'],
+                    },
+                    transitionDuration: {
+                        '500': '200ms',
+                        '700': '250ms',
+                        '1000': '300ms',
+                    }
+                }
+            }
+        }
+    </script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

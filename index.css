@@ -1,0 +1,541 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Palette: Coworking Management Dashboard (Proton Workspace) */
+    --primary: #3d4ad8;           /* Blue - Primary Action */
+    --primary-rgb: 61, 74, 216;
+    --primary-container: #5865f2; /* Lighter Blue */
+    --primary-container-rgb: 88, 101, 242;
+    --secondary: #7b5800;         /* Gold/Yellow - Accent */
+    --secondary-rgb: 123, 88, 0;
+    --secondary-container: #ffbb00;
+    --secondary-container-rgb: 255, 187, 0;
+    --tertiary: #006a48;          /* Emerald - Available / Success */
+    --tertiary-rgb: 0, 106, 72;
+    --tertiary-container: #00865c;
+    --tertiary-container-rgb: 0, 134, 92;
+    
+    /* Base Colors */
+    --surface: #fbf8ff;
+    --surface-rgb: 251, 248, 255;
+    --card: #FFFFFF;
+    --card-rgb: 255, 255, 255;
+    
+    /* Text */
+    --on-surface: #1a1b23;
+    --on-surface-rgb: 26, 27, 35;
+    --on-surface-variant: #454655;
+    --on-surface-variant-rgb: 69, 70, 85;
+    --on-surface-subtle: #767686;
+    --on-surface-subtle-rgb: 118, 118, 134;
+    
+    /* Functional Tokens */
+    --on-primary-fixed: #ffffff;
+    --on-primary-fixed-rgb: 255, 255, 255;
+    --outline-variant: #c6c5d7;
+    --outline-variant-rgb: 198, 197, 215;
+    
+    /* Spacing & Radii */
+    --radius-md: 0.75rem; /* 12px */
+    --radius-lg: 1rem;    /* 16px */
+    
+    /* Motion */
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Modern Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Legacy variables mapping */
+    --neu-bg: var(--surface);
+    --neu-shadow-dark: rgba(0, 0, 0, 0.05);
+    --neu-shadow-light: rgba(255, 255, 255, 1);
+    --neu-flat: var(--shadow-md);
+    --neu-flat-sm: var(--shadow-sm);
+    --neu-pressed: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    --neu-pressed-sm: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    
+    /* Yellow Accents (Clean Style) */
+    --neu-yellow-bg: #ffbb00;
+    --neu-yellow-flat: var(--shadow-md);
+    --neu-yellow-pressed: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+    /* Modal Specifics */
+    --modal-backdrop: rgba(26, 27, 35, 0.6);
+    --modal-glass-border: rgba(255, 255, 255, 0.2);
+}
+
+/* Base Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--surface);
+    color: var(--on-surface);
+    font-family: 'Manrope', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Typography Editorial Authority */
+h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    margin: 0;
+    font-style: normal !important;
+}
+
+h1 { font-size: 1.5rem; }    /* 25% smaller than default 2em */
+h2 { font-size: 1.125rem; }  /* 25% smaller than default 1.5em */
+h3 { font-size: 0.875rem; }  /* 25% smaller than default 1.17em */
+
+.display-lg { font-size: 2.0625rem; font-weight: 200; line-height: 1.1; } /* 25% smaller */
+.headline-lg { font-size: 1.125rem; letter-spacing: -0.01em; }           /* 25% smaller */
+.headline-md { font-size: 0.9375rem; letter-spacing: -0.01em; }          /* 25% smaller */
+.title-sm { font-size: 0.875rem; font-weight: 700; }
+.label-md { 
+    font-family: 'Manrope', sans-serif; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    letter-spacing: 0.2em;
+    color: var(--on-surface-subtle);
+}
+
+/* Accessibility Contrast Utilities */
+.text-workspace-muted { color: var(--on-surface-subtle); }
+.text-workspace-low { color: var(--on-surface-variant); opacity: 0.7; }
+.text-accent-gold { color: var(--secondary); } /* Map to gold/yellow secondary */
+
+/* Structural Utilities (The No-Line Rule) */
+.surface-low { background-color: var(--surface-container-low); }
+.surface-base { background-color: var(--surface); }
+.surface-white { background-color: var(--surface-container-lowest); }
+
+.no-border { border: none !important; }
+
+/* Components */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: var(--radius-md);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s var(--ease-premium);
+}
+
+.btn-primary:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    background: var(--primary-container);
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--on-surface-subtle);
+    padding: 1.25rem 3rem;
+    border-radius: var(--radius-md);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    border: none;
+    box-shadow: var(--neu-flat);
+    transition: all 0.3s var(--ease-premium);
+}
+
+.btn-inverted {
+    background: var(--surface);
+    color: var(--on-surface);
+    padding: 1.25rem 3rem;
+    border-radius: var(--radius-md);
+    border: none;
+    box-shadow: var(--neu-pressed);
+}
+
+.btn-outlined {
+    background: transparent;
+    color: var(--on-surface);
+    border: none;
+    box-shadow: var(--neu-flat-sm);
+    padding: 1.25rem 3rem;
+    border-radius: var(--radius-md);
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    box-shadow: var(--neu-pressed);
+    color: var(--primary);
+    transform: none;
+}
+
+.btn-brand-yellow {
+    background: var(--neu-yellow-bg);
+    color: var(--secondary);
+    padding: 1.25rem 3rem;
+    border-radius: var(--radius-md);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--neu-yellow-flat);
+    transition: all 0.3s var(--ease-premium);
+}
+
+.btn-brand-yellow:hover {
+    box-shadow: var(--neu-yellow-pressed);
+}
+
+.card-workspace {
+    background-color: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--outline-variant);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s var(--ease-premium);
+}
+
+.card-workspace:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+    border-color: rgba(61, 74, 216, 0.1);
+}
+
+.glass-workspace {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Premium FullCalendar Architectural Overrides */
+.fc {
+    font-family: 'Manrope', sans-serif !important;
+    --fc-border-color: rgba(0, 0, 0, 0.05);
+    --fc-button-bg-color: var(--surface);
+    --fc-button-border-color: transparent;
+    --fc-button-hover-bg-color: var(--surface-container-low);
+    --fc-button-active-bg-color: var(--primary-container);
+    --fc-button-active-border-color: transparent;
+    --fc-today-bg-color: rgba(61, 74, 216, 0.03);
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.25rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.02em !important;
+    color: var(--secondary) !important;
+}
+
+.fc .fc-button {
+    border-radius: var(--radius-md) !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    padding: 10px 20px !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: all 0.3s var(--ease-premium) !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: var(--primary-container) !important;
+    color: var(--secondary) !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* Event Styling */
+.fc-event {
+    border-radius: 8px !important;
+    border: none !important;
+    padding: 2px 4px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+    cursor: grab !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.fc-event:active {
+    cursor: grabbing !important;
+}
+
+.fc-v-event {
+    background-color: var(--primary) !important;
+}
+
+.fc-h-event {
+    background-color: var(--primary) !important;
+}
+
+/* Fix: Drag and Drop Offset Issue (Definitive & Aggressive) */
+/* When dragging, FullCalendar adds 'fc-unselectable' to the body.
+   We must kill all layout-shifting properties on EVERY parent. */
+body.fc-unselectable * {
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+}
+
+/* Neutralize common layout parents that cause offsets in centered/flex layouts */
+body.fc-unselectable .card-workspace,
+body.fc-unselectable .animate-fade,
+body.fc-unselectable .animate-slide,
+body.fc-unselectable .max-w-\[1500px\],
+body.fc-unselectable main,
+body.fc-unselectable .flex-1,
+body.fc-unselectable .relative {
+    transform: none !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
+    filter: none !important; /* Filters can also create coordinate roots */
+}
+
+/* Force the mirror to be global and ignore container paddings */
+.fc-event-mirror {
+    z-index: 999999 !important;
+    pointer-events: none !important;
+    opacity: 0.85 !important;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4) !important;
+    margin: 0 !important;
+}
+
+/* Specific fix for FullCalendar 6+ hit detection in scrolled/flex containers */
+.fc-unselectable .fc-view-harness {
+    pointer-events: all !important;
+}
+
+.fc-unselectable .fc-event-dragging {
+    visibility: hidden !important;
+}
+
+.fc-timegrid-slot {
+    height: 3em !important;
+    border-bottom: 1px solid rgba(0,0,0,0.02) !important;
+}
+
+.fc-timegrid-axis-cbox {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: var(--on-surface-subtle) !important;
+}
+
+.fc-col-header-cell {
+    padding: 15px 0 !important;
+    background: var(--surface) !important;
+}
+
+.fc-col-header-cell-cbox {
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    color: var(--on-surface-subtle) !important;
+}
+
+.card-workspace {
+    background-color: var(--card);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--outline-variant);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Animations */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-up { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slide-in { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+
+.animate-fade { animation: fade-in 0.8s var(--ease-premium) forwards; }
+.animate-slide { animation: slide-up 0.8s var(--ease-premium) forwards; }
+.animate-slide-in { animation: slide-in 0.6s var(--ease-premium) forwards; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+/* Divider alternative (Vertical White Space) */
+.spacing-block { height: 1.4rem; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--outline-variant); opacity: 0.2; border-radius: 10px; }
+
+/* Refined Modal & Popups */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: var(--modal-backdrop);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    animation: fade-in 0.4s var(--ease-premium);
+}
+
+.modal-container {
+    background-color: var(--card);
+    width: 100%;
+    max-width: 800px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2xl);
+    border: 1px solid var(--outline-variant);
+    position: relative;
+    overflow: hidden;
+    animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hide Native Browser Icons for Date/Time Inputs */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 3rem 3rem 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.modal-body {
+    padding: 3rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 2rem 3rem 3rem;
+    border-top: 1px solid rgba(0,0,0,0.03);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Standardized Neumorphic Inputs */
+.neu-input-wrapper {
+    position: relative;
+    margin-top: 1rem; /* Added margin to accommodate the floating label */
+    margin-bottom: 2.5rem;
+}
+
+.neu-input-label {
+    position: absolute;
+    top: -0.85rem; /* Slightly higher */
+    left: 1.25rem;
+    background-color: white; /* Ensure it covers the input border */
+    padding: 0 0.75rem; /* More horizontal padding for the label background */
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--secondary);
+    z-index: 20;
+    transition: all 0.3s var(--ease-premium);
+    pointer-events: none; /* Avoid clicking the label instead of the input */
+    white-space: nowrap;
+}
+
+.neu-input {
+    width: 100%;
+    height: 4rem; /* 64px */
+    background-color: white;
+    border: 1.5px solid #F1F5F9;
+    border-radius: 1.25rem;
+    padding: 1.1rem 4.5rem 0.1rem 1.5rem; /* Better vertical alignment and more right space for icons */
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--on-surface);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.neu-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: white;
+    box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.08), 0 10px 15px -3px rgba(0,0,0,0.05);
+}
+
+.neu-input::placeholder {
+    color: var(--on-surface-subtle);
+    opacity: 0.2;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.neu-select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 4rem !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 0.75rem !important; /* Smaller font to ensure it fits the design */
+    font-weight: 800 !important;
+    letter-spacing: 0.15em !important;
+    line-height: normal;
+}
+
+/* Custom indicator for selects when they don't have a manual icon */
+.neu-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.neu-select-wrapper::after {
+    content: '\e5cf'; /* material icon 'expand_more' code */
+    font-family: 'Material Symbols Outlined';
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--on-surface-subtle);
+    pointer-events: none;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.neu-select-wrapper:hover::after {
+    opacity: 1;
+    color: var(--primary);
+}
+
+.neu-select option {
+    background-color: white;
+    color: var(--on-surface);
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.neu-textarea {
+    min-height: 10rem;
+    padding: 1.5rem;
+    resize: none;
+}

@@ -1,0 +1,451 @@
+import React, { useState, useEffect, Suspense, lazy, useRef } from 'react';
+import { HashRouter as Router, Routes, Route, Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { supabase } from './supabase';
+import { useTranslation } from 'react-i18next';
+import SplashScreen from './pages/SplashScreen';
+import { Transition } from './components/ui/Transition';
+import { CreateNewDisclosure } from './components/ui/create-new-disclosure';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  Award01Icon,
+  Calendar04Icon,
+  Flag02Icon,
+  Folder01Icon,
+  NoteIcon,
+  TaskEdit01Icon,
+} from '@hugeicons/core-free-icons';
+
+// Lazy loaded components
+const prefetchMap: Record<string, () => Promise<any>> = {
+  '/app': () => import('./pages/MobileApp/MobileApp'),
+  '/': () => import('./pages/Home'),
+  '/reservations': () => import('./pages/Reservations'),
+  '/community': () => import('./pages/Community'),
+  '/benefits': () => import('./pages/Benefits'),
+  '/profile': () => import('./pages/Profile'),
+  '/checkin': () => import('./pages/CheckIn'),
+  '/login': () => import('./pages/Login'),
+  '/registro': () => import('./pages/Registro'),
+  '/plans': () => import('./pages/Plans'),
+  '/events': () => import('./pages/Events'),
+  '/guests': () => import('./pages/Guests'),
+  '/quoteview': () => import('./pages/QuoteView'),
+  '/admin': () => import('./pages/Admin/AdminDashboard'),
+  '/admin/add-member': () => import('./pages/Admin/AddMember'),
+  '/admin/spaces': () => import('./pages/Admin/ManageSpaces'),
+  '/admin/members': () => import('./pages/Admin/MemberDetail'),
+  '/admin/manage-members': () => import('./pages/Admin/ManageMembers'),
+  '/admin/reservations': () => import('./pages/Admin/ManageReservations'),
+  '/admin/plans': () => import('./pages/Admin/ManagePlans'),
+  '/admin/events': () => import('./pages/Admin/ManageEvents'),
+  '/admin/reports': () => import('./pages/Admin/AdminReports'),
+  '/admin/guests': () => import('./pages/Admin/ManageGuests'),
+  '/admin/benefits': () => import('./pages/Admin/ManageBenefits'),
+  '/admin/quotes': () => import('./pages/Admin/ManageQuotes'),
+  '/landing': () => import('./pages/LandingPageAlt'),
+  '/admin/login': () => import('./pages/Admin/AdminLogin'),
+  '/onboarding': () => import('./pages/Onboarding'),
+  '/admin/settings': () => import('./pages/Admin/Settings'),
+};
+
+const prefetchRoute = (path: string) => {
+  if (prefetchMap[path]) {
+    prefetchMap[path]().catch(() => {});
+  }
+};
+
+const MobileApp = lazy(prefetchMap['/app']);
+const Home = lazy(prefetchMap['/']);
+const Reservations = lazy(prefetchMap['/reservations']);
+const Community = lazy(prefetchMap['/community']);
+const Benefits = lazy(prefetchMap['/benefits']);
+const Profile = lazy(prefetchMap['/profile']);
+const CheckIn = lazy(prefetchMap['/checkin']);
+const Login = lazy(prefetchMap['/login']);
+const Registro = lazy(prefetchMap['/registro']);
+const Plans = lazy(prefetchMap['/plans']);
+const Events = lazy(prefetchMap['/events']);
+const Guests = lazy(prefetchMap['/guests']);
+const QuoteView = lazy(prefetchMap['/quoteview']);
+const LandingPageAlt = lazy(prefetchMap['/landing']);
+
+// Admin Components
+const AdminDashboard = lazy(prefetchMap['/admin']);
+const AddMember = lazy(prefetchMap['/admin/add-member']);
+const ManageSpaces = lazy(prefetchMap['/admin/spaces']);
+const MemberDetail = lazy(prefetchMap['/admin/members']);
+const ManageMembers = lazy(prefetchMap['/admin/manage-members']);
+const ManageReservations = lazy(prefetchMap['/admin/reservations']);
+const ManagePlans = lazy(prefetchMap['/admin/plans']);
+const ManageEvents = lazy(prefetchMap['/admin/events']);
+const AdminReports = lazy(prefetchMap['/admin/reports']);
+const ManageGuests = lazy(prefetchMap['/admin/guests']);
+const ManageBenefits = lazy(prefetchMap['/admin/benefits']);
+const ManageQuotes = lazy(prefetchMap['/admin/quotes']);
+const AdminLogin = lazy(prefetchMap['/admin/login']);
+const Onboarding = lazy(prefetchMap['/onboarding']);
+const Settings = lazy(prefetchMap['/admin/settings']);
+
+// Simple Auth Context simulation
+export type UserRole = 'member' | 'admin' | 'staff';
+
+const AdminRoute: React.FC<{ children: React.ReactNode, role: UserRole }> = ({ children, role }) => {
+  if (role === 'member') {
+    return <Navigate to="/admin/login" replace />;
+  }
+  return <>{children}</>;
+};
+
+const MemberRoute: React.FC<{ children: React.ReactNode, profile: any }> = ({ children, profile }) => {
+  if (!profile) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+};
+
+const placeholderAvatar = (name: string) => `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0284c7&color=ffffff`;
+
+const MemberLayout: React.FC<{ children: React.ReactNode, role: UserRole, onRoleChange: (role: UserRole) => void, profile: any, darkMode: boolean, toggleDarkMode: () => void }> = ({ children, role, onRoleChange, profile, darkMode, toggleDarkMode }) => {
+  const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isActive = (path: string) => location.pathname === path;
+
+  const handleAdminAccess = () => {
+    onRoleChange('admin');
+    navigate('/admin');
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[var(--surface)] text-[var(--on-surface)] selection:bg-[var(--primary-container)] selection:text-black">
+      {/* Top Editorial Header */}
+      <header className="fixed top-0 left-0 w-full h-20 z-[100] px-8 md:px-16 flex items-center justify-between border-b border-[var(--outline-variant)] bg-white/95 backdrop-blur-3xl">
+        <Link to="/" className="flex items-center gap-4 group">
+            <div className="size-10 bg-[var(--secondary)] text-[var(--primary-container)] flex items-center justify-center font-extrabold tracking-tighter rounded-xl group-hover:rotate-12 transition-all duration-700">
+               B
+            </div>
+            <span className="text-xl font-black uppercase tracking-[-0.05em] text-[var(--secondary)]">BURÓ <span className="font-light opacity-30">PANAMÁ</span></span>
+        </Link>
+        
+        <div className="flex items-center gap-12">
+          {/* Language Switcher Editorial Style */}
+          <button 
+            onClick={() => i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es')}
+            className="label-md opacity-40 hover:opacity-100 transition-opacity border-none bg-transparent cursor-pointer"
+          >
+            {i18n.language === 'es' ? 'English' : 'Español'}
+          </button>
+
+          <Link to="/profile" className="flex items-center gap-4 group">
+            <div className="text-right">
+              <p className="label-md opacity-40 mb-1">{t('socio')}</p>
+              <h4 className="title-sm font-display uppercase tracking-tighter">{profile?.name?.split(' ')[0] || 'Member'}</h4>
+            </div>
+            <div className="size-10 rounded-lg overflow-hidden border border-[var(--outline-variant)] p-0.5 group-hover:scale-105 transition-transform">
+              <img src={profile?.avatar_url || placeholderAvatar(profile?.name || 'User')} alt="Avatar" className="w-full h-full object-cover rounded-[calc(var(--radius-md)-2px)]" />
+            </div>
+          </Link>
+        </div>
+      </header>
+
+      <main className="flex-1 w-full max-w-[1600px] mx-auto px-12 md:px-24 pt-24 pb-48">
+        <Transition key={location.key} direction="right" type="curved" introDuration={0.3}>
+          {children}
+        </Transition>
+      </main>
+
+      {/* Floating Architecture Nav */}
+      <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100] px-4 py-3 bg-[#11171D] rounded-xl shadow-2xl flex items-center gap-1 group transition-all duration-700">
+        {[
+          { path: '/', label: t('home'), icon: 'grid_view' },
+          { path: '/reservations', label: t('reservations'), icon: 'desk' },
+          { path: '/community', label: 'COMUNIDAD', icon: 'groups' },
+          { path: '/events', label: t('events'), icon: 'local_activity' },
+          { path: '/plans', label: 'PLANES', icon: 'workspace_premium' },
+        ].map((item, i) => (
+          <Link 
+            key={item.path} 
+            to={item.path}
+            onMouseEnter={() => prefetchRoute(item.path)}
+            className={`flex items-center justify-center gap-3 px-6 py-4 min-w-[64px] rounded-lg transition-all duration-500 overflow-hidden ${isActive(item.path) ? 'bg-[var(--primary-container)] text-black' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+          >
+            <span className="material-symbols-outlined !text-xl">{item.icon}</span>
+            {isActive(item.path) && (
+              <span className="label-md font-bold whitespace-nowrap animate-slide-in">{item.label}</span>
+            )}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode: boolean, toggleDarkMode: () => void, role: UserRole, onRoleChange: (role: UserRole) => void }> = ({ children, profile, darkMode, toggleDarkMode, role, onRoleChange }) => {
+  const { t, i18n } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [showQuickActions, setShowQuickActions] = useState(false);
+  const quickActionsRef = useRef<HTMLDivElement>(null);
+
+  const isAdminActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    onRoleChange('member');
+    navigate('/');
+  };
+
+  const navItems = [
+    { path: '/admin', labelKey: 'nav_dashboard', label: 'DASHBOARD', icon: 'dashboard', adminOnly: false },
+    { path: '/admin/reports', labelKey: 'nav_reports', label: 'ESTADÍSTICAS', icon: 'analytics', adminOnly: true },
+    { path: '/admin/reservations', labelKey: 'nav_reservations', label: 'RESERVAS', icon: 'calendar_month', adminOnly: false },
+    { path: '/admin/members', labelKey: 'nav_members', label: 'CLIENTES', icon: 'groups', adminOnly: false },
+    { path: '/admin/spaces', labelKey: 'nav_spaces', label: 'ESPACIOS', icon: 'other_houses', adminOnly: false },
+    { path: '/admin/plans', labelKey: 'nav_plans', label: 'PLANES', icon: 'card_membership', adminOnly: true },
+    { path: '/admin/events', labelKey: 'nav_events', label: 'EVENTOS', icon: 'local_activity', adminOnly: false },
+    { path: '/admin/quotes', labelKey: 'nav_quotes', label: 'COTIZACIONES', icon: 'request_quote', adminOnly: false },
+    { path: '/admin/settings', labelKey: 'nav_settings', label: 'CONFIGURACIÓN', icon: 'settings', adminOnly: true },
+  ].filter(item => !item.adminOnly || role === 'admin');
+
+  const getPageTitle = () => {
+    const currentItem = navItems.find(item => isAdminActive(item.path));
+    return currentItem ? t(currentItem.labelKey, currentItem.label) : t('administration', 'ADMINISTRACIÓN');
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (quickActionsRef.current && !quickActionsRef.current.contains(event.target as Node)) {
+        setShowQuickActions(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const quickActions = [
+    { label: 'Nueva Reserva', icon: 'event_available', path: '/admin/reservations', color: 'text-indigo-600', bg: 'bg-indigo-50' },
+    { label: 'Nueva Cotización', icon: 'request_quote', path: '/admin/quotes', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: 'Nuevo Evento', icon: 'local_activity', path: '/admin/events', color: 'text-rose-600', bg: 'bg-rose-50' },
+    { label: 'Nuevo Cliente', icon: 'person_add', path: '/admin/add-member', color: 'text-amber-600', bg: 'bg-amber-50' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-[var(--surface)] flex selection:bg-[var(--primary-container)] selection:text-white overflow-hidden">
+      {/* Sidebar Architectural Style (Stitch Light Theme) */}
+      <aside className="w-[320px] h-screen sticky top-0 bg-[var(--surface-container-low)] text-[var(--on-surface)] py-8 px-8 flex flex-col justify-between overflow-y-auto shrink-0 border-r border-[var(--outline-variant)]">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] border border-[var(--outline-variant)]/10 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+          
+          <div className="relative z-10">
+             <Link to="/" className="flex items-center gap-4 mb-12 group px-2">
+                <div className="size-8 bg-[var(--primary)] text-white flex items-center justify-center font-extrabold tracking-tighter rounded-lg group-hover:rotate-12 transition-all duration-700">
+                   B
+                </div>
+                <span className="text-lg font-black uppercase tracking-[-0.05em] text-[var(--primary)]">BURÓ <span className="font-light opacity-60">WORKSPACE</span></span>
+             </Link>
+
+             <nav className="space-y-1">
+                {navItems.map((item) => {
+                   const isActive = isAdminActive(item.path);
+                   return (
+                       <Link
+                          key={item.path}
+                          to={item.path}
+                          onMouseEnter={() => prefetchRoute(item.path)}
+                          className={`flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group hover:translate-x-2 ${isActive ? 'bg-[var(--primary-container)] text-white border-l-4 border-[var(--primary)]' : 'text-[var(--on-surface-variant)] hover:text-[var(--on-surface)] hover:bg-[var(--outline-variant)]/30'}`}
+                       >
+                          <span className={`material-symbols-outlined !text-xl ${isActive ? 'text-white' : 'text-[var(--on-surface-subtle)]'}`}>{item.icon}</span>
+                          <span className={`label-md font-bold tracking-[0.1em] text-[11px] font-display uppercase ${isActive ? '!text-white' : '!text-[var(--on-surface-variant)]'}`}>{t(item.labelKey, item.label)}</span>
+                       </Link>
+                   );
+                 })}
+             </nav>
+          </div>
+
+          <div className="relative z-10 pt-6 border-t border-[var(--outline-variant)]/40 mt-4">
+             <Link to="/profile" className="flex items-center gap-4 group mb-6 px-2">
+                <div className="size-10 rounded-full overflow-hidden border border-[var(--outline-variant)] p-0.5 group-hover:scale-110 transition-transform">
+                   <img src={profile?.avatar_url || placeholderAvatar('Admin')} className="w-full h-full object-cover rounded-full" alt="Admin" />
+                </div>
+                <div>
+                   <p className="label-md text-[8px] opacity-60 mb-0.5 font-bold tracking-widest uppercase text-[var(--on-surface-subtle)]">Protocolo Adm</p>
+                   <p className="title-sm text-xs font-display uppercase tracking-tight font-black text-[var(--on-surface)]">{profile?.name?.split(' ')[0] || 'Admin'}</p>
+                </div>
+             </Link>
+             <button 
+               onClick={handleLogout}
+               className="label-md text-[9px] font-bold tracking-widest opacity-60 hover:opacity-100 flex items-center gap-3 transition-all bg-transparent border-none p-2 cursor-pointer text-[var(--on-surface)]"
+             >
+                <span className="material-symbols-outlined !text-sm">logout</span>
+                <span className="uppercase">Salir</span>
+             </button>
+          </div>
+      </aside>
+
+      {/* Admin Content Area */}
+      <div className="flex-1 h-screen flex flex-col bg-[var(--surface)]">
+         {/* SaaS Top Bar */}
+         <header className="h-20 bg-white border-b border-[var(--outline-variant)] px-10 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-8">
+                <button className="material-symbols-outlined text-slate-400 hover:text-slate-900 transition-colors bg-transparent border-none cursor-pointer !text-2xl">menu</button>
+                <h1 className="text-xl font-bold text-slate-900 tracking-tight capitalize">{getPageTitle().toLowerCase()}</h1>
+            </div>
+
+            {/* Middle Search */}
+            <div className="hidden lg:flex items-center flex-1 max-w-sm mx-10">
+                <div className="relative w-full">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 !text-xl">search</span>
+                    <input 
+                        type="text" 
+                        placeholder="Search here..." 
+                        defaultValue=""
+                        className="w-full h-10 pl-12 pr-4 bg-slate-50 border border-slate-100 rounded-lg text-sm focus:outline-none focus:border-[var(--primary)] focus:bg-white transition-all"
+                    />
+                </div>
+            </div>
+
+            {/* Right Actions */}
+            <div className="flex items-center gap-6">
+                <button 
+                  onClick={() => i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es')}
+                  className="text-xs font-bold text-slate-400 hover:text-slate-900 transition-colors border-none bg-transparent cursor-pointer uppercase tracking-wider"
+                >
+                  {i18n.language === 'es' ? 'EN' : 'ES'}
+                </button>
+
+                <div className="flex items-center gap-2 border-r border-slate-100 pr-6 mr-2">
+                    <button className="relative size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 transition-colors bg-transparent border-none cursor-pointer">
+                        <span className="material-symbols-outlined text-slate-400">notifications</span>
+                        <span className="absolute top-2 right-2 size-4 bg-orange-500 text-[9px] text-white font-bold flex items-center justify-center rounded-full border-2 border-white">12</span>
+                    </button>
+                    <button className="relative size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 transition-colors bg-transparent border-none cursor-pointer">
+                        <span className="material-symbols-outlined text-slate-400">mail</span>
+                        <span className="absolute top-2 right-2 size-4 bg-orange-400 text-[9px] text-white font-bold flex items-center justify-center rounded-full border-2 border-white">65</span>
+                    </button>
+                </div>
+                
+                {/* Quick Actions Menu */}
+                <div className="relative z-[200]">
+                    <CreateNewDisclosure 
+                      items={[
+                        { icon: <HugeiconsIcon icon={Calendar04Icon} size={28} strokeWidth={1.5} />, label: "Reserva", path: "/admin/reservations" },
+                        { icon: <HugeiconsIcon icon={TaskEdit01Icon} size={28} strokeWidth={1.5} />, label: "Cotización", path: "/admin/quotes" },
+                        { icon: <HugeiconsIcon icon={NoteIcon} size={28} strokeWidth={1.5} />, label: "Evento", path: "/admin/events" },
+                        { icon: <HugeiconsIcon icon={Award01Icon} size={28} strokeWidth={1.5} />, label: "Cliente", path: "/admin/add-member" },
+                        { icon: <HugeiconsIcon icon={Folder01Icon} size={28} strokeWidth={1.5} />, label: "Espacio", path: "/admin/spaces" },
+                        { icon: <HugeiconsIcon icon={Flag02Icon} size={28} strokeWidth={1.5} />, label: "Plan", path: "/admin/plans" },
+                      ]}
+                      initialOpen={false}
+                    />
+                </div>
+            </div>
+         </header>
+
+         <main className="flex-1 overflow-y-auto">
+            <Transition key={location.key} direction="right" type="curved" introDuration={0.3}>
+                <div className="max-w-[1500px] mx-auto p-10">
+                   {children}
+                </div>
+            </Transition>
+         </main>
+      </div>
+    </div>
+  );
+};
+
+
+const App: React.FC = () => {
+  const [userRole, setUserRole] = useState<UserRole>('member');
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
+    fetchProfile().then(() => setLoading(false));
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+        setProfile(data);
+        if (data?.role) setUserRole(data.role as UserRole);
+      }
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+    }
+  };
+
+  const toggleRole = (role: UserRole) => setUserRole(role);
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  // If loading is true, we just return null or a small loader so it doesn't flash
+  if (loading) return null;
+
+  return (
+    <Router>
+      <Suspense fallback={
+        <div className="min-h-screen flex flex-col items-center justify-center gap-8 bg-white dark:bg-buro-black transition-colors duration-1000">
+          <div className="size-20 border-[6px] border-stone-100 border-t-primary rounded-full animate-spin"></div>
+          <div className="text-center space-y-2">
+            <p className="text-[10px] font-black uppercase text-stone-300 tracking-[0.5em] font-mono animate-pulse">Initializing Buro Core</p>
+            <p className="text-xs text-stone-200 font-bold uppercase tracking-widest font-mono">Quantum Interface Loading</p>
+          </div>
+        </div>
+      }>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/admin/login" element={<AdminLogin onLoginSuccess={(role) => setUserRole(role)} />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+
+          <Route path="/app" element={<MobileApp />} />
+          <Route path="/" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Home /></MemberLayout></MemberRoute>} />
+          <Route path="/reservations" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Reservations role={userRole} /></MemberLayout></MemberRoute>} />
+          <Route path="/community" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Community /></MemberLayout></MemberRoute>} />
+          <Route path="/events" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Events /></MemberLayout></MemberRoute>} />
+          <Route path="/benefits" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Benefits /></MemberLayout></MemberRoute>} />
+          <Route path="/profile" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Profile role={userRole} onRoleChange={toggleRole} /></MemberLayout></MemberRoute>} />
+          <Route path="/plans" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Plans /></MemberLayout></MemberRoute>} />
+          <Route path="/guests" element={<MemberRoute profile={profile}><MemberLayout role={userRole} onRoleChange={toggleRole} profile={profile} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Guests /></MemberLayout></MemberRoute>} />
+          <Route path="/checkin" element={<MemberRoute profile={profile}><CheckIn /></MemberRoute>} />
+          <Route path="/quote/:id" element={<QuoteView />} />
+
+          <Route path="/admin" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><AdminDashboard /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/add-member" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><AddMember /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/spaces" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManageSpaces /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/members" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManageMembers /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/reservations" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManageReservations /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/plans" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManagePlans /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/events" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManageEvents /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/benefits" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManageBenefits /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/reports" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><AdminReports /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/guests" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManageGuests /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/quotes" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><ManageQuotes /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/settings" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><Settings /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/members/:id" element={<AdminRoute role={userRole}><AdminLayout profile={profile} role={userRole} onRoleChange={toggleRole} darkMode={darkMode} toggleDarkMode={toggleDarkMode}><MemberDetail /></AdminLayout></AdminRoute>} />
+          <Route path="/landing" element={<LandingPageAlt />} />
+          <Route path="/welcome" element={<SplashScreen />} />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
+      <Toaster position="top-right" />
+    </Router>
+  );
+};
+
+export default App;

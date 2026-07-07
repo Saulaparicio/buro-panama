@@ -1,0 +1,8 @@
+{
+  "name": "BURÓ Panamá Workspace",
+  "description": "A comprehensive workspace management application for members and administrators, featuring space booking, community networking, automated check-in, and detailed analytics.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
