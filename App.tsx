@@ -376,6 +376,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     fetchProfile().then(() => setLoading(false));
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        window.location.hash = '/reset-password';
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const fetchProfile = async () => {
