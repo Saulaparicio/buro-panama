@@ -8,7 +8,9 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [isResetMode, setIsResetMode] = useState(false);
 
   const handleGoogleLogin = async () => {
     try {
@@ -21,6 +23,29 @@ const Login: React.FC = () => {
       if (authError) throw authError;
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión con Google.');
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      setError('Por favor, ingresa tu correo electrónico.');
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    setMessage(null);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/reset-password',
+      });
+      if (error) throw error;
+      setMessage('Te hemos enviado un enlace de recuperación al correo.');
+      setIsResetMode(false);
+    } catch (err: any) {
+      setError(err.message || 'Error al solicitar el enlace.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,11 +128,17 @@ const Login: React.FC = () => {
           <div className="bg-white p-10 md:p-12 rounded-[2rem] border border-slate-200/60 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-indigo-600"></div>
 
-            <form onSubmit={handleLogin} className="space-y-8">
+            <form onSubmit={isResetMode ? handleResetPassword : handleLogin} className="space-y-8">
               {error && (
                 <div className="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3 border border-red-100">
                   <span className="material-symbols-outlined text-lg">error</span>
                   <span className="flex-1">{error}</span>
+                </div>
+              )}
+              {message && (
+                <div className="p-4 bg-green-50 text-green-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3 border border-green-100">
+                  <span className="material-symbols-outlined text-lg">check_circle</span>
+                  <span className="flex-1">{message}</span>
                 </div>
               )}
 
@@ -129,32 +160,38 @@ const Login: React.FC = () => {
                 </div>
 
                 {/* Password field in screenshot style */}
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center px-1">
-                    <label className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Código de Entrada (Pass)</label>
-                    <button type="button" className="text-[8px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer">
-                      Recuperar
-                    </button>
+                {!isResetMode && (
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center px-1">
+                      <label className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Código de Entrada (Pass)</label>
+                      <button 
+                        type="button" 
+                        onClick={() => { setIsResetMode(true); setError(null); setMessage(null); }}
+                        className="text-[8px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer"
+                      >
+                        Recuperar
+                      </button>
+                    </div>
+                    <div className="relative flex items-center border border-slate-200 rounded-xl px-4 bg-slate-50 focus-within:bg-white focus-within:border-indigo-500 transition-all">
+                      <span className="material-symbols-outlined text-slate-400 text-base mr-2 select-none">fingerprint</span>
+                      <input 
+                        type={showPassword ? "text" : "password"}
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full py-4 text-xs font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none bg-transparent uppercase tracking-widest border-none"
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-slate-400 hover:text-slate-600 transition-colors bg-transparent border-none cursor-pointer flex items-center"
+                      >
+                        <span className="material-symbols-outlined !text-base">{showPassword ? "visibility_off" : "visibility"}</span>
+                      </button>
+                    </div>
                   </div>
-                  <div className="relative flex items-center border border-slate-200 rounded-xl px-4 bg-slate-50 focus-within:bg-white focus-within:border-indigo-500 transition-all">
-                    <span className="material-symbols-outlined text-slate-400 text-base mr-2 select-none">fingerprint</span>
-                    <input 
-                      type={showPassword ? "text" : "password"}
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full py-4 text-xs font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none bg-transparent uppercase tracking-widest border-none"
-                    />
-                    <button 
-                      type="button" 
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="text-slate-400 hover:text-slate-600 transition-colors bg-transparent border-none cursor-pointer flex items-center"
-                    >
-                      <span className="material-symbols-outlined !text-base">{showPassword ? "visibility_off" : "visibility"}</span>
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Submit button in screenshot style */}
@@ -167,26 +204,40 @@ const Login: React.FC = () => {
                   <div className="size-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    Autenticar Acceso
-                    <span className="material-symbols-outlined !text-base">verified_user</span>
+                    {isResetMode ? 'Enviar Enlace' : 'Autenticar Acceso'}
+                    <span className="material-symbols-outlined !text-base">{isResetMode ? 'send' : 'verified_user'}</span>
                   </>
                 )}
               </button>
 
-              <div className="relative flex items-center pt-2 pb-2">
-                <div className="flex-grow border-t border-slate-200"></div>
-                <span className="flex-shrink-0 mx-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">O continuar con</span>
-                <div className="flex-grow border-t border-slate-200"></div>
-              </div>
+              {isResetMode && (
+                <button 
+                  type="button" 
+                  onClick={() => { setIsResetMode(false); setError(null); setMessage(null); }}
+                  className="w-full text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors cursor-pointer bg-transparent border-none mt-4 block text-center"
+                >
+                  Volver al acceso
+                </button>
+              )}
 
-              <button 
-                type="button" 
-                onClick={handleGoogleLogin}
-                className="w-full py-4.5 bg-white border-2 border-slate-100 hover:border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold uppercase tracking-[0.15em] transition-all flex items-center justify-center gap-3 cursor-pointer"
-              >
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
-                Acceso con Google
-              </button>
+              {!isResetMode && (
+                <>
+                  <div className="relative flex items-center pt-2 pb-2">
+                    <div className="flex-grow border-t border-slate-200"></div>
+                    <span className="flex-shrink-0 mx-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">O continuar con</span>
+                    <div className="flex-grow border-t border-slate-200"></div>
+                  </div>
+
+                  <button 
+                    type="button" 
+                    onClick={handleGoogleLogin}
+                    className="w-full py-4.5 bg-white border-2 border-slate-100 hover:border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold uppercase tracking-[0.15em] transition-all flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
+                    Acceso con Google
+                  </button>
+                </>
+              )}
             </form>
           </div>
 
