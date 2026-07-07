@@ -37,7 +37,7 @@ const Login: React.FC = () => {
     setMessage(null);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/reset-password',
+        redirectTo: window.location.origin + '/#/reset-password',
       });
       if (error) throw error;
       setMessage('Te hemos enviado un enlace de recuperación al correo.');

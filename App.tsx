@@ -47,6 +47,7 @@ const prefetchMap: Record<string, () => Promise<any>> = {
   '/admin/login': () => import('./pages/Admin/AdminLogin'),
   '/onboarding': () => import('./pages/Onboarding'),
   '/admin/settings': () => import('./pages/Admin/Settings'),
+  '/reset-password': () => import('./pages/ResetPassword'),
 };
 
 const prefetchRoute = (path: string) => {
@@ -69,6 +70,7 @@ const Events = lazy(prefetchMap['/events']);
 const Guests = lazy(prefetchMap['/guests']);
 const QuoteView = lazy(prefetchMap['/quoteview']);
 const LandingPageAlt = lazy(prefetchMap['/landing']);
+const ResetPassword = lazy(prefetchMap['/reset-password']);
 
 // Admin Components
 const AdminDashboard = lazy(prefetchMap['/admin']);
@@ -409,6 +411,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/admin/login" element={<AdminLogin onLoginSuccess={(role) => setUserRole(role)} />} />
           <Route path="/onboarding" element={<Onboarding />} />
 
