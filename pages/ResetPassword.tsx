@@ -11,12 +11,14 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Check if user is actually authenticated
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
+    // Escuchamos los cambios de sesión para no redirigir prematuramente
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
         navigate('/login');
       }
     });
+    
+    return () => subscription.unsubscribe();
   }, [navigate]);
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
