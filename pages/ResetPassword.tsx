@@ -11,6 +11,27 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
+    // Cuando usamos HashRouter, Supabase a veces no puede leer el access_token automáticamente.
+    // Lo extraemos manualmente de la URL y establecemos la sesión.
+    const hash = window.location.hash;
+    if (hash.includes('access_token=')) {
+      const hashParams = new URLSearchParams(hash.substring(hash.indexOf('access_token=')));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      
+      if (accessToken && refreshToken) {
+        supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken
+        }).then(({ error }) => {
+          if (!error) {
+            // Limpiar la URL para que no queden los tokens expuestos
+            window.location.hash = '/reset-password';
+          }
+        });
+      }
+    }
+
     // Escuchamos los cambios de sesión para no redirigir prematuramente
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
