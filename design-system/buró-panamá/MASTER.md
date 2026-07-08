@@ -19,7 +19,7 @@
 | Role | Hex | CSS Variable |
 |------|-----|--------------|
 | Primary (Blue) | `#3d4ad8` | `--primary` |
-| Primary Container | `#5865f2` | `--primary-container` |
+| Primary Container | `#13202E` | `--primary-container` |
 | Secondary (Gold/Yellow) | `#7b5800` | `--secondary` |
 | Secondary Container | `#ffbb00` | `--secondary-container` |
 | Tertiary (Emerald) | `#006a48` | `--tertiary` |
