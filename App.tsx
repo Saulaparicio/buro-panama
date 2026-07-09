@@ -190,6 +190,9 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
   const navigate = useNavigate();
   const [showQuickActions, setShowQuickActions] = useState(false);
   const quickActionsRef = useRef<HTMLDivElement>(null);
+  
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [sidebarSearch, setSidebarSearch] = useState('');
 
   const isAdminActive = (path: string) => location.pathname === path;
 
@@ -209,6 +212,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
     { path: '/admin/quotes', labelKey: 'nav_quotes', label: 'COTIZACIONES', icon: 'request_quote', adminOnly: false },
     { path: '/admin/settings', labelKey: 'nav_settings', label: 'CONFIGURACIÓN', icon: 'settings', adminOnly: true },
   ].filter(item => !item.adminOnly || role === 'admin');
+
+  const filteredNavItems = navItems.filter(item => t(item.labelKey, item.label).toLowerCase().includes(sidebarSearch.toLowerCase()));
 
   const getPageTitle = () => {
     const currentItem = navItems.find(item => isAdminActive(item.path));
@@ -233,55 +238,87 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--surface)] flex selection:bg-[var(--primary-container)] selection:text-white overflow-hidden">
-      {/* Sidebar Architectural Style (Stitch Light Theme) */}
-      <aside className="w-[320px] h-screen sticky top-0 bg-[var(--surface-container-low)] text-[var(--on-surface)] py-8 px-8 flex flex-col justify-between overflow-y-auto shrink-0 border-r border-[var(--outline-variant)]">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] border border-[var(--outline-variant)]/10 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-          
-          <div className="relative z-10">
-             <Link to="/" className="flex items-center gap-4 mb-12 group px-2">
-                <div className="size-8 bg-[var(--primary)] text-white flex items-center justify-center font-extrabold tracking-tighter rounded-lg group-hover:rotate-12 transition-all duration-700">
-                   B
+    <div className="min-h-screen bg-[#e9e9ec] flex selection:bg-[var(--primary-container)] selection:text-white overflow-hidden">
+      {/* Sidebar Architectural Style (Nolito sidebar-11) */}
+      <aside className={`h-screen sticky top-0 bg-white text-[#1c1c1e] py-6 px-2 flex flex-col shrink-0 shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-[width] duration-300 ease-in-out z-20 ${isCollapsed ? 'w-[80px]' : 'w-[320px] rounded-r-[16px]'}`}>
+         
+         <div className="flex flex-col h-full overflow-hidden">
+           {/* Header */}
+           <div className="flex items-center justify-between px-3 mb-6 min-h-[34px]">
+             <Link to="/" className={`flex items-center gap-2 overflow-hidden transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
+                <div className="flex-shrink-0 grid place-items-center size-[34px]">
+                  <svg viewBox="0 0 32 32" aria-hidden="true" className="w-[26px] h-[26px]">
+                    <path d="M7 27 L16 6 L20.5 15 L12 27 Z" fill="#3b82f6" />
+                    <path d="M16.5 27 L24 9 L28 27 Z" fill="#1e3a8a" />
+                  </svg>
                 </div>
-                <span className="text-lg font-black uppercase tracking-[-0.05em] text-[var(--primary)]">BURÓ <span className="font-light opacity-60">WORKSPACE</span></span>
+                <span className="text-[22px] font-semibold tracking-[-0.02em] whitespace-nowrap">BURÓ<sup className="text-[10px] font-medium text-[#9b9ba3] ml-0.5">®</sup></span>
              </Link>
-
-             <nav className="space-y-1">
-                {navItems.map((item) => {
-                   const isActive = isAdminActive(item.path);
-                   return (
-                       <Link
-                          key={item.path}
-                          to={item.path}
-                          onMouseEnter={() => prefetchRoute(item.path)}
-                          className={`flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group hover:translate-x-2 ${isActive ? 'bg-[var(--primary-container)] text-white border-l-4 border-[var(--primary)]' : 'text-[var(--on-surface-variant)] hover:text-[var(--on-surface)] hover:bg-[var(--outline-variant)]/30'}`}
-                       >
-                          <span className={`material-symbols-outlined !text-xl ${isActive ? 'text-white' : 'text-[var(--on-surface-subtle)]'}`}>{item.icon}</span>
-                          <span className={`label-md font-bold tracking-[0.1em] text-[11px] font-display uppercase ${isActive ? '!text-white' : '!text-[var(--on-surface-variant)]'}`}>{t(item.labelKey, item.label)}</span>
-                       </Link>
-                   );
-                 })}
-             </nav>
-          </div>
-
-          <div className="relative z-10 pt-6 border-t border-[var(--outline-variant)]/40 mt-4">
-             <Link to="/profile" className="flex items-center gap-4 group mb-6 px-2">
-                <div className="size-10 rounded-full overflow-hidden border border-[var(--outline-variant)] p-0.5 group-hover:scale-110 transition-transform">
-                   <img src={profile?.avatar_url || placeholderAvatar('Admin')} className="w-full h-full object-cover rounded-full" alt="Admin" />
-                </div>
-                <div>
-                   <p className="label-md text-[8px] opacity-60 mb-0.5 font-bold tracking-widest uppercase text-[var(--on-surface-subtle)]">Protocolo Adm</p>
-                   <p className="title-sm text-xs font-display uppercase tracking-tight font-black text-[var(--on-surface)]">{profile?.name?.split(' ')[0] || 'Admin'}</p>
-                </div>
-             </Link>
+             
              <button 
-               onClick={handleLogout}
-               className="label-md text-[9px] font-bold tracking-widest opacity-60 hover:opacity-100 flex items-center gap-3 transition-all bg-transparent border-none p-2 cursor-pointer text-[var(--on-surface)]"
+               onClick={() => setIsCollapsed(!isCollapsed)}
+               className={`flex-shrink-0 grid place-items-center size-12 rounded-[11px] bg-[#f5f5f7] text-[#6b6b73] hover:bg-[#eaeaec] transition-colors border-none cursor-pointer ${isCollapsed ? 'mx-auto' : ''}`}
+               aria-label="Toggle sidebar"
              >
-                <span className="material-symbols-outlined !text-sm">logout</span>
-                <span className="uppercase">Salir</span>
+               <span className="material-symbols-outlined !text-[20px]">{isCollapsed ? 'menu' : 'panel_left'}</span>
              </button>
-          </div>
+           </div>
+
+           {/* Search */}
+           <div className={`relative flex items-center gap-2.5 h-[46px] px-3.5 mb-4 mx-2 border border-[#c3c3c7] rounded-[13px] text-[#9b9ba3] transition-opacity duration-300 ${isCollapsed ? 'opacity-0 pointer-events-none hidden' : 'opacity-100'}`}>
+             <span className="material-symbols-outlined !text-[20px]">search</span>
+             <input 
+               type="text" 
+               placeholder="Search" 
+               value={sidebarSearch}
+               onChange={(e) => setSidebarSearch(e.target.value)}
+               className="flex-1 min-w-0 bg-transparent border-none outline-none text-[15px] text-[#1c1c1e] placeholder-[#9b9ba3]" 
+             />
+             <div className="grid place-items-center size-6 border border-[#c3c3c7] rounded-md text-[13px] text-[#9b9ba3]">/</div>
+           </div>
+
+           {/* Nav */}
+           <nav className="flex-1 overflow-y-auto overflow-x-hidden space-y-0.5 px-2">
+              {filteredNavItems.map((item) => {
+                 const isActive = isAdminActive(item.path);
+                 return (
+                     <Link
+                        key={item.path}
+                        to={item.path}
+                        onMouseEnter={() => prefetchRoute(item.path)}
+                        title={isCollapsed ? t(item.labelKey, item.label) : undefined}
+                        className={`flex items-center gap-3.5 h-[48px] rounded-[13px] px-3.5 transition-colors duration-200 cursor-pointer ${isActive ? 'bg-[#f5f5f7] text-[#1c1c1e]' : 'text-[#1c1c1e] hover:bg-[#f5f5f7]'} ${isCollapsed ? 'justify-center' : 'w-full'}`}
+                     >
+                        <span className={`material-symbols-outlined !text-[20px] flex-shrink-0 ${isActive ? 'text-[#1c1c1e]' : 'text-[#6b6b73]'}`}>{item.icon}</span>
+                        <span className={`text-[16px] font-medium whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100 flex-1 overflow-hidden text-ellipsis'}`}>{t(item.labelKey, item.label)}</span>
+                     </Link>
+                 );
+               })}
+           </nav>
+
+           {/* Divider */}
+           <hr className="h-px border-0 bg-[#ebebef] mx-3 my-2 flex-shrink-0" />
+
+           {/* Profile & Logout */}
+           <div className="px-2 mt-auto pt-2">
+             <div className={`flex items-center gap-3 p-2 rounded-xl transition-all duration-300 ${isCollapsed ? 'flex-col justify-center' : 'hover:bg-[#f5f5f7]'}`}>
+                <Link to="/profile" className="flex-shrink-0 size-10 rounded-full overflow-hidden border border-[var(--outline-variant)]">
+                   <img src={profile?.avatar_url || placeholderAvatar('Admin')} className="w-full h-full object-cover rounded-full" alt="Admin" />
+                </Link>
+                <div className={`flex-1 min-w-0 transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
+                   <p className="text-[14px] font-semibold text-[#1c1c1e] truncate">{profile?.name?.split(' ')[0] || 'Admin'}</p>
+                   <p className="text-[12px] font-medium text-[#9b9ba3] truncate">Protocolo Adm</p>
+                </div>
+                <button 
+                  onClick={handleLogout}
+                  title="Logout"
+                  className={`flex-shrink-0 grid place-items-center size-8 rounded-lg text-[#6b6b73] hover:text-[#1c1c1e] hover:bg-[#eaeaec] transition-colors border-none bg-transparent cursor-pointer ${isCollapsed ? 'mt-2' : ''}`}
+                >
+                   <span className="material-symbols-outlined !text-[20px]">logout</span>
+                </button>
+             </div>
+           </div>
+         </div>
       </aside>
 
       {/* Admin Content Area */}
