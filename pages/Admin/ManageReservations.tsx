@@ -141,7 +141,8 @@ const ManageReservations: React.FC = () => {
                         to: member.email,
                         memberName: member.name || 'Cliente',
                         spaceName: space.name,
-                        reservationDate: `${new Date(insertedRes.start_time).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} a las ${new Date(insertedRes.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                        reservationDate: `${new Date(insertedRes.start_time).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} a las ${new Date(insertedRes.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+                        tenantId: tenant?.id || ''
                     }).catch(err => console.error("Email error:", err));
                 }
             }
@@ -750,67 +751,118 @@ const ManageReservations: React.FC = () => {
                 );
             })()}
 
-            {/* Detail Modal */}
-            {isDetailModalOpen && selectedReservation && (
-                <div className="modal-backdrop" role="dialog" aria-modal="true">
-                    <div className="modal-container max-w-2xl !rounded-[3rem] shadow-2xl border-none overflow-hidden">
-                        <header className="modal-header !p-12 !pb-6">
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-4">
-                                    <div className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] shadow-lg ${selectedReservation.status === 'confirmed' ? 'bg-[var(--primary)] text-[var(--secondary)]' : 'bg-red-500 text-white'}`}>
-                                        {selectedReservation.status === 'confirmed' ? 'VALIDADO' : 'ANULADO'}
-                                    </div>
-                                    <span className="text-[10px] text-[var(--on-surface-subtle)] font-black uppercase opacity-40">REF: {selectedReservation.reference_code}</span>
-                                </div>
-                                <h3 className="text-4xl font-black text-[var(--on-surface)] uppercase leading-none">{selectedReservation.reference_code}</h3>
-                            </div>
-                            <button onClick={() => setIsDetailModalOpen(false)} className="size-16 rounded-2xl bg-white shadow-[var(--neu-flat-sm)] flex items-center justify-center border-none cursor-pointer">
-                                <span className="material-symbols-outlined !text-3xl font-light">close</span>
-                            </button>
-                        </header>
-
-                        <div className="modal-body !p-12 !pt-0 space-y-10 relative">
-                            <div className="absolute inset-0 bg-[radial-gradient(var(--on-surface)_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.03] pointer-events-none"></div>
+            {/* Detail Modal - Variante Minimalista */}
+            {isDetailModalOpen && selectedReservation && (() => {
+                const space = spaces.find(s => s.id === selectedReservation.space_id);
+                const member = members.find(m => m.id === selectedReservation.member_id);
+                const isCancelled = selectedReservation.status === 'cancelled';
+                
+                return (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md" role="dialog" aria-modal="true">
+                        <div className="bg-white w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl flex flex-col animate-fade">
                             
-                            <div className="p-8 bg-slate-50/50 rounded-[2.5rem] border border-white flex items-center gap-8">
-                                <div className="size-20 rounded-[1.5rem] bg-[var(--secondary)] shadow-xl overflow-hidden flex items-center justify-center">
-                                    <img src={getNanoBananaAvatar(0)} className="w-full h-full object-cover" />
-                                </div>
-                                <div>
-                                    <h4 className="text-xl font-black text-[var(--on-surface)] uppercase">{members.find(m => m.id === selectedReservation.member_id)?.name || 'Cliente Workspace'}</h4>
-                                    <p className="text-[10px] text-[var(--on-surface-subtle)] font-black uppercase tracking-[0.2em] opacity-60">Verified Member Dossier</p>
+                            {/* Left/Top: Space Image */}
+                            <div className="p-6 pb-0">
+                                <div className="w-full h-48 rounded-xl overflow-hidden relative bg-slate-900">
+                                    <img 
+                                        src={space?.images?.[0] || "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800"} 
+                                        className="w-full h-full object-cover opacity-90"
+                                        alt={space?.name}
+                                    />
+                                    <div className="absolute top-3 left-3">
+                                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-md ${selectedReservation.status === 'confirmed' ? 'bg-blue-600 text-white' : 'bg-red-500 text-white'}`}>
+                                            <span className="material-symbols-outlined text-[14px]">
+                                                {selectedReservation.status === 'confirmed' ? 'verified' : 'cancel'}
+                                            </span>
+                                            {selectedReservation.status === 'confirmed' ? 'Validado' : 'Anulado'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="p-8 bg-[var(--surface)] shadow-[var(--neu-pressed-sm)] rounded-[2.5rem] border border-white/40">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)] opacity-40">Horario</p>
-                                    <p className="text-xl font-black text-[var(--on-surface)]">
-                                        {new Date(selectedReservation.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - {new Date(selectedReservation.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-                                    </p>
+                            
+                            {/* Right/Bottom: Details Content */}
+                            <div className="p-6 flex flex-col gap-6">
+                                
+                                {/* Header */}
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">{space?.name || 'Espacio'}</h2>
+                                        <p className="text-[12px] font-bold text-slate-400 flex items-center gap-1 uppercase tracking-wider mt-1">
+                                            <span className="material-symbols-outlined text-[16px]">qr_code</span>
+                                            REF: {selectedReservation.reference_code}
+                                        </p>
+                                    </div>
+                                    <button onClick={() => setIsDetailModalOpen(false)} className="size-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors border-none cursor-pointer text-slate-600">
+                                        <span className="material-symbols-outlined !text-lg">close</span>
+                                    </button>
                                 </div>
-                                <div className="p-8 bg-[var(--surface)] shadow-[var(--neu-pressed-sm)] rounded-[2.5rem] border border-white/40">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--primary)] opacity-40">Espacio</p>
+                                
+                                {/* Primary Details Box */}
+                                <div className="grid grid-cols-2 gap-4 p-5 bg-slate-50 border border-slate-100 rounded-xl">
+                                    <div>
+                                        <p className="text-[9px] uppercase tracking-wider text-slate-400 font-black mb-1">Fecha de Sesión</p>
+                                        <p className="text-sm font-black text-slate-800 uppercase tracking-tight">
+                                            {new Date(selectedReservation.start_time).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                        </p>
+                                        <p className="text-[11px] text-slate-500 font-bold uppercase mt-1">
+                                            {new Date(selectedReservation.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - {new Date(selectedReservation.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[9px] uppercase tracking-wider text-slate-400 font-black mb-1">Costo Estimado</p>
+                                        <p className="text-sm font-black text-slate-800 uppercase tracking-tight">${space?.price || 45}.00 / hr</p>
+                                        <p className="text-[11px] text-emerald-600 font-black uppercase tracking-wider mt-1">Sincronizado</p>
+                                    </div>
+                                </div>
+                                
+                                {/* Host / Member Info */}
+                                <div className="flex justify-between items-center px-1">
+                                    <div className="flex items-center gap-4">
+                                        <div className="size-10 rounded-full bg-slate-200 overflow-hidden shadow-sm flex items-center justify-center">
+                                            <img className="w-full h-full object-cover" src={getNanoBananaAvatar(0)} alt="Avatar" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] text-slate-400 uppercase font-black tracking-widest">Titular</p>
+                                            <p className="text-xs font-black text-slate-800 uppercase tracking-tight">{member?.name || 'Cliente'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Espacio / Select */}
+                                <div>
+                                    <p className="text-[9px] uppercase tracking-wider text-slate-400 font-black mb-2">Modificar Espacio Asignado</p>
                                     <PremiumSelect 
                                         value={selectedReservation.space_id}
                                         options={spaces.map(s => ({ value: s.id, label: s.name.toUpperCase() }))}
                                         onChange={(val) => handleUpdateSpace(val)}
                                         placeholder="SELECCIONAR..."
-                                        className="!mb-0"
+                                        className="!mb-0 shadow-sm"
                                     />
                                 </div>
+                                
+                                {/* Actions */}
+                                <div className="flex gap-3 pt-6 border-t border-slate-100">
+                                    <button 
+                                        onClick={() => setIsDetailModalOpen(false)} 
+                                        className="flex-[2] bg-slate-900 text-white py-3.5 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-black transition-all flex items-center justify-center gap-2 border-none cursor-pointer"
+                                    >
+                                        Cerrar Dossier
+                                    </button>
+                                    {!isCancelled && (
+                                        <button 
+                                            onClick={() => handleCancelReservation(selectedReservation.id)} 
+                                            className="flex-1 bg-red-50 text-red-600 py-3.5 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-100 transition-all flex items-center justify-center gap-2 border-none cursor-pointer"
+                                        >
+                                            Anular
+                                        </button>
+                                    )}
+                                </div>
+                                
                             </div>
                         </div>
-
-                        <footer className="modal-footer !p-12 !pt-6 flex gap-4">
-                            {selectedReservation.status !== 'cancelled' && (
-                                <button onClick={() => handleCancelReservation(selectedReservation.id)} className="flex-1 h-16 bg-red-50 text-red-500 rounded-2xl font-black text-[10px] uppercase border-none cursor-pointer">ANULAR</button>
-                            )}
-                            <button onClick={() => setIsDetailModalOpen(false)} className="flex-[2] h-16 btn-brand-yellow rounded-2xl font-black text-[11px] uppercase shadow-xl border-none cursor-pointer">CERRAR DOSSIER</button>
-                        </footer>
                     </div>
-                </div>
-            )}
+                );
+            })()}
 
             <style>{`
                 .fc { font-family: 'Cairo', sans-serif; --fc-border-color: rgba(0,0,0,0.05); }
