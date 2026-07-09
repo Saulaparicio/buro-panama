@@ -185,6 +185,7 @@ const ManageEvents: React.FC = () => {
                 eventName: selectedEventForAttendees.title,
                 eventDate: `${new Date(selectedEventForAttendees.event_date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} a las ${new Date(selectedEventForAttendees.event_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
                 eventLocation: selectedEventForAttendees.location,
+                tenantId: ''
             });
 
             toast.promise(promise, {

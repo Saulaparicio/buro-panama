@@ -31,7 +31,8 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (tab: TabValue) 
         .maybeSingle();
 
       if (membership) {
-        setMembershipName(membership.tier?.name || 'Plan Activo');
+        const tierName = Array.isArray(membership.tier) ? membership.tier[0]?.name : (membership.tier as any)?.name;
+        setMembershipName(tierName || 'Plan Activo');
         setMembershipStatus('Activo');
       }
 

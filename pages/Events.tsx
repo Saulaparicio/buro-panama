@@ -89,6 +89,7 @@ const Events: React.FC = () => {
                         eventName: event.title,
                         eventDate: `${new Date(event.event_date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} a las ${new Date(event.event_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
                         eventLocation: event.location,
+                        tenantId: ''
                     }).catch(err => console.error('Error sending RSVP email:', err));
                 }
             }

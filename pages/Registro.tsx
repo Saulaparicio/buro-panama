@@ -285,7 +285,8 @@ const Registro: React.FC = () => {
       // Enviar email de bienvenida definitivo
       sendWelcomeEmail({
         to: formData.email || user.email || '',
-        memberName: formData.name || user.user_metadata?.name || 'Socio Buró'
+        memberName: formData.name || user.user_metadata?.name || 'Socio Buró',
+        tenantId: ''
       }).catch(err => console.error('Error welcome email:', err));
 
       toast.success('¡Perfil corporativo completado!');
