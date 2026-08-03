@@ -75,7 +75,7 @@ const SplashScreen: React.FC = () => {
             >
               <span className="relative z-10 flex items-center gap-2">
                 {isAdmin ? 'Acceder al Panel' : 'Empezar'}
-                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                <Icon name="arrow_forward" className="group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
             </button>

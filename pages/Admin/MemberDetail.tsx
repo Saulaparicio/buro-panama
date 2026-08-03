@@ -276,7 +276,7 @@ const MemberDetail: React.FC = () => {
                                     {membership?.tier?.name || 'Premium Member'}
                                 </span>
                                 <span className="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    <span className="material-symbols-outlined !text-sm">location_on</span>
+                                    <Icon name="location_on" className="!text-sm" />
                                     Madrid, ES
                                 </span>
                             </div>

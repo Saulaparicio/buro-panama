@@ -589,7 +589,7 @@ const ManageMembers: React.FC = () => {
                                                     onClick={() => handleRemoveTag(tag)}
                                                     className="size-4 hover:bg-indigo-100 rounded-full flex items-center justify-center border-none bg-transparent cursor-pointer"
                                                 >
-                                                    <span className="material-symbols-outlined !text-xs">close</span>
+                                                    <Icon name="close" className="!text-xs" />
                                                 </button>
                                             </span>
                                         ))}

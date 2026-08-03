@@ -772,9 +772,7 @@ const ManageReservations: React.FC = () => {
                                     />
                                     <div className="absolute top-3 left-3">
                                         <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-md ${selectedReservation.status === 'confirmed' ? 'bg-blue-600 text-white' : 'bg-red-500 text-white'}`}>
-                                            <span className="material-symbols-outlined text-[14px]">
-                                                {selectedReservation.status === 'confirmed' ? 'verified' : 'cancel'}
-                                            </span>
+                                            <Icon name={selectedReservation.status === 'confirmed' ? 'verified' : 'cancel'} className="text-[14px]" />
                                             {selectedReservation.status === 'confirmed' ? 'Validado' : 'Anulado'}
                                         </span>
                                     </div>

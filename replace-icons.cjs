@@ -29,42 +29,29 @@ const iconComponentPath = path.join(__dirname, 'components/ui/Icon');
 let totalReplaced = 0;
 
 walkDir(__dirname, (filePath) => {
-    // skip Icon.tsx itself and PremiumSelect and ErrorBoundary since we did them manually
     if (filePath.includes('Icon.tsx') || filePath.includes('ErrorBoundary.tsx') || filePath.includes('PremiumSelect.tsx')) return;
 
     let content = fs.readFileSync(filePath, 'utf-8');
     let original = content;
 
-    // Pattern: <span className="material-symbols-outlined [optional extra classes]">(content)</span>
-    // Note: className could be just "material-symbols-outlined" or "material-symbols-outlined extra-class"
-    
-    // We need to match <span ... className="...material-symbols-outlined..." ... > ... </span>
-    // This is a bit tricky with Regex.
-    // Let's use a replacer function.
-
-    const spanRegex = /<span([^>]*)>([\s\S]*?)<\/span>/g;
+    // Fix regex to strictly match the opening tag with the class, and ONLY non-HTML content inside
+    // This avoids the nested span issue
+    const spanRegex = /<span([^>]*material-symbols-outlined[^>]*)>([^<]*)<\/span>/g;
     
     let needsImport = false;
     
     content = content.replace(spanRegex, (match, attrs, innerText) => {
-        if (!attrs.includes('material-symbols-outlined')) {
-            return match;
-        }
-
         // Extract className
         let classNameMatch = attrs.match(/className=(["'])(.*?)\1/);
         let classNameValue = classNameMatch ? classNameMatch[2] : '';
         
-        // Remove "material-symbols-outlined" from className
         let newClassName = classNameValue.replace(/material-symbols-outlined/g, '').trim();
-        // Replace multiple spaces with single space
         newClassName = newClassName.replace(/\s+/g, ' ');
 
-        // Keep other attributes (like onClick)
         let otherAttrs = attrs.replace(/className=(["'])(.*?)\1/, '').trim();
 
         let iconName = innerText.trim();
-        if (!iconName) return match; // fallback just in case
+        if (!iconName) return match; 
 
         needsImport = true;
         totalReplaced++;
@@ -80,10 +67,8 @@ walkDir(__dirname, (filePath) => {
     });
 
     if (content !== original) {
-        // Add import
         if (needsImport && !content.includes('components/ui/Icon') && !content.includes('Icon from')) {
             const relPath = getRelativeImport(filePath, iconComponentPath);
-            // Insert after the last import, or at the top
             const importRegex = /import .* from '.*';\r?\n/g;
             let lastMatch = null;
             let m;

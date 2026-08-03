@@ -509,7 +509,7 @@ const ManageQuotes: React.FC = () => {
           </div>
           <div className="text-right flex flex-col items-end gap-1">
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 flex items-center gap-0.5">
-              +12% <span className="material-symbols-outlined !text-[10px]">trending_up</span>
+              +12% <Icon name="trending_up" className="!text-[10px]" />
             </span>
             <div className="size-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
               <HugeiconsIcon icon={NoteIcon} size={20} strokeWidth={1.5} />
@@ -526,7 +526,7 @@ const ManageQuotes: React.FC = () => {
           </div>
           <div className="text-right flex flex-col items-end gap-1">
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 flex items-center gap-0.5">
-              -2% <span className="material-symbols-outlined !text-[10px]">trending_down</span>
+              -2% <Icon name="trending_down" className="!text-[10px]" />
             </span>
             <div className="size-10 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600">
               <HugeiconsIcon icon={Calendar04Icon} size={20} strokeWidth={1.5} />
@@ -543,7 +543,7 @@ const ManageQuotes: React.FC = () => {
           </div>
           <div className="text-right flex flex-col items-end gap-1">
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 flex items-center gap-0.5">
-              +8% <span className="material-symbols-outlined !text-[10px]">trending_up</span>
+              +8% <Icon name="trending_up" className="!text-[10px]" />
             </span>
             <div className="size-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
               <HugeiconsIcon icon={Award01Icon} size={20} strokeWidth={1.5} />
@@ -937,7 +937,7 @@ const ManageQuotes: React.FC = () => {
                             onClick={() => handleSpaceToggleForNew(spaceId)}
                             className="text-slate-400 hover:text-rose-600 bg-transparent border-none p-0 cursor-pointer"
                           >
-                            <span className="material-symbols-outlined !text-xs">close</span>
+                            <Icon name="close" className="!text-xs" />
                           </button>
                         </span>
                       ) : null;
@@ -1241,7 +1241,7 @@ const ManageQuotes: React.FC = () => {
                             onClick={() => handleSpaceToggleForEdit(spaceId)}
                             className="text-slate-400 hover:text-rose-600 bg-transparent border-none p-0 cursor-pointer"
                           >
-                            <span className="material-symbols-outlined !text-xs">close</span>
+                            <Icon name="close" className="!text-xs" />
                           </button>
                         </span>
                       ) : null;
