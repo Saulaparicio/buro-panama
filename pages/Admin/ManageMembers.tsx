@@ -5,6 +5,7 @@ import { Member, MembershipTier } from '../../types';
 import confetti from 'canvas-confetti';
 import { toast } from 'react-hot-toast';
 import { useTenant } from '../../contexts/TenantContext';
+import { Icon } from '../../components/ui/Icon';
 
 const ManageMembers: React.FC = () => {
     const { tenant } = useTenant();
@@ -194,14 +195,14 @@ const ManageMembers: React.FC = () => {
                             onClick={() => setViewMode('grid')}
                             className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'grid' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'}`}
                         >
-                            <span className="material-symbols-outlined !text-lg">grid_view</span>
+                            <Icon name="grid_view" className="!text-lg" />
                             Retícula
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
                             className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'list' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-50'}`}
                         >
-                            <span className="material-symbols-outlined !text-lg">format_list_bulleted</span>
+                            <Icon name="format_list_bulleted" className="!text-lg" />
                             Lista
                         </button>
                     </div>
@@ -218,7 +219,7 @@ const ManageMembers: React.FC = () => {
                         onClick={() => setIsAddModalOpen(true)}
                         className="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-3 shadow-lg shadow-indigo-200 border-none cursor-pointer"
                     >
-                        <span className="material-symbols-outlined !text-lg">person_add</span>
+                        <Icon name="person_add" className="!text-lg" />
                         Nuevo Cliente
                     </button>
                 </div>
@@ -228,7 +229,7 @@ const ManageMembers: React.FC = () => {
             <section className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm space-y-8">
                 <div className="flex flex-col md:flex-row items-center gap-8">
                     <div className="flex-1 relative w-full">
-                        <span className="material-symbols-outlined absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 !text-xl">search</span>
+                        <Icon name="search" className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 !text-xl" />
                         <input
                             type="text"
                             placeholder="Buscar por nombre, email o empresa..."
@@ -262,7 +263,7 @@ const ManageMembers: React.FC = () => {
                         <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                         <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">diversity_3</span>
+                            <Icon name="diversity_3" className="!text-4xl text-slate-200 animate-pulse" />
                         </div>
                     </div>
                     <div className="text-center space-y-4">
@@ -271,7 +272,7 @@ const ManageMembers: React.FC = () => {
                 </div>
             ) : filteredMembers.length === 0 ? (
                 <div className="py-48 text-center bg-white rounded-[2rem] border-dashed border-2 border-slate-100 flex flex-col items-center justify-center gap-8">
-                    <span className="material-symbols-outlined !text-8xl font-thin text-slate-100">person_search</span>
+                    <Icon name="person_search" className="!text-8xl font-thin text-slate-100" />
                     <div className="space-y-2">
                         <p className="text-2xl font-bold text-slate-300">Sin Coincidencias</p>
                         <p className="text-xs text-slate-300 font-medium">Prueba con otros términos de búsqueda</p>
@@ -320,7 +321,7 @@ const ManageMembers: React.FC = () => {
 
                                 <div className="space-y-4 relative z-10">
                                     <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100/50">
-                                        <span className="material-symbols-outlined !text-lg text-slate-400">corporate_fare</span>
+                                        <Icon name="corporate_fare" className="!text-lg text-slate-400" />
                                         <span className="text-[11px] font-bold text-slate-500 truncate uppercase tracking-tight">
                                             {member.company || 'Buró Panamá'}
                                         </span>
@@ -333,7 +334,7 @@ const ManageMembers: React.FC = () => {
                                                 {member.status === 'active' ? 'Activo' : 'Inactivo'}
                                             </span>
                                         </div>
-                                        <span className="material-symbols-outlined text-slate-300 group-hover:text-indigo-500 transition-colors">arrow_forward_ios</span>
+                                        <Icon name="arrow_forward_ios" className="text-slate-300 group-hover:text-indigo-500 transition-colors" />
                                     </div>
                                 </div>
                             </div>
@@ -394,7 +395,7 @@ const ManageMembers: React.FC = () => {
                                         </td>
                                         <td className="px-10 py-6 text-right">
                                             <button className="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-white hover:shadow-md transition-all text-slate-300 hover:text-indigo-600">
-                                                <span className="material-symbols-outlined !text-xl">chevron_right</span>
+                                                <Icon name="chevron_right" className="!text-xl" />
                                             </button>
                                         </td>
                                     </tr>
@@ -421,14 +422,14 @@ const ManageMembers: React.FC = () => {
                                     onClick={() => setIsAddModalOpen(false)}
                                     className="md:hidden size-10 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400"
                                 >
-                                    <span className="material-symbols-outlined">close</span>
+                                    <Icon name="close" />
                                 </button>
                             </div>
 
                             {/* Profile Picture Upload Zone */}
                             <div className="flex items-center gap-6 p-4 rounded-2xl bg-slate-50/50 border border-slate-100">
                                 <div className="size-20 rounded-full border-2 border-dashed border-slate-200 flex flex-col items-center justify-center bg-white text-slate-400 cursor-pointer hover:border-indigo-500 hover:text-indigo-600 transition-all shrink-0">
-                                    <span className="material-symbols-outlined !text-2xl mb-1">add_a_photo</span>
+                                    <Icon name="add_a_photo" className="!text-2xl mb-1" />
                                     <span className="text-[9px] font-bold uppercase tracking-wider">UPLOAD</span>
                                 </div>
                                 <div className="space-y-1">
@@ -511,7 +512,7 @@ const ManageMembers: React.FC = () => {
                                 onClick={() => setIsAddModalOpen(false)}
                                 className="hidden md:flex size-10 rounded-full hover:bg-slate-200 items-center justify-center text-slate-400 self-end transition-all"
                             >
-                                <span className="material-symbols-outlined">close</span>
+                                <Icon name="close" />
                             </button>
 
                             <div className="space-y-8">
@@ -633,7 +634,7 @@ const ManageMembers: React.FC = () => {
                                     ) : (
                                         <>
                                             <span>Create User</span>
-                                            <span className="material-symbols-outlined !text-sm">arrow_forward</span>
+                                            <Icon name="arrow_forward" className="!text-sm" />
                                         </>
                                     )}
                                 </button>

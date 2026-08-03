@@ -3,6 +3,7 @@ import { supabase } from '../../supabase';
 import { useTenant } from '../../contexts/TenantContext';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
+import { Icon } from '../../components/ui/Icon';
 
 const Settings: React.FC = () => {
     const { tenant } = useTenant();
@@ -212,7 +213,7 @@ const Settings: React.FC = () => {
                     <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                     <div className="absolute inset-0 border-t-2 border-[var(--primary)] rounded-full animate-spin"></div>
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">settings</span>
+                        <Icon name="settings" className="!text-4xl text-slate-200 animate-pulse" />
                     </div>
                 </div>
                 <p className="text-sm font-bold text-slate-400 animate-pulse uppercase tracking-widest">Cargando Configuración Global</p>
@@ -227,7 +228,7 @@ const Settings: React.FC = () => {
                 <div className="flex items-center gap-6">
                     <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
                         <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-                            <span className="material-symbols-outlined !text-lg">settings</span>
+                            <Icon name="settings" className="!text-lg" />
                             Configuración
                         </div>
                     </div>
@@ -308,7 +309,7 @@ const Settings: React.FC = () => {
                                         placeholder="https://example.com/logo.png"
                                     />
                                     <label className="flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 rounded-xl cursor-pointer transition-colors border border-slate-200" title="Subir desde PC">
-                                        <span className="material-symbols-outlined !text-lg">upload</span>
+                                        <Icon name="upload" className="!text-lg" />
                                         <input 
                                             type="file" 
                                             accept="image/*" 
@@ -365,7 +366,7 @@ const Settings: React.FC = () => {
                             onClick={() => setShowTestModal(true)}
                             className="px-5 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all border border-slate-200 cursor-pointer flex items-center gap-2"
                         >
-                            <span className="material-symbols-outlined !text-sm">mail</span>
+                            <Icon name="mail" className="!text-sm" />
                             Probar Conexión
                         </button>
                     </div>
@@ -424,9 +425,7 @@ const Settings: React.FC = () => {
                                         onClick={() => setShowPassword(!showPassword)}
                                         className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer"
                                     >
-                                        <span className="material-symbols-outlined !text-lg">
-                                            {showPassword ? 'visibility_off' : 'visibility'}
-                                        </span>
+                                        <Icon name={showPassword ? 'visibility_off' : 'visibility'} className="!text-lg" />
                                     </button>
                                 </div>
                             </div>
@@ -474,7 +473,7 @@ const Settings: React.FC = () => {
                 <div className="modal-backdrop" role="dialog" aria-modal="true">
                     <div className="modal-container max-w-md !rounded-[2.5rem] shadow-2xl p-10 bg-white border border-slate-100">
                         <div className="size-16 bg-blue-50 text-blue-600 rounded-[1.5rem] flex items-center justify-center mx-auto shadow-inner mb-6">
-                            <span className="material-symbols-outlined !text-3xl">mark_email_read</span>
+                            <Icon name="mark_email_read" className="!text-3xl" />
                         </div>
 
                         <div className="space-y-2 text-center mb-6">
@@ -506,7 +505,7 @@ const Settings: React.FC = () => {
                                     {testing ? (
                                         <div className="size-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                     ) : (
-                                        <span className="material-symbols-outlined !text-lg">send</span>
+                                        <Icon name="send" className="!text-lg" />
                                     )}
                                     {testing ? 'PROBANDO...' : 'ENVIAR CORREO PRUEBA'}
                                 </button>

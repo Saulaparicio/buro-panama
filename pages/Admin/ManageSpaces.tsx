@@ -6,6 +6,7 @@ import { Space, Member } from '../../types';
 import confetti from 'canvas-confetti';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
+import { Icon } from '../../components/ui/Icon';
 
 /**
  * Componente SpaceGallery
@@ -27,7 +28,7 @@ const SpaceGallery: React.FC<{ images: string[] }> = ({ images }) => {
   if (!images || images.length === 0) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-[var(--surface-container)] text-[var(--on-surface-variant)]/30">
-        <span className="material-symbols-outlined !text-5xl mb-4 font-thin">architecture</span>
+        <Icon name="architecture" className="!text-5xl mb-4 font-thin" />
         <span className="label-md text-[10px] font-black uppercase tracking-[0.3em]">No Visual Assets</span>
       </div>
     );
@@ -51,13 +52,13 @@ const SpaceGallery: React.FC<{ images: string[] }> = ({ images }) => {
               onClick={handlePrev}
               className="size-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all border border-white/20 active:scale-95"
             >
-              <span className="material-symbols-outlined !text-xl font-light">west</span>
+              <Icon name="west" className="!text-xl font-light" />
             </button>
             <button
               onClick={handleNext}
               className="size-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white hover:bg-white hover:text-black transition-all border border-white/20 active:scale-95"
             >
-              <span className="material-symbols-outlined !text-xl font-light">east</span>
+              <Icon name="east" className="!text-xl font-light" />
             </button>
           </div>
 
@@ -242,7 +243,7 @@ const ManageSpaces: React.FC = () => {
         <div className="flex items-center gap-6">
           <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
             <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-              <span className="material-symbols-outlined !text-lg">architecture</span>
+              <Icon name="architecture" className="!text-lg" />
               Espacios
             </div>
           </div>
@@ -272,7 +273,7 @@ const ManageSpaces: React.FC = () => {
             onClick={() => handleOpenForm()}
             className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3 shadow-lg shadow-slate-200 border-none cursor-pointer"
           >
-            <span className="material-symbols-outlined !text-lg">add</span>
+            <Icon name="add" className="!text-lg" />
             Nuevo Espacio
           </button>
         </div>
@@ -284,7 +285,7 @@ const ManageSpaces: React.FC = () => {
                 <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                 <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">architecture</span>
+                    <Icon name="architecture" className="!text-4xl text-slate-200 animate-pulse" />
                 </div>
             </div>
             <div className="text-center space-y-4">
@@ -308,9 +309,7 @@ const ManageSpaces: React.FC = () => {
                 >
                   <div className="flex items-center gap-4">
                     <div className={`size-10 rounded-lg flex items-center justify-center transition-all ${selectedSpaceForMap === s.id ? 'bg-indigo-600 text-white' : 'bg-slate-50 text-slate-400'}`}>
-                      <span className="material-symbols-outlined !text-lg">
-                        {s.type === 'desk' ? 'deck' : s.type === 'meeting' ? 'groups' : 'corporate_fare'}
-                      </span>
+                      <Icon name={s.type === 'desk' ? 'deck' : s.type === 'meeting' ? 'groups' : 'corporate_fare'} className="!text-lg" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className={`font-bold text-xs uppercase tracking-tight ${selectedSpaceForMap === s.id ? 'text-indigo-900' : 'text-slate-700'}`}>{s.name}</p>
@@ -360,9 +359,7 @@ const ManageSpaces: React.FC = () => {
                 >
                   <div className={`size-10 rounded-xl border border-white shadow-2xl transition-all ${selectedSpaceForMap === s.id ? 'bg-indigo-600 text-white' : 'bg-white text-slate-900'}`}>
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="material-symbols-outlined !text-lg">
-                        {s.type === 'desk' ? 'deck' : s.type === 'meeting' ? 'groups' : 'corporate_fare'}
-                      </span>
+                      <Icon name={s.type === 'desk' ? 'deck' : s.type === 'meeting' ? 'groups' : 'corporate_fare'} className="!text-lg" />
                     </div>
                   </div>
                 </div>
@@ -371,7 +368,7 @@ const ManageSpaces: React.FC = () => {
               {!selectedSpaceForMap && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="bg-white/80 backdrop-blur-md py-4 px-8 rounded-2xl flex items-center gap-4 shadow-xl border border-slate-100">
-                    <span className="material-symbols-outlined text-indigo-600 animate-bounce">touch_app</span>
+                    <Icon name="touch_app" className="text-indigo-600 animate-bounce" />
                     <p className="text-xs font-bold text-slate-900 uppercase tracking-widest">Selecciona un activo para ubicar</p>
                   </div>
                 </div>
@@ -406,7 +403,7 @@ const ManageSpaces: React.FC = () => {
                     <div className="min-w-0 flex-1">
                       <h3 className="text-2xl font-bold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">{space.name}</h3>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="material-symbols-outlined !text-sm text-slate-300">person</span>
+                        <Icon name="person" className="!text-sm text-slate-300" />
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{space.capacity} PAX</span>
                       </div>
                     </div>
@@ -426,7 +423,7 @@ const ManageSpaces: React.FC = () => {
                   <div className="flex flex-wrap gap-2">
                     {space.features?.slice(0, 5).map(feature => (
                       <div key={feature} className="size-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all" title={feature}>
-                        <span className="material-symbols-outlined !text-xl">{getFeatureIcon(feature)}</span>
+                        <Icon name={getFeatureIcon(feature)} className="!text-xl" />
                       </div>
                     ))}
                   </div>
@@ -438,7 +435,7 @@ const ManageSpaces: React.FC = () => {
                     className="w-full h-12 bg-slate-900 text-white rounded-xl text-[11px] font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center justify-center gap-3"
                   >
                     Ver Agenda
-                    <span className="material-symbols-outlined !text-lg">event_available</span>
+                    <Icon name="event_available" className="!text-lg" />
                   </button>
 
                   <div className="grid grid-cols-2 gap-3">
@@ -446,14 +443,14 @@ const ManageSpaces: React.FC = () => {
                       onClick={() => handleOpenForm(space)}
                       className="h-12 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all flex items-center justify-center gap-2"
                     >
-                      <span className="material-symbols-outlined !text-lg">settings</span>
+                      <Icon name="settings" className="!text-lg" />
                       <span className="text-[10px] font-bold uppercase tracking-widest">Configurar</span>
                     </button>
                     <button
                       onClick={() => setSpaceToDelete(space)}
                       className="h-12 rounded-xl bg-rose-50 text-rose-400 hover:text-rose-600 hover:bg-rose-100 transition-all flex items-center justify-center"
                     >
-                      <span className="material-symbols-outlined !text-lg">delete</span>
+                      <Icon name="delete" className="!text-lg" />
                     </button>
                   </div>
                 </div>
@@ -468,7 +465,7 @@ const ManageSpaces: React.FC = () => {
         <div className="modal-backdrop" role="dialog" aria-modal="true">
           <div className="modal-container max-w-md !rounded-[3rem] shadow-2xl p-12 text-center space-y-10">
             <div className="size-20 bg-rose-50 text-rose-500 rounded-[2rem] flex items-center justify-center mx-auto shadow-inner">
-              <span className="material-symbols-outlined !text-4xl">delete_sweep</span>
+              <Icon name="delete_sweep" className="!text-4xl" />
             </div>
             
             <div className="space-y-3">
@@ -486,7 +483,7 @@ const ManageSpaces: React.FC = () => {
                 onClick={handleConfirmDelete} 
                 className="w-full h-16 bg-rose-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] shadow-xl shadow-rose-600/20 hover:bg-rose-700 transition-all flex items-center justify-center gap-4"
               >
-                {isDeleting ? <div className="size-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <span className="material-symbols-outlined !text-xl">priority_high</span>}
+                {isDeleting ? <div className="size-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Icon name="priority_high" className="!text-xl" />}
                 {isDeleting ? "PROCESANDO..." : "CONFIRMAR RETIRADA"}
               </button>
               <button 
@@ -539,14 +536,14 @@ const ManageSpaces: React.FC = () => {
                                   onClick={(e) => { e.stopPropagation(); removeImage(idx); }}
                                   className="absolute top-1.5 right-1.5 size-6 bg-black/50 text-white rounded-md flex items-center justify-center hover:bg-red-600 transition-colors"
                                 >
-                                  <span className="material-symbols-outlined !text-xs">close</span>
+                                  <Icon name="close" className="!text-xs" />
                                 </button>
                               </div>
                             ))}
                           </div>
                         ) : (
                           <>
-                            <span className="material-symbols-outlined text-[var(--primary)] !text-3xl font-light">add_a_photo</span>
+                            <Icon name="add_a_photo" className="text-[var(--primary)] !text-3xl font-light" />
                             <div className="text-center">
                               <p className="text-[10px] font-black text-[var(--primary)] uppercase tracking-wider">Upload space photos</p>
                               <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">PNG, JPG up to 10MB</p>
@@ -598,7 +595,7 @@ const ManageSpaces: React.FC = () => {
                           }}
                           className="w-full border border-slate-200 rounded-xl p-3 pl-10 text-xs font-bold"
                         />
-                        <span className="material-symbols-outlined absolute left-3 top-3 text-slate-400 !text-lg">location_on</span>
+                        <Icon name="location_on" className="absolute left-3 top-3 text-slate-400 !text-lg" />
                       </div>
                     </div>
 
@@ -632,7 +629,7 @@ const ManageSpaces: React.FC = () => {
                   <div className="space-y-4">
                     <div className="bg-white border border-slate-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
                       <div className="flex items-center gap-3">
-                        <span className="material-symbols-outlined text-[var(--primary)]">groups</span>
+                        <Icon name="groups" className="text-[var(--primary)]" />
                         <div>
                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Max Capacity</p>
                           <input 
@@ -688,7 +685,7 @@ const ManageSpaces: React.FC = () => {
                             className="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center justify-between shadow-sm cursor-pointer hover:border-[var(--primary)]/30 transition-colors"
                           >
                             <div className="flex items-center gap-3">
-                              <span className="material-symbols-outlined text-slate-500 !text-lg">{amenity.icon}</span>
+                              <Icon name={amenity.icon} className="text-slate-500 !text-lg" />
                               <span className="text-xs font-bold text-slate-800">{amenity.name}</span>
                             </div>
                             <input 
@@ -750,7 +747,7 @@ const ManageSpaces: React.FC = () => {
                         onClick={() => fileInputRef.current?.click()}
                         className="absolute bottom-4 right-4 bg-white/80 hover:bg-white text-slate-800 text-[10px] font-black uppercase px-4 py-2 rounded-xl shadow-md border border-white/20 transition-all cursor-pointer flex items-center gap-2"
                       >
-                        <span className="material-symbols-outlined !text-sm">edit</span> Cambiar Foto
+                        <Icon name="edit" className="!text-sm" /> Cambiar Foto
                       </button>
                       <input ref={fileInputRef} type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
                     </div>
@@ -809,7 +806,7 @@ const ManageSpaces: React.FC = () => {
                     onClick={handleCloseForm} 
                     className="size-8 bg-slate-200/60 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors border-none cursor-pointer text-slate-600"
                   >
-                    <span className="material-symbols-outlined !text-lg">close</span>
+                    <Icon name="close" className="!text-lg" />
                   </button>
                 </div>
 
@@ -818,7 +815,7 @@ const ManageSpaces: React.FC = () => {
                   {/* Capacity Box */}
                   <div className="bg-white border border-slate-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
                     <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-[var(--primary)]">groups</span>
+                      <Icon name="groups" className="text-[var(--primary)]" />
                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Capacity</span>
                     </div>
                     <input 
@@ -832,7 +829,7 @@ const ManageSpaces: React.FC = () => {
                   {/* Price Box */}
                   <div className="bg-white border border-slate-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
                     <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-emerald-600">payments</span>
+                      <Icon name="payments" className="text-emerald-600" />
                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Price</span>
                     </div>
                     <div className="flex items-center justify-end gap-1">
@@ -893,7 +890,7 @@ const ManageSpaces: React.FC = () => {
                     disabled={formLoading} 
                     className="w-full py-4 bg-[var(--primary)] hover:bg-[var(--primary-container)] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-lg shadow-blue-500/10 transition-colors border-none cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span className="material-symbols-outlined !text-base">save</span>
+                    <Icon name="save" className="!text-base" />
                     {formLoading ? 'Guardando...' : 'Update Changes'}
                   </button>
                   <button 
@@ -904,7 +901,7 @@ const ManageSpaces: React.FC = () => {
                     }}
                     className="w-full py-3 bg-transparent hover:bg-rose-50 text-rose-500 rounded-xl text-xs font-black uppercase tracking-wider transition-colors border-none cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span className="material-symbols-outlined !text-base">delete</span>
+                    <Icon name="delete" className="!text-base" />
                     Delete Space
                   </button>
                 </div>

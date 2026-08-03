@@ -7,6 +7,7 @@ import SplashScreen from './pages/SplashScreen';
 import { Transition } from './components/ui/Transition';
 import { CreateNewDisclosure } from './components/ui/create-new-disclosure';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { Icon } from './components/ui/Icon';
 import {
   Award01Icon,
   Calendar04Icon,
@@ -172,7 +173,7 @@ const MemberLayout: React.FC<{ children: React.ReactNode, role: UserRole, onRole
             onMouseEnter={() => prefetchRoute(item.path)}
             className={`flex items-center justify-center gap-3 px-6 py-4 min-w-[64px] rounded-lg transition-all duration-500 overflow-hidden ${isActive(item.path) ? 'bg-[var(--primary-container)] text-black' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
           >
-            <span className="material-symbols-outlined !text-xl">{item.icon}</span>
+            <Icon name={item.icon} className="!text-xl" />
             {isActive(item.path) && (
               <span className="label-md font-bold whitespace-nowrap animate-slide-in">{item.label}</span>
             )}
@@ -260,13 +261,13 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
                className={`flex-shrink-0 grid place-items-center size-12 rounded-[11px] bg-[#f5f5f7] text-[#6b6b73] hover:bg-[#eaeaec] transition-colors border-none cursor-pointer ${isCollapsed ? 'mx-auto' : ''}`}
                aria-label="Toggle sidebar"
              >
-               <span className="material-symbols-outlined !text-[20px]">{isCollapsed ? 'menu' : 'panel_left'}</span>
+               <Icon name={isCollapsed ? 'menu' : 'panel_left'} className="!text-[20px]" />
              </button>
            </div>
 
            {/* Search */}
            <div className={`relative flex items-center gap-2.5 h-[46px] px-3.5 mb-4 mx-2 border border-[#c3c3c7] rounded-[13px] text-[#9b9ba3] transition-opacity duration-300 ${isCollapsed ? 'opacity-0 pointer-events-none hidden' : 'opacity-100'}`}>
-             <span className="material-symbols-outlined !text-[20px]">search</span>
+             <Icon name="search" className="!text-[20px]" />
              <input 
                type="text" 
                placeholder="Search" 
@@ -289,7 +290,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
                         title={isCollapsed ? t(item.labelKey, item.label) : undefined}
                         className={`flex items-center gap-3.5 h-[48px] rounded-[13px] px-3.5 transition-colors duration-200 cursor-pointer ${isActive ? 'bg-[#f5f5f7] text-[#1c1c1e]' : 'text-[#1c1c1e] hover:bg-[#f5f5f7]'} ${isCollapsed ? 'justify-center' : 'w-full'}`}
                      >
-                        <span className={`material-symbols-outlined !text-[20px] flex-shrink-0 ${isActive ? 'text-[#1c1c1e]' : 'text-[#6b6b73]'}`}>{item.icon}</span>
+                        <Icon name={item.icon} className={`material-symbols-outlined !text-[20px] flex-shrink-0 ${isActive ? 'text-[#1c1c1e]' : 'text-[#6b6b73]'}`} />
                         <span className={`text-[16px] font-medium whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100 flex-1 overflow-hidden text-ellipsis'}`}>{t(item.labelKey, item.label)}</span>
                      </Link>
                  );
@@ -314,7 +315,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
                   title="Logout"
                   className={`flex-shrink-0 grid place-items-center size-8 rounded-lg text-[#6b6b73] hover:text-[#1c1c1e] hover:bg-[#eaeaec] transition-colors border-none bg-transparent cursor-pointer ${isCollapsed ? 'mt-2' : ''}`}
                 >
-                   <span className="material-symbols-outlined !text-[20px]">logout</span>
+                   <Icon name="logout" className="!text-[20px]" />
                 </button>
              </div>
            </div>
@@ -333,7 +334,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
             {/* Middle Search */}
             <div className="hidden lg:flex items-center flex-1 max-w-sm mx-10">
                 <div className="relative w-full">
-                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 !text-xl">search</span>
+                    <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 !text-xl" />
                     <input 
                         type="text" 
                         placeholder="Search here..." 
@@ -354,11 +355,11 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
 
                 <div className="flex items-center gap-2 border-r border-slate-100 pr-6 mr-2">
                     <button className="relative size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 transition-colors bg-transparent border-none cursor-pointer">
-                        <span className="material-symbols-outlined text-slate-400">notifications</span>
+                        <Icon name="notifications" className="text-slate-400" />
                         <span className="absolute top-2 right-2 size-4 bg-orange-500 text-[9px] text-white font-bold flex items-center justify-center rounded-full border-2 border-white">12</span>
                     </button>
                     <button className="relative size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 transition-colors bg-transparent border-none cursor-pointer">
-                        <span className="material-symbols-outlined text-slate-400">mail</span>
+                        <Icon name="mail" className="text-slate-400" />
                         <span className="absolute top-2 right-2 size-4 bg-orange-400 text-[9px] text-white font-bold flex items-center justify-center rounded-full border-2 border-white">65</span>
                     </button>
                 </div>

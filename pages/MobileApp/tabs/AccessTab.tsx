@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Icon } from '../../../components/ui/Icon';
 
 export const AccessTab: React.FC<{ profile: any; isOnline: boolean }> = ({ profile, isOnline }) => {
   const [progress, setProgress] = useState(100);
@@ -21,14 +22,14 @@ export const AccessTab: React.FC<{ profile: any; isOnline: boolean }> = ({ profi
         {/* Top Header */}
         <div className="w-full flex justify-between items-center mb-8">
           <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Acceso Seguro</span>
-          <span className="material-symbols-outlined text-white/40 !text-lg">shield</span>
+          <Icon name="shield" className="text-white/40 !text-lg" />
         </div>
 
         {/* QR Code Area */}
         <div className={`bg-white p-6 rounded-3xl w-full aspect-square flex flex-col items-center justify-center shadow-inner relative transition-opacity duration-300 ${!isOnline ? 'opacity-50' : 'opacity-100'}`}>
           {!isOnline && (
             <div className="absolute inset-0 bg-white/80 rounded-3xl flex flex-col items-center justify-center z-10 p-6 text-center">
-              <span className="material-symbols-outlined text-red-500 !text-4xl mb-2">wifi_off</span>
+              <Icon name="wifi_off" className="text-red-500 !text-4xl mb-2" />
               <p className="text-[#111111] text-sm font-bold">Sin conexión</p>
               <p className="text-gray-500 text-xs mt-1">Mostrando código de emergencia offline.</p>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Icon } from '../components/ui/Icon';
 
 const SplashScreen: React.FC = () => {
   const [isEntering, setIsEntering] = useState(false);
@@ -38,7 +39,7 @@ const SplashScreen: React.FC = () => {
         <div className="w-full flex justify-center animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0, animationFillMode: 'forwards' }}>
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 ${isAdmin ? 'bg-white text-black' : 'bg-[var(--primary-container)] text-[var(--on-primary-container)]'} rounded-lg flex items-center justify-center shadow-lg font-black tracking-tighter text-xl`}>
-              {isAdmin ? 'B' : <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>rocket_launch</span>}
+              {isAdmin ? 'B' : <Icon name="rocket_launch" style={{ fontVariationSettings: "'FILL' 1" }} />}
             </div>
             <h1 className="font-display text-4xl md:text-5xl font-extrabold text-white tracking-tight">
               {isAdmin ? 'Buró Panamá' : 'Buró Workspace'}
@@ -102,7 +103,7 @@ const SplashScreen: React.FC = () => {
             <a className="text-sm hover:text-white transition-colors" href="#">Privacidad</a>
             <span className="w-1 h-1 rounded-full bg-white/20"></span>
             <a className="text-sm hover:text-white transition-colors flex items-center gap-1" href="#">
-              <span className="material-symbols-outlined text-[16px]">language</span>
+              <Icon name="language" className="text-[16px]" />
               ES
             </a>
           </div>

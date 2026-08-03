@@ -5,6 +5,7 @@ import { Member, Reservation, MembershipTier, Membership } from '../../types';
 import confetti from 'canvas-confetti';
 import { toast } from 'react-hot-toast';
 import { useTenant } from '../../contexts/TenantContext';
+import { Icon } from '../../components/ui/Icon';
 
 interface ExtendedMembership extends Membership {
     tier: MembershipTier;
@@ -220,7 +221,7 @@ const MemberDetail: React.FC = () => {
                 <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                 <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">id_card</span>
+                    <Icon name="id_card" className="!text-4xl text-slate-200 animate-pulse" />
                 </div>
             </div>
             <div className="text-center space-y-4">
@@ -232,7 +233,7 @@ const MemberDetail: React.FC = () => {
     if (!member) return (
         <div className="py-32 text-center card-workspace space-y-8 bg-transparent">
             <div className="size-20 bg-slate-50 rounded-xl flex items-center justify-center mx-auto text-slate-300">
-                <span className="material-symbols-outlined !text-4xl font-extralight">person_off</span>
+                <Icon name="person_off" className="!text-4xl font-extralight" />
             </div>
             <h3 className="text-2xl text-slate-900 mb-2 font-black uppercase tracking-tight">Expediente No Localizado</h3>
         </div>
@@ -246,7 +247,7 @@ const MemberDetail: React.FC = () => {
             {/* Header / Navigation */}
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-2">
                 <Link to="/admin/members" className="hover:text-indigo-600 transition-colors">Clientes</Link>
-                <span className="material-symbols-outlined !text-[10px]">chevron_right</span>
+                <Icon name="chevron_right" className="!text-[10px]" />
                 <span>Detalle</span>
             </div>
 
@@ -262,7 +263,7 @@ const MemberDetail: React.FC = () => {
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute bottom-2 right-2 size-8 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-md cursor-pointer hover:bg-indigo-700 transition-all">
-                                <span className="material-symbols-outlined !text-base">photo_camera</span>
+                                <Icon name="photo_camera" className="!text-base" />
                             </div>
                         </div>
 
@@ -286,7 +287,7 @@ const MemberDetail: React.FC = () => {
                         onClick={() => setIsEditing(true)}
                         className="h-14 px-8 bg-white border border-slate-200 rounded-2xl text-xs font-bold uppercase tracking-widest text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
                     >
-                        <span className="material-symbols-outlined !text-lg">edit</span>
+                        <Icon name="edit" className="!text-lg" />
                         Editar Perfil
                     </button>
                 </div>
@@ -295,7 +296,7 @@ const MemberDetail: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6">
                         <div className="size-14 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-2xl">calendar_today</span>
+                            <Icon name="calendar_today" className="!text-2xl" />
                         </div>
                         <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">RESERVAS ACTIVAS</p>
@@ -305,7 +306,7 @@ const MemberDetail: React.FC = () => {
 
                     <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6">
                         <div className="size-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-2xl">schedule</span>
+                            <Icon name="schedule" className="!text-2xl" />
                         </div>
                         <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">TOTAL HORAS</p>
@@ -315,7 +316,7 @@ const MemberDetail: React.FC = () => {
 
                     <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6">
                         <div className="size-14 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-2xl">workspace_premium</span>
+                            <Icon name="workspace_premium" className="!text-2xl" />
                         </div>
                         <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">PUNTOS COMMUNITY</p>
@@ -390,7 +391,7 @@ const MemberDetail: React.FC = () => {
                                     </div>
                                 )) : (
                                     <div className="py-8 text-center text-slate-400 space-y-4">
-                                        <span className="material-symbols-outlined !text-4xl opacity-30">desk</span>
+                                        <Icon name="desk" className="!text-4xl opacity-30" />
                                         <p className="text-xs font-bold uppercase tracking-widest opacity-40">No hay reservas recientes</p>
                                     </div>
                                 )}
@@ -482,7 +483,7 @@ const MemberDetail: React.FC = () => {
                                 onClick={() => setIsEditing(false)}
                                 className="size-10 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400 transition-all border-none bg-transparent cursor-pointer"
                             >
-                                <span className="material-symbols-outlined">close</span>
+                                <Icon name="close" />
                             </button>
                         </header>
 
@@ -498,7 +499,7 @@ const MemberDetail: React.FC = () => {
                                     />
                                     <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
                                         <div className="size-8 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-md">
-                                            <span className="material-symbols-outlined !text-sm">edit</span>
+                                            <Icon name="edit" className="!text-sm" />
                                         </div>
                                     </div>
                                 </div>
@@ -604,7 +605,7 @@ const MemberDetail: React.FC = () => {
                                 onClick={handleDeleteMember}
                                 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-red-500 hover:text-red-700 transition-colors border-none bg-transparent cursor-pointer"
                             >
-                                <span className="material-symbols-outlined !text-base">delete</span>
+                                <Icon name="delete" className="!text-base" />
                                 Delete User
                             </button>
 
@@ -650,7 +651,7 @@ const MemberDetail: React.FC = () => {
                                 onClick={() => setIsPlanModalOpen(false)} 
                                 className="size-10 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400 transition-all border-none bg-transparent cursor-pointer"
                             >
-                                <span className="material-symbols-outlined">close</span>
+                                <Icon name="close" />
                             </button>
                         </header>
 
@@ -684,7 +685,7 @@ const MemberDetail: React.FC = () => {
                                 {updatingPlan ? <div className="size-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div> : (
                                     <>
                                         <span>Confirmar Membresía</span>
-                                        <span className="material-symbols-outlined !text-lg">bolt</span>
+                                        <Icon name="bolt" className="!text-lg" />
                                     </>
                                 )}
                             </button>

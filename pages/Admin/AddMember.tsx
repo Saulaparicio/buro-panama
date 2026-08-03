@@ -4,6 +4,7 @@ import { supabase } from '../../supabase';
 import confetti from 'canvas-confetti';
 import { toast } from 'react-hot-toast';
 import PremiumSelect from '../../components/ui/PremiumSelect';
+import { Icon } from '../../components/ui/Icon';
 
 
 const AddMember: React.FC = () => {
@@ -90,7 +91,7 @@ const AddMember: React.FC = () => {
                         onClick={() => navigate('/admin/members')} 
                         className="h-16 px-8 rounded-2xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] hover:shadow-[var(--neu-pressed-sm)] text-[10px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-subtle)] transition-all flex items-center gap-4 group"
                     >
-                        <span className="material-symbols-outlined !text-xl group-hover:-translate-x-2 transition-transform">west</span>
+                        <Icon name="west" className="!text-xl group-hover:-translate-x-2 transition-transform" />
                         Volver al Directorio
                     </button>
                 </div>
@@ -203,7 +204,7 @@ const AddMember: React.FC = () => {
                         {/* Actions Architecture */}
                         <footer className="pt-12 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-black/5 relative z-10">
                             <div className="flex items-center gap-6 opacity-30 group/verify">
-                                <span className="material-symbols-outlined !text-5xl font-thin text-[var(--on-surface)] group-hover/verify:text-[var(--primary)] transition-colors">verified_user</span>
+                                <Icon name="verified_user" className="!text-5xl font-thin text-[var(--on-surface)] group-hover/verify:text-[var(--primary)] transition-colors" />
                                 <p className="text-[9px] font-black uppercase tracking-[0.3em] max-w-[200px] leading-relaxed">
                                     Generación de identidad digital criptográfica única y persistente.
                                 </p>
@@ -218,7 +219,7 @@ const AddMember: React.FC = () => {
                                 ) : (
                                     <>
                                         Consolidar Registro
-                                        <span className="material-symbols-outlined !text-2xl font-light group-hover:translate-x-3 transition-transform">east</span>
+                                        <Icon name="east" className="!text-2xl font-light group-hover:translate-x-3 transition-transform" />
                                     </>
                                 )}
                             </button>

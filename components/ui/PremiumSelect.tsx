@@ -1,9 +1,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import { ArrowDown01Icon } from 'hugeicons-react';
 
 interface PremiumSelectProps {
     label?: string;
-    icon?: string;
+    icon?: React.ReactNode;
     value: string;
     options: { value: string; label: string }[];
     onChange: (val: string) => void;
@@ -34,8 +35,8 @@ const PremiumSelect: React.FC<PremiumSelectProps> = ({ label, icon, value, optio
                 <span className={`text-[11px] font-black uppercase tracking-[0.15em] truncate pr-4 ${value ? 'text-[var(--on-surface)]' : 'opacity-30'}`}>
                     {selectedLabel}
                 </span>
-                <span className={`material-symbols-outlined text-slate-300 transition-transform duration-500 ${isOpen ? 'rotate-180 text-[var(--primary)]' : ''}`}>
-                    {icon || 'expand_more'}
+                <span className={`flex items-center transition-transform duration-500 ${isOpen ? 'rotate-180 text-[var(--primary)]' : 'text-slate-300'}`}>
+                    {icon || <ArrowDown01Icon size={24} />}
                 </span>
             </div>
 

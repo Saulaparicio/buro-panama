@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase, sendWelcomeEmail } from '../supabase';
 import { toast } from 'react-hot-toast';
+import { Icon } from '../components/ui/Icon';
 
 const Registro: React.FC = () => {
   const navigate = useNavigate();
@@ -364,7 +365,7 @@ const Registro: React.FC = () => {
               <form onSubmit={handleRegisterSubmit} className="space-y-6">
                 {error && (
                   <div className="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3 border border-red-100">
-                    <span className="material-symbols-outlined text-lg">error</span>
+                    <Icon name="error" className="text-lg" />
                     <span className="flex-1">{error}</span>
                   </div>
                 )}
@@ -420,7 +421,7 @@ const Registro: React.FC = () => {
                         <option value="staff">Diseño & Arquitectura</option>
                         <option value="corporate">Corporativo / Empresa</option>
                       </select>
-                      <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                      <Icon name="expand_more" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     </div>
                   </div>
                 </div>
@@ -433,7 +434,7 @@ const Registro: React.FC = () => {
                       onClick={generateSecurePassword}
                       className="text-[9px] font-bold uppercase tracking-wider text-indigo-600 hover:underline bg-transparent border-none cursor-pointer flex items-center gap-1 focus:outline-none"
                     >
-                      <span className="material-symbols-outlined !text-[11px]">lock_reset</span>
+                      <Icon name="lock_reset" className="!text-[11px]" />
                       Generar contraseña segura
                     </button>
                   </div>
@@ -451,7 +452,7 @@ const Registro: React.FC = () => {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors bg-transparent border-none cursor-pointer flex items-center"
                     >
-                      <span className="material-symbols-outlined !text-lg">{showPassword ? "visibility_off" : "visibility"}</span>
+                      <Icon name={showPassword ? "visibility_off" : "visibility"} className="!text-lg" />
                     </button>
                   </div>
 
@@ -540,7 +541,7 @@ const Registro: React.FC = () => {
               <form onSubmit={handleVerifyOtp} className="space-y-6">
                 {error && (
                   <div className="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3 border border-red-100">
-                    <span className="material-symbols-outlined text-lg">error</span>
+                    <Icon name="error" className="text-lg" />
                     <span className="flex-1">{error}</span>
                   </div>
                 )}
@@ -602,7 +603,7 @@ const Registro: React.FC = () => {
               <form onSubmit={handleCompanySubmit} className="space-y-8">
                 {error && (
                   <div className="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3 border border-red-100">
-                    <span className="material-symbols-outlined text-lg">error</span>
+                    <Icon name="error" className="text-lg" />
                     <span className="flex-1">{error}</span>
                   </div>
                 )}
@@ -616,10 +617,10 @@ const Registro: React.FC = () => {
                     {companyData.avatarUrl ? (
                       <img src={companyData.avatarUrl} alt="Avatar Preview" className="w-full h-full object-cover rounded-full" />
                     ) : (
-                      <span className="material-symbols-outlined !text-3xl text-slate-400 group-hover:scale-110 transition-transform">add_a_photo</span>
+                      <Icon name="add_a_photo" className="!text-3xl text-slate-400 group-hover:scale-110 transition-transform" />
                     )}
                     <div className="absolute bottom-1 right-1 size-7 bg-indigo-600 text-white rounded-full flex items-center justify-center border-2 border-white shadow-md">
-                      <span className="material-symbols-outlined !text-sm">edit</span>
+                      <Icon name="edit" className="!text-sm" />
                     </div>
                   </div>
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Sube tu logo o foto de perfil</span>
@@ -660,7 +661,7 @@ const Registro: React.FC = () => {
                         <option value="Marketing">Marketing & Creatividad</option>
                         <option value="Other">Otro Sector</option>
                       </select>
-                      <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                      <Icon name="expand_more" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     </div>
                   </div>
                 </div>
@@ -705,7 +706,7 @@ const Registro: React.FC = () => {
           {currentStep === 4 && (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-6">
               <div className="size-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center shadow-lg">
-                <span className="material-symbols-outlined !text-4xl">task_alt</span>
+                <Icon name="task_alt" className="!text-4xl" />
               </div>
               <div className="space-y-2">
                 <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">¡Registro Completado!</h1>

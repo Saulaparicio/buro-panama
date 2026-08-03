@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '../components/ui/Icon';
 
 export function LandingPageAlt() {
   const { t } = useTranslation();
@@ -121,7 +122,7 @@ export function LandingPageAlt() {
             <div className="absolute -bottom-10 -left-10 bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 hidden md:block animate-float">
               <div className="flex items-center gap-4">
                 <div className="size-12 bg-[#f7db15] rounded-lg flex items-center justify-center text-black">
-                  <span className="material-symbols-outlined">workspace_premium</span>
+                  <Icon name="workspace_premium" />
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Membresía Activa</p>
@@ -151,7 +152,7 @@ export function LandingPageAlt() {
                 </div>
                 <div className="flex items-center gap-4 mb-4">
                   <div className="size-10 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center text-[#11171D]">
-                    <span className="material-symbols-outlined !text-xl">{feature.icon}</span>
+                    <Icon name={feature.icon} className="!text-xl" />
                   </div>
                   <h3 className="text-lg font-bold uppercase tracking-tight text-[#11171D]">{feature.title}</h3>
                 </div>
@@ -200,7 +201,7 @@ export function LandingPageAlt() {
                 <ul className="space-y-4 mb-10 flex-1">
                   {plan.features.map((f, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm">
-                      <span className={`material-symbols-outlined !text-sm ${plan.highlighted ? 'text-[#f7db15]' : 'text-[#CA8A04]'}`}>check_circle</span>
+                      <Icon name="check_circle" className={`material-symbols-outlined !text-sm ${plan.highlighted ? 'text-[#f7db15]' : 'text-[#CA8A04]'}`} />
                       <span className={plan.highlighted ? 'text-white/80' : 'text-slate-600'}>{f}</span>
                     </li>
                   ))}
@@ -281,15 +282,15 @@ export function LandingPageAlt() {
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#11171D] mb-8">Contacto</h4>
             <ul className="space-y-4 text-sm text-slate-500">
               <li className="flex items-center gap-3">
-                <span className="material-symbols-outlined !text-sm">location_on</span>
+                <Icon name="location_on" className="!text-sm" />
                 <span>Calle 50, Ciudad de Panamá</span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="material-symbols-outlined !text-sm">mail</span>
+                <Icon name="mail" className="!text-sm" />
                 <span>info@buropanama.com</span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="material-symbols-outlined !text-sm">call</span>
+                <Icon name="call" className="!text-sm" />
                 <span>+507 8888-8888</span>
               </li>
             </ul>
@@ -301,7 +302,7 @@ export function LandingPageAlt() {
             <div className="flex gap-2">
               <input type="email" placeholder="Email" className="bg-slate-100 border-none rounded-lg px-4 py-3 text-sm flex-1 focus:ring-2 focus:ring-[#f7db15] outline-none" />
               <button className="bg-[#11171D] text-white p-3 rounded-lg hover:bg-slate-800 transition-all">
-                <span className="material-symbols-outlined !text-sm">arrow_forward</span>
+                <Icon name="arrow_forward" className="!text-sm" />
               </button>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from '../../../components/ui/Icon';
 
 export const ServicesTab: React.FC = () => {
   return (
@@ -10,19 +11,19 @@ export const ServicesTab: React.FC = () => {
         <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Soporte Técnico Rápido</h3>
         <div className="grid grid-cols-2 gap-3">
           <button className="bg-white border border-gray-100 p-4 rounded-[20px] flex flex-col items-center justify-center gap-2 shadow-sm transition-all active:scale-95 text-[#111111] hover:border-[#111111]/10">
-            <span className="material-symbols-outlined !text-2xl text-[#FDE910]">wifi</span>
+            <Icon name="wifi" className="!text-2xl text-[#FDE910]" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Credenciales Wi-Fi</span>
           </button>
           <button className="bg-white border border-gray-100 p-4 rounded-[20px] flex flex-col items-center justify-center gap-2 shadow-sm transition-all active:scale-95 text-[#111111] hover:border-[#111111]/10">
-            <span className="material-symbols-outlined !text-2xl text-[#111111]">print</span>
+            <Icon name="print" className="!text-2xl text-[#111111]" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Impresora</span>
           </button>
           <button className="bg-white border border-gray-100 p-4 rounded-[20px] flex flex-col items-center justify-center gap-2 shadow-sm transition-all active:scale-95 text-[#111111] hover:border-[#111111]/10">
-            <span className="material-symbols-outlined !text-2xl text-[#111111]">ac_unit</span>
+            <Icon name="ac_unit" className="!text-2xl text-[#111111]" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Ajustar A/C</span>
           </button>
           <button className="bg-white border border-gray-100 p-4 rounded-[20px] flex flex-col items-center justify-center gap-2 shadow-sm transition-all active:scale-95 text-[#111111] hover:border-[#111111]/10">
-            <span className="material-symbols-outlined !text-2xl text-[#111111]">support_agent</span>
+            <Icon name="support_agent" className="!text-2xl text-[#111111]" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Hablar con Staff</span>
           </button>
         </div>
@@ -35,7 +36,7 @@ export const ServicesTab: React.FC = () => {
           <div className="p-4 border-b border-gray-100 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="size-10 bg-[#F9F9FB] rounded-full flex items-center justify-center">
-                <span className="material-symbols-outlined text-[#111111]">local_cafe</span>
+                <Icon name="local_cafe" className="text-[#111111]" />
               </div>
               <div>
                 <p className="text-sm font-black uppercase text-[#111111]">Café Americano</p>
@@ -47,7 +48,7 @@ export const ServicesTab: React.FC = () => {
           <div className="p-4 border-b border-gray-100 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="size-10 bg-[#F9F9FB] rounded-full flex items-center justify-center">
-                <span className="material-symbols-outlined text-[#111111]">water_drop</span>
+                <Icon name="water_drop" className="text-[#111111]" />
               </div>
               <div>
                 <p className="text-sm font-black uppercase text-[#111111]">Agua Mineral</p>
@@ -59,7 +60,7 @@ export const ServicesTab: React.FC = () => {
           <div className="p-4 border-b border-gray-100 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="size-10 bg-[#F9F9FB] rounded-full flex items-center justify-center">
-                <span className="material-symbols-outlined text-[#111111]">bakery_dining</span>
+                <Icon name="bakery_dining" className="text-[#111111]" />
               </div>
               <div>
                 <p className="text-sm font-black uppercase text-[#111111]">Croissant Mantequilla</p>
@@ -70,7 +71,7 @@ export const ServicesTab: React.FC = () => {
           </div>
           <div className="p-4 bg-[#F9F9FB]">
             <button className="w-full bg-[#111111] text-white py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95">
-              <span className="material-symbols-outlined !text-sm">shopping_cart</span>
+              <Icon name="shopping_cart" className="!text-sm" />
               Ver Menú Completo
             </button>
           </div>

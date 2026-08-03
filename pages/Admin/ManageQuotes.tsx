@@ -6,6 +6,7 @@ import confetti from 'canvas-confetti';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { Icon } from '../../components/ui/Icon';
 import {
   Award01Icon,
   Calendar04Icon,
@@ -491,7 +492,7 @@ const ManageQuotes: React.FC = () => {
             onClick={() => handleOpenCreateModal()}
             className="px-5 py-3 bg-[#3B4FE4] hover:bg-[#2d3ec7] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-indigo-100 border-none cursor-pointer"
           >
-            <span className="material-symbols-outlined !text-base">add_circle</span>
+            <Icon name="add_circle" className="!text-base" />
             Nueva Propuesta
           </button>
         </div>
@@ -588,7 +589,7 @@ const ManageQuotes: React.FC = () => {
               </p>
             </div>
             <div className="flex items-center gap-2 text-xs font-bold mt-8 relative z-10 group-hover:translate-x-2 transition-transform">
-              Usar esta plantilla <span className="material-symbols-outlined !text-sm">arrow_forward</span>
+              Usar esta plantilla <Icon name="arrow_forward" className="!text-sm" />
             </div>
           </div>
 
@@ -606,7 +607,7 @@ const ManageQuotes: React.FC = () => {
               </p>
             </div>
             <div className="flex items-center gap-2 text-xs font-bold mt-8 relative z-10 group-hover:translate-x-2 transition-transform">
-              Usar esta plantilla <span className="material-symbols-outlined !text-sm">arrow_forward</span>
+              Usar esta plantilla <Icon name="arrow_forward" className="!text-sm" />
             </div>
           </div>
 
@@ -624,7 +625,7 @@ const ManageQuotes: React.FC = () => {
               </p>
             </div>
             <div className="flex items-center gap-2 text-xs font-bold mt-8 relative z-10 group-hover:translate-x-2 transition-transform">
-              Usar esta plantilla <span className="material-symbols-outlined !text-sm">arrow_forward</span>
+              Usar esta plantilla <Icon name="arrow_forward" className="!text-sm" />
             </div>
           </div>
         </div>
@@ -636,7 +637,7 @@ const ManageQuotes: React.FC = () => {
           <h2 className="text-xl font-bold text-slate-900 tracking-tight">Propuestas Recientes</h2>
           <div className="flex items-center gap-4">
             <div className="relative w-64">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 !text-lg">search</span>
+              <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 !text-lg" />
               <input
                 type="text"
                 placeholder="Buscar propuesta..."
@@ -730,7 +731,7 @@ const ManageQuotes: React.FC = () => {
                             className="size-8 rounded-lg bg-transparent border-none text-slate-400 hover:text-emerald-600 hover:bg-emerald-50/50 flex items-center justify-center transition-all cursor-pointer"
                             title="Ver propuesta"
                           >
-                            <span className="material-symbols-outlined !text-lg">visibility</span>
+                            <Icon name="visibility" className="!text-lg" />
                           </button>
                           
                           <button
@@ -738,7 +739,7 @@ const ManageQuotes: React.FC = () => {
                             className="size-8 rounded-lg bg-transparent border-none text-slate-400 hover:text-[#3B4FE4] hover:bg-indigo-50/50 flex items-center justify-center transition-all cursor-pointer"
                             title="Editar propuesta"
                           >
-                            <span className="material-symbols-outlined !text-lg">edit</span>
+                            <Icon name="edit" className="!text-lg" />
                           </button>
                           
                           <button
@@ -750,7 +751,7 @@ const ManageQuotes: React.FC = () => {
                             {sendingEmail === quote.id ? (
                               <div className="size-3.5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
                             ) : (
-                              <span className="material-symbols-outlined !text-lg">send</span>
+                              <Icon name="send" className="!text-lg" />
                             )}
                           </button>
 
@@ -770,7 +771,7 @@ const ManageQuotes: React.FC = () => {
                             className="size-8 rounded-lg bg-transparent border-none text-slate-400 hover:text-rose-600 hover:bg-rose-50/50 flex items-center justify-center transition-all cursor-pointer"
                             title="Anular"
                           >
-                            <span className="material-symbols-outlined !text-lg">delete</span>
+                            <Icon name="delete" className="!text-lg" />
                           </button>
                         </div>
                       </td>
@@ -793,7 +794,7 @@ const ManageQuotes: React.FC = () => {
               disabled={currentPage === 1}
               className="size-8 border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 cursor-pointer"
             >
-              <span className="material-symbols-outlined !text-base">chevron_left</span>
+              <Icon name="chevron_left" className="!text-base" />
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
@@ -813,7 +814,7 @@ const ManageQuotes: React.FC = () => {
               disabled={currentPage === totalPages}
               className="size-8 border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-50 cursor-pointer"
             >
-              <span className="material-symbols-outlined !text-base">chevron_right</span>
+              <Icon name="chevron_right" className="!text-base" />
             </button>
           </div>
         </div>
@@ -833,7 +834,7 @@ const ManageQuotes: React.FC = () => {
                 onClick={() => setShowCreateModal(false)}
                 className="size-10 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-900 cursor-pointer transition-all hover:scale-105"
               >
-                <span className="material-symbols-outlined !text-lg">close</span>
+                <Icon name="close" className="!text-lg" />
               </button>
             </div>
 
@@ -846,7 +847,7 @@ const ManageQuotes: React.FC = () => {
                     CLIENTE / MIEMBRO
                   </label>
                   <div className="relative">
-                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 !text-lg">search</span>
+                    <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 !text-lg" />
                     <input
                       type="text"
                       placeholder="Busca o ingresa un cliente..."
@@ -995,7 +996,7 @@ const ManageQuotes: React.FC = () => {
                       onClick={() => setNewQuoteItems([...newQuoteItems, { description: '', quantity: 1, price: 0 }])}
                       className="text-xs font-bold text-[#3B4FE4] hover:text-[#2d3ec7] transition-colors flex items-center gap-1 bg-transparent border-none cursor-pointer"
                     >
-                      <span className="material-symbols-outlined !text-sm">add</span> Add Item
+                      <Icon name="add" className="!text-sm" /> Add Item
                     </button>
                   </div>
 
@@ -1052,7 +1053,7 @@ const ManageQuotes: React.FC = () => {
                             onClick={() => setNewQuoteItems(newQuoteItems.filter((_, i) => i !== idx))}
                             className="size-8 rounded-lg bg-transparent border-none text-slate-400 hover:text-rose-600 hover:bg-rose-50 flex items-center justify-center cursor-pointer transition-all"
                           >
-                            <span className="material-symbols-outlined !text-base">delete</span>
+                            <Icon name="delete" className="!text-base" />
                           </button>
                         )}
                       </div>
@@ -1085,7 +1086,7 @@ const ManageQuotes: React.FC = () => {
                 {/* Modal Footer Controls */}
                 <div className="flex items-center justify-between border-t border-slate-100 pt-6">
                   <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                    <span className="material-symbols-outlined !text-base text-emerald-500 animate-pulse">check_circle</span>
+                    <Icon name="check_circle" className="!text-base text-emerald-500 animate-pulse" />
                     Saving as <strong>Draft</strong> automatically.
                   </div>
                   <div className="flex items-center gap-3">
@@ -1100,7 +1101,7 @@ const ManageQuotes: React.FC = () => {
                       type="submit"
                       className="px-6 py-3.5 bg-[#3B4FE4] hover:bg-[#2d3ec7] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-indigo-100 border-none cursor-pointer"
                     >
-                      Send Proposal <span className="material-symbols-outlined !text-sm">send</span>
+                      Send Proposal <Icon name="send" className="!text-sm" />
                     </button>
                   </div>
                 </div>
@@ -1118,7 +1119,7 @@ const ManageQuotes: React.FC = () => {
             <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 bg-white">
               <div className="flex items-center gap-3">
                 <div className="size-10 rounded-xl bg-indigo-50 text-[#3B4FE4] flex items-center justify-center">
-                  <span className="material-symbols-outlined">description</span>
+                  <Icon name="description" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -1136,7 +1137,7 @@ const ManageQuotes: React.FC = () => {
                 onClick={() => setShowEditModal(false)}
                 className="size-8 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-900 cursor-pointer transition-all hover:scale-105"
               >
-                <span className="material-symbols-outlined !text-lg">close</span>
+                <Icon name="close" className="!text-lg" />
               </button>
             </div>
 
@@ -1257,7 +1258,7 @@ const ManageQuotes: React.FC = () => {
                       onClick={() => setEditQuoteItems([...editQuoteItems, { description: '', quantity: 1, price: 0 }])}
                       className="text-xs font-bold text-[#3B4FE4] hover:text-[#2d3ec7] transition-colors bg-transparent border-none cursor-pointer flex items-center gap-1"
                     >
-                      <span className="material-symbols-outlined !text-sm">add</span> Add Product/Service
+                      <Icon name="add" className="!text-sm" /> Add Product/Service
                     </button>
                   </div>
 
@@ -1314,7 +1315,7 @@ const ManageQuotes: React.FC = () => {
                             onClick={() => setEditQuoteItems(editQuoteItems.filter((_, i) => i !== idx))}
                             className="size-8 rounded-lg bg-transparent border-none text-slate-400 hover:text-rose-600 hover:bg-rose-50 flex items-center justify-center cursor-pointer transition-all"
                           >
-                            <span className="material-symbols-outlined !text-base">delete</span>
+                            <Icon name="delete" className="!text-base" />
                           </button>
                         )}
                       </div>
@@ -1391,7 +1392,7 @@ const ManageQuotes: React.FC = () => {
                     onClick={handleDeleteDraft}
                     className="px-4 py-2.5 border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer bg-white"
                   >
-                    <span className="material-symbols-outlined !text-sm">delete</span> Delete Draft
+                    <Icon name="delete" className="!text-sm" /> Delete Draft
                   </button>
 
                   <div className="flex items-center gap-3">

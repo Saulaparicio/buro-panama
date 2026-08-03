@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from '../../../components/ui/Icon';
 
 export type TabValue = 'home' | 'reservations' | 'access' | 'services' | 'community';
 
@@ -30,9 +31,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onChangeTab }) 
             style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
           >
             <div className={`flex items-center justify-center rounded-xl p-1.5 transition-colors ${isActive ? 'bg-[#FDE910]' : 'bg-transparent'}`}>
-              <span className={`material-symbols-outlined !text-[22px] ${isActive ? 'filled' : ''}`}>
-                {tab.icon}
-              </span>
+              <Icon name={tab.icon} className={`material-symbols-outlined !text-[22px] ${isActive ? 'filled' : ''}`} />
             </div>
             <span className={`text-[9px] font-bold tracking-wide ${isActive ? 'text-[#111111]' : 'text-gray-400'}`}>
               {tab.label}

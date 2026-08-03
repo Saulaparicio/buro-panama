@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Alert01Icon } from 'hugeicons-react';
 
 interface Props {
     children?: ReactNode;
@@ -27,7 +28,7 @@ class ErrorBoundary extends Component<Props, State> {
             return (
                 <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-white dark:bg-buro-black text-center">
                     <div className="size-24 bg-red-50 dark:bg-red-900/10 rounded-full flex items-center justify-center mb-8">
-                        <span className="material-symbols-outlined text-red-500 text-5xl">error</span>
+                        <Alert01Icon size={48} className="text-red-500" />
                     </div>
                     <h1 className="text-2xl font-black text-buro-black dark:text-white uppercase tracking-widest mb-4">Algo salió mal</h1>
                     <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-8 font-medium">

@@ -3,6 +3,7 @@ import { supabase } from '../../supabase';
 import { Guest } from '../../types';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
+import { Icon } from '../../components/ui/Icon';
 
 const ManageGuests: React.FC = () => {
     const [guests, setGuests] = useState<Guest[]>([]);
@@ -78,7 +79,7 @@ const ManageGuests: React.FC = () => {
                 <div className="flex items-center gap-6">
                     <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
                         <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-                            <span className="material-symbols-outlined !text-lg">security</span>
+                            <Icon name="security" className="!text-lg" />
                             Invitados
                         </div>
                     </div>
@@ -102,14 +103,14 @@ const ManageGuests: React.FC = () => {
                         onClick={fetchGuests}
                         className={`size-12 rounded-xl bg-white border border-slate-100 shadow-sm flex items-center justify-center text-slate-400 hover:text-indigo-600 transition-all ${loading ? 'animate-spin' : ''}`}
                     >
-                        <span className="material-symbols-outlined !text-xl">refresh</span>
+                        <Icon name="refresh" className="!text-xl" />
                     </button>
                 </div>
             </div>
 
             {/* Search Section */}
             <div className="relative group mb-10">
-                <span className="material-symbols-outlined absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors !text-xl">search</span>
+                <Icon name="search" className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors !text-xl" />
                 <input
                     type="text"
                     placeholder="BUSCAR POR NOMBRE O ANFITRIÓN..."
@@ -125,7 +126,7 @@ const ManageGuests: React.FC = () => {
                         <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                         <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">security</span>
+                            <Icon name="security" className="!text-4xl text-slate-200 animate-pulse" />
                         </div>
                     </div>
                     <div className="text-center space-y-4">
@@ -155,7 +156,7 @@ const ManageGuests: React.FC = () => {
                                             <td className="px-8 py-6">
                                                 <div className="flex items-center gap-4">
                                                     <div className="size-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-indigo-50 transition-all">
-                                                        <span className="material-symbols-outlined !text-xl">account_circle</span>
+                                                        <Icon name="account_circle" className="!text-xl" />
                                                     </div>
                                                     <div>
                                                         <p className="text-sm font-bold text-slate-900 uppercase tracking-tight">{guest.full_name}</p>
@@ -176,7 +177,7 @@ const ManageGuests: React.FC = () => {
                                                         {new Date(guest.visit_date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }).toUpperCase()}
                                                     </p>
                                                     <div className="flex items-center gap-2 text-slate-400 mt-1">
-                                                        <span className="material-symbols-outlined !text-xs">schedule</span>
+                                                        <Icon name="schedule" className="!text-xs" />
                                                         <p className="text-[10px] font-bold uppercase tracking-widest">{guest.visit_time}</p>
                                                     </div>
                                                 </div>
@@ -205,7 +206,7 @@ const ManageGuests: React.FC = () => {
                                                             onClick={() => handleUpdateStatus(guest.id, 'arrived')}
                                                             className="h-10 px-6 bg-slate-900 text-white rounded-lg text-[9px] font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-2"
                                                         >
-                                                            <span className="material-symbols-outlined !text-base">verified</span>
+                                                            <Icon name="verified" className="!text-base" />
                                                             Check-In
                                                         </button>
                                                     )}
@@ -222,7 +223,7 @@ const ManageGuests: React.FC = () => {
                                                             onClick={() => handleUpdateStatus(guest.id, 'cancelled')}
                                                             className="size-10 rounded-lg bg-rose-50 text-rose-400 hover:text-rose-600 hover:bg-rose-100 transition-all flex items-center justify-center"
                                                         >
-                                                            <span className="material-symbols-outlined !text-lg">close</span>
+                                                            <Icon name="close" className="!text-lg" />
                                                         </button>
                                                     )}
                                                 </div>
@@ -233,7 +234,7 @@ const ManageGuests: React.FC = () => {
                                     <tr>
                                         <td colSpan={5} className="px-10 py-32 text-center">
                                             <div className="flex flex-col items-center gap-6 opacity-20">
-                                                <span className="material-symbols-outlined !text-6xl">person_search</span>
+                                                <Icon name="person_search" className="!text-6xl" />
                                                 <div className="space-y-1">
                                                     <p className="text-sm font-bold uppercase tracking-widest">Sin registros</p>
                                                     <p className="text-[10px] font-bold uppercase tracking-widest">No hay invitados que coincidan</p>

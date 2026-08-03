@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabase';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { toast } from 'react-hot-toast';
+import { Icon } from '../../components/ui/Icon';
 
 const AdminReports: React.FC = () => {
     const [stats, setStats] = useState({
@@ -154,7 +155,7 @@ const AdminReports: React.FC = () => {
                 <div className="absolute inset-0 border-[1px] border-[var(--outline-variant)]/20 rounded-full scale-150"></div>
                 <div className="absolute inset-0 border-t-2 border-[var(--primary)] rounded-full animate-spin-slow"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="material-symbols-outlined !text-4xl text-[var(--on-surface)]/10 animate-pulse">analytics</span>
+                    <Icon name="analytics" className="!text-4xl text-[var(--on-surface)]/10 animate-pulse" />
                 </div>
             </div>
             <div className="text-center space-y-4">
@@ -171,7 +172,7 @@ const AdminReports: React.FC = () => {
                 <div className="flex items-center gap-6">
                     <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
                         <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-                            <span className="material-symbols-outlined !text-lg">analytics</span>
+                            <Icon name="analytics" className="!text-lg" />
                             Estadísticas
                         </div>
                     </div>
@@ -179,7 +180,7 @@ const AdminReports: React.FC = () => {
                     <div className="h-8 w-[1px] bg-slate-200 hidden md:block"></div>
 
                     <div className="flex items-center gap-4 bg-white border border-slate-100 px-4 py-2 rounded-xl shadow-sm">
-                        <span className="material-symbols-outlined !text-base text-slate-400">calendar_today</span>
+                        <Icon name="calendar_today" className="!text-base text-slate-400" />
                         <div className="flex items-center gap-2">
                             <input 
                                 type="date" 
@@ -203,7 +204,7 @@ const AdminReports: React.FC = () => {
                         onClick={handleExportData} 
                         className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3 shadow-lg shadow-slate-200 border-none cursor-pointer"
                     >
-                        <span className="material-symbols-outlined !text-xl">download</span>
+                        <Icon name="download" className="!text-xl" />
                         Exportar CSV
                     </button>
                 </div>
@@ -219,11 +220,11 @@ const AdminReports: React.FC = () => {
                 ].map((stat, idx) => (
                     <div key={idx} className="card-workspace group relative overflow-hidden">
                         <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                            <span className="material-symbols-outlined !text-[120px]">{stat.icon}</span>
+                            <Icon name={stat.icon} className="!text-[120px]" />
                         </div>
                         <div className="flex justify-between items-start mb-10 relative z-10">
                             <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-                                <span className="material-symbols-outlined !text-2xl">{stat.icon}</span>
+                                <Icon name={stat.icon} className="!text-2xl" />
                             </div>
                             <span className={`text-[10px] font-black uppercase px-3 py-1.5 rounded-xl shadow-sm ${stat.up ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
                                 {stat.change}
@@ -424,11 +425,11 @@ const AdminReports: React.FC = () => {
                     {/* AI Insight */}
                     <div className="mt-20 p-12 bg-[var(--surface)] shadow-[var(--neu-pressed-sm)] rounded-[2.5rem] relative overflow-hidden group/ai border border-white/20">
                         <div className="absolute top-0 right-0 p-10 opacity-[0.03] group-hover/ai:rotate-12 group-hover/ai:scale-110 transition-all duration-700">
-                            <span className="material-symbols-outlined !text-9xl text-[var(--on-surface)]">auto_awesome</span>
+                            <Icon name="auto_awesome" className="!text-9xl text-[var(--on-surface)]" />
                         </div>
                         <div className="flex items-center gap-5 mb-8">
                             <div className="size-14 bg-[var(--secondary)] text-[var(--primary)] rounded-2xl flex items-center justify-center shadow-2xl">
-                                <span className="material-symbols-outlined !text-3xl animate-pulse">auto_awesome</span>
+                                <Icon name="auto_awesome" className="!text-3xl animate-pulse" />
                             </div>
                             <span className="text-[11px] font-black uppercase tracking-[0.5em] text-[var(--on-surface)]">AI OPERATIONAL INSIGHT</span>
                         </div>

@@ -22,6 +22,7 @@ import {
 } from 'recharts';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
+import { Icon } from '../../components/ui/Icon';
 
 
 
@@ -430,11 +431,11 @@ const AdminDashboard: React.FC = () => {
         {/* Members Onsite */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
           <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <span className="material-symbols-outlined !text-[120px]">groups</span>
+            <Icon name="groups" className="!text-[120px]" />
           </div>
           <div className="flex justify-between items-start mb-6 relative z-10">
             <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <span className="material-symbols-outlined !text-2xl">groups</span>
+              <Icon name="groups" className="!text-2xl" />
             </div>
             <span className="text-[10px] font-black uppercase px-3 py-1.5 rounded-xl shadow-sm bg-green-500/10 text-green-500">
               +12%
@@ -447,11 +448,11 @@ const AdminDashboard: React.FC = () => {
         {/* Unpaid Invoices */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
           <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <span className="material-symbols-outlined !text-[120px]">receipt_long</span>
+            <Icon name="receipt_long" className="!text-[120px]" />
           </div>
           <div className="flex justify-between items-start mb-6 relative z-10">
             <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <span className="material-symbols-outlined !text-2xl">receipt_long</span>
+              <Icon name="receipt_long" className="!text-2xl" />
             </div>
             <span className="text-[10px] font-black uppercase px-3 py-1.5 rounded-xl shadow-sm bg-red-500/10 text-red-500">
               Urgent
@@ -464,11 +465,11 @@ const AdminDashboard: React.FC = () => {
         {/* Unread Messages */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
           <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <span className="material-symbols-outlined !text-[120px]">mail</span>
+            <Icon name="mail" className="!text-[120px]" />
           </div>
           <div className="flex justify-between items-start mb-6 relative z-10">
             <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <span className="material-symbols-outlined !text-2xl">mail</span>
+              <Icon name="mail" className="!text-2xl" />
             </div>
             <div className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse mt-2"></div>
           </div>
@@ -479,11 +480,11 @@ const AdminDashboard: React.FC = () => {
         {/* Active Bookings */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
           <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <span className="material-symbols-outlined !text-[120px]">calendar_today</span>
+            <Icon name="calendar_today" className="!text-[120px]" />
           </div>
           <div className="flex justify-between items-start mb-6 relative z-10">
             <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <span className="material-symbols-outlined !text-2xl">calendar_today</span>
+              <Icon name="calendar_today" className="!text-2xl" />
             </div>
           </div>
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-subtle)] relative z-10">{t('active_bookings', "Active Bookings")}</p>
@@ -500,7 +501,7 @@ const AdminDashboard: React.FC = () => {
               <h3 className="label-md text-[var(--primary)] uppercase tracking-[0.2em]">{t('agenda', "Agenda")}</h3>
               <h2 className="text-lg font-black uppercase tracking-tight text-[var(--on-surface)]">{t('todays_reservations', "Today's Reservations")}</h2>
             </div>
-            <span className="material-symbols-outlined text-[var(--primary)]">calendar_today</span>
+            <Icon name="calendar_today" className="text-[var(--primary)]" />
           </div>
           <div className="space-y-4">
             {todayReservations.length > 0 ? (
@@ -524,7 +525,7 @@ const AdminDashboard: React.FC = () => {
               <h3 className="label-md text-[var(--primary)] uppercase tracking-[0.2em]">{t('scheduled', "Scheduled")}</h3>
               <h2 className="text-lg font-black uppercase tracking-tight text-[var(--on-surface)]">{t('upcoming', "Upcoming")}</h2>
             </div>
-            <span className="material-symbols-outlined text-slate-400">schedule</span>
+            <Icon name="schedule" className="text-slate-400" />
           </div>
           <div className="space-y-4">
             {upcomingReservations.length > 0 ? (
@@ -575,7 +576,7 @@ const AdminDashboard: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="size-10 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--secondary)] rounded-xl flex items-center justify-center">
-                  <span className="material-symbols-outlined !text-xl">restaurant</span>
+                  <Icon name="restaurant" className="!text-xl" />
                 </div>
                 <div>
                   <h4 className="text-[11px] font-black uppercase tracking-wider text-[var(--on-surface)]">Member Lunch</h4>
@@ -584,7 +585,7 @@ const AdminDashboard: React.FC = () => {
               </div>
               <div className="flex items-center gap-3">
                 <div className="size-10 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--primary)] rounded-xl flex items-center justify-center">
-                  <span className="material-symbols-outlined !text-xl">campaign</span>
+                  <Icon name="campaign" className="!text-xl" />
                 </div>
                 <div>
                   <h4 className="text-[11px] font-black uppercase tracking-wider text-[var(--on-surface)]">VC Pitch Day</h4>
@@ -605,10 +606,10 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div className="flex gap-2">
             <button className="p-2 border border-[var(--outline-variant)]/60 rounded-lg hover:bg-slate-50 transition-colors">
-              <span className="material-symbols-outlined text-slate-400 !text-xl">filter_list</span>
+              <Icon name="filter_list" className="text-slate-400 !text-xl" />
             </button>
             <button className="p-2 border border-[var(--outline-variant)]/60 rounded-lg hover:bg-slate-50 transition-colors">
-              <span className="material-symbols-outlined text-slate-400 !text-xl">grid_view</span>
+              <Icon name="grid_view" className="text-slate-400 !text-xl" />
             </button>
           </div>
         </div>
@@ -627,17 +628,17 @@ const AdminDashboard: React.FC = () => {
                 <h4 className="text-base font-bold text-[var(--on-surface)] mb-1">HDMI Room</h4>
                 <div className="flex gap-3 text-[var(--on-surface-subtle)] text-xs">
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">groups</span> 6 {t('seats', "Seats")}
+                    <Icon name="groups" className="text-[16px]" /> 6 {t('seats', "Seats")}
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">tv</span> {t('display_4k', "4K Display")}
+                    <Icon name="tv" className="text-[16px]" /> {t('display_4k', "4K Display")}
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
                 <button onClick={() => openQuickBook('HDMI')} className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-container)] text-white py-2 rounded-lg text-xs font-bold uppercase tracking-wider block transition-colors">{t('quick_book', "Quick Book")}</button>
                 <button className="p-2 border border-[var(--outline-variant)]/60 rounded-lg hover:bg-slate-50 transition-colors text-slate-400">
-                  <span className="material-symbols-outlined">more_horiz</span>
+                  <Icon name="more_horiz" />
                 </button>
               </div>
             </div>
@@ -656,17 +657,17 @@ const AdminDashboard: React.FC = () => {
                 <h4 className="text-base font-bold text-[var(--on-surface)] mb-1">RJ-45 Room</h4>
                 <div className="flex gap-3 text-[var(--on-surface-subtle)] text-xs">
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">groups</span> 2 {t('seats', "Seats")}
+                    <Icon name="groups" className="text-[16px]" /> 2 {t('seats', "Seats")}
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">bolt</span> {t('fiber_1gbps', "Fiber 1Gbps")}
+                    <Icon name="bolt" className="text-[16px]" /> {t('fiber_1gbps', "Fiber 1Gbps")}
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
                 <button className="flex-1 bg-slate-100 text-slate-400 py-2 rounded-lg text-xs font-bold uppercase tracking-wider cursor-not-allowed">{t('unavailable', "Unavailable")}</button>
                 <button className="p-2 border border-[var(--outline-variant)]/60 rounded-lg hover:bg-slate-50 transition-colors text-slate-400">
-                  <span className="material-symbols-outlined">more_horiz</span>
+                  <Icon name="more_horiz" />
                 </button>
               </div>
             </div>
@@ -685,17 +686,17 @@ const AdminDashboard: React.FC = () => {
                 <h4 className="text-base font-bold text-[var(--on-surface)] mb-1">Private Pod 04</h4>
                 <div className="flex gap-3 text-[var(--on-surface-subtle)] text-xs">
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">person</span> 1 {t('seat', "Seat")}
+                    <Icon name="person" className="text-[16px]" /> 1 {t('seat', "Seat")}
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">noise_control_on</span> {t('soundproof', "Soundproof")}
+                    <Icon name="noise_control_on" className="text-[16px]" /> {t('soundproof', "Soundproof")}
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
                 <button onClick={() => openQuickBook('Pod 04')} className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-container)] text-white py-2 rounded-lg text-xs font-bold uppercase tracking-wider block transition-colors">{t('quick_book', "Quick Book")}</button>
                 <button className="p-2 border border-[var(--outline-variant)]/60 rounded-lg hover:bg-slate-50 transition-colors text-slate-400">
-                  <span className="material-symbols-outlined">more_horiz</span>
+                  <Icon name="more_horiz" />
                 </button>
               </div>
             </div>
@@ -714,17 +715,17 @@ const AdminDashboard: React.FC = () => {
                 <h4 className="text-base font-bold text-[var(--on-surface)] mb-1">Green Creative</h4>
                 <div className="flex gap-3 text-[var(--on-surface-subtle)] text-xs">
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">groups</span> 12 {t('seats', "Seats")}
+                    <Icon name="groups" className="text-[16px]" /> 12 {t('seats', "Seats")}
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[16px]">draw</span> {t('whiteboard', "Whiteboard")}
+                    <Icon name="draw" className="text-[16px]" /> {t('whiteboard', "Whiteboard")}
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
                 <button onClick={() => openQuickBook('Green Creative')} className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-container)] text-white py-2 rounded-lg text-xs font-bold uppercase tracking-wider block transition-colors">{t('quick_book', "Quick Book")}</button>
                 <button className="p-2 border border-[var(--outline-variant)]/60 rounded-lg hover:bg-slate-50 transition-colors text-slate-400">
-                  <span className="material-symbols-outlined">more_horiz</span>
+                  <Icon name="more_horiz" />
                 </button>
               </div>
             </div>
@@ -801,7 +802,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-3 gap-4">
                   {/* Capacidad */}
                   <div className="bg-[var(--surface)] border border-[var(--outline-variant)]/30 p-4 rounded-xl flex items-center gap-3">
-                    <span className="material-symbols-outlined text-[var(--primary)]">groups</span>
+                    <Icon name="groups" className="text-[var(--primary)]" />
                     <div>
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Capacidad</p>
                       <p className="text-xs font-black text-slate-800 uppercase tracking-tight">{selectedSpace?.capacity || 12} Personas</p>
@@ -809,7 +810,7 @@ const AdminDashboard: React.FC = () => {
                   </div>
                   {/* Precio */}
                   <div className="bg-[var(--surface)] border border-[var(--outline-variant)]/30 p-4 rounded-xl flex items-center gap-3">
-                    <span className="material-symbols-outlined text-[var(--secondary)]">payments</span>
+                    <Icon name="payments" className="text-[var(--secondary)]" />
                     <div>
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Precio</p>
                       <p className="text-xs font-black text-slate-800 uppercase tracking-tight">${hourlyRate}/hr</p>
@@ -817,7 +818,7 @@ const AdminDashboard: React.FC = () => {
                   </div>
                   {/* Ubicación */}
                   <div className="bg-[var(--surface)] border border-[var(--outline-variant)]/30 p-4 rounded-xl flex items-center gap-3">
-                    <span className="material-symbols-outlined text-emerald-600">location_on</span>
+                    <Icon name="location_on" className="text-emerald-600" />
                     <div>
                       <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Ubicación</p>
                       <p className="text-xs font-black text-slate-800 uppercase tracking-tight">Piso 4, Ala Norte</p>
@@ -828,7 +829,7 @@ const AdminDashboard: React.FC = () => {
                 {/* Features & Amenities */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[var(--primary)] !text-lg">verified</span>
+                    <Icon name="verified" className="text-[var(--primary)] !text-lg" />
                     <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Características & Amenidades</h3>
                   </div>
                   <div className="grid grid-cols-3 gap-3">
@@ -841,7 +842,7 @@ const AdminDashboard: React.FC = () => {
                       { name: 'Audio System', icon: 'volume_up' }
                     ].map((amenity, i) => (
                       <div key={i} className="bg-[var(--surface)]/40 border border-[var(--outline-variant)]/10 p-3 rounded-xl flex flex-col gap-1 items-start text-left">
-                        <span className="material-symbols-outlined text-[var(--primary)] !text-base">{amenity.icon}</span>
+                        <Icon name={amenity.icon} className="text-[var(--primary)] !text-base" />
                         <span className="text-[9px] font-bold text-slate-700 tracking-tight">{amenity.name}</span>
                       </div>
                     ))}
@@ -863,7 +864,7 @@ const AdminDashboard: React.FC = () => {
                     onClick={() => setIsBookingModalOpen(false)} 
                     className="size-8 bg-slate-200/60 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors border-none cursor-pointer text-slate-600"
                   >
-                    <span className="material-symbols-outlined !text-lg">close</span>
+                    <Icon name="close" className="!text-lg" />
                   </button>
                 </div>
 
@@ -912,7 +913,7 @@ const AdminDashboard: React.FC = () => {
                           required 
                           className="w-full border border-[var(--outline-variant)] rounded-xl p-3 text-xs bg-white font-bold uppercase tracking-wider" 
                         />
-                        <span className="material-symbols-outlined absolute right-3 top-3.5 text-slate-400 pointer-events-none">calendar_today</span>
+                        <Icon name="calendar_today" className="absolute right-3 top-3.5 text-slate-400 pointer-events-none" />
                       </div>
                     </div>
 
@@ -988,7 +989,7 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => setIsBookingModalOpen(false)}
                         className="w-full py-3.5 bg-slate-200/50 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-colors border-none cursor-pointer"
                       >
-                        <span className="material-symbols-outlined !text-base">shopping_cart</span>
+                        <Icon name="shopping_cart" className="!text-base" />
                         Añadir al Carrito
                       </button>
                     </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Benefit } from '../types';
 import { useTenant } from '../contexts/TenantContext';
 import { supabase } from '../supabase';
+import { Icon } from '../components/ui/Icon';
 
 const Benefits: React.FC = () => {
   const { tenant } = useTenant();
@@ -43,7 +44,7 @@ const Benefits: React.FC = () => {
         <div className="flex flex-col">
             <div className="flex items-center gap-5 mb-4">
                 <div className="size-14 bg-[#6b6d00] text-white rounded-2xl flex items-center justify-center shadow-lg">
-                    <span className="material-symbols-outlined !text-3xl">loyalty</span>
+                    <Icon name="loyalty" className="!text-3xl" />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none">Beneficios</h1>
             </div>
@@ -88,7 +89,7 @@ const Benefits: React.FC = () => {
                        />
                      ) : (
                        <div className="w-full h-full flex items-center justify-center text-[var(--on-surface)]/10">
-                          <span className="material-symbols-outlined text-[120px]">verified</span>
+                          <Icon name="verified" className="text-[120px]" />
                        </div>
                      )}
                      <div className="absolute inset-0 bg-gradient-to-t from-[var(--on-surface)]/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex flex-col justify-end p-12">
@@ -115,7 +116,7 @@ const Benefits: React.FC = () => {
 
              {filteredBenefits.length === 0 && (
                <div className="col-span-full py-60 border border-dashed border-[var(--outline-variant)]/30 rounded-3xl text-center space-y-8">
-                  <span className="material-symbols-outlined text-[80px] opacity-10">inventory_2</span>
+                  <Icon name="inventory_2" className="text-[80px] opacity-10" />
                   <div className="space-y-4">
                     <h3 className="display-lg opacity-10 uppercase">Registry Empty</h3>
                     <p className="label-md opacity-20">No strategic alliances found in this sector</p>
@@ -151,7 +152,7 @@ const Benefits: React.FC = () => {
                       { icon: 'bolt', label: 'Acceso Directo' }
                     ].map((perk, i) => (
                       <div key={i} className="flex flex-col gap-4 p-8 bg-white/5 rounded-3xl border border-white/5 group/perk hover:border-[var(--primary-container)]/20 transition-all">
-                         <span className="material-symbols-outlined text-[var(--primary-container)] !text-4xl">{perk.icon}</span>
+                         <Icon name={perk.icon} className="text-[var(--primary-container)] !text-4xl" />
                          <span className="text-[11px] font-bold text-white/60 uppercase tracking-widest font-jakarta">{perk.label}</span>
                       </div>
                     ))}
@@ -159,7 +160,7 @@ const Benefits: React.FC = () => {
                  
                  <button className="btn-primary w-full py-8 text-[12px] font-black uppercase tracking-[0.5em] font-manrope flex items-center justify-center gap-6 group/btn">
                     <span>Solicitar Partnership</span>
-                    <span className="material-symbols-outlined !text-xl group-hover/btn:translate-x-4 transition-transform duration-700">arrow_forward</span>
+                    <Icon name="arrow_forward" className="!text-xl group-hover/btn:translate-x-4 transition-transform duration-700" />
                  </button>
               </div>
            </div>

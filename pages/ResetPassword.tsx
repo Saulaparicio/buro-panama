@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
+import { Icon } from '../components/ui/Icon';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ const ResetPassword = () => {
         {success ? (
           <div className="text-center space-y-4">
             <div className="size-16 mx-auto bg-green-100 text-green-600 rounded-full flex items-center justify-center">
-              <span className="material-symbols-outlined !text-3xl">check</span>
+              <Icon name="check" className="!text-3xl" />
             </div>
             <p className="text-sm font-bold text-slate-600">¡Contraseña actualizada con éxito!</p>
             <p className="text-xs text-slate-400">Redirigiendo a tu panel...</p>
@@ -89,7 +90,7 @@ const ResetPassword = () => {
           <form onSubmit={handleUpdatePassword} className="space-y-6">
             {error && (
               <div className="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3">
-                <span className="material-symbols-outlined text-lg">error</span>
+                <Icon name="error" className="text-lg" />
                 <span className="flex-1">{error}</span>
               </div>
             )}

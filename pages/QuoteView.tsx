@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { Quote } from '../types';
+import { Icon } from '../components/ui/Icon';
 
 // Helper to parse metadata
 const parseMetadata = (notes: string | null) => {
@@ -72,7 +73,7 @@ const QuoteView: React.FC = () => {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-24 text-center">
                 <div className="size-24 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-8">
-                    <span className="material-symbols-outlined !text-4xl">error</span>
+                    <Icon name="error" className="!text-4xl" />
                 </div>
                 <h1 className="text-3xl font-black text-slate-900 mb-4">Propuesta no encontrada</h1>
                 <p className="text-slate-500 max-w-md mb-8">El enlace puede haber expirado o la cotización fue eliminada.</p>
@@ -115,13 +116,11 @@ const QuoteView: React.FC = () => {
                     
                     {/* Title Card */}
                     <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 print-shadow-none relative overflow-hidden">
-                        <span className="material-symbols-outlined absolute -right-6 -top-6 !text-9xl text-slate-50 opacity-50 rotate-12 pointer-events-none">draw</span>
+                        <Icon name="draw" className="absolute -right-6 -top-6 !text-9xl text-slate-50 opacity-50 rotate-12 pointer-events-none" />
                         
                         <div className="relative z-10">
                             <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold mb-6 ${statusColor} print-bg-blue print-text-black`}>
-                                <span className="material-symbols-outlined !text-sm">
-                                    {accepted ? 'task_alt' : 'pending_actions'}
-                                </span>
+                                <Icon name={accepted ? 'task_alt' : 'pending_actions'} className="!text-sm" />
                                 {statusText}
                             </div>
                             
@@ -138,13 +137,13 @@ const QuoteView: React.FC = () => {
                     {/* Client Info Card */}
                     <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 print-shadow-none">
                         <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                            <span className="material-symbols-outlined text-slate-400">person</span>
+                            <Icon name="person" className="text-slate-400" />
                             <h3 className="text-sm font-bold text-slate-900">Información del Cliente</h3>
                         </div>
                         
                         <div className="flex items-center gap-4 mb-6">
                             <div className="size-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
-                                <span className="material-symbols-outlined">domain</span>
+                                <Icon name="domain" />
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-900">{quote.client_name}</h4>
@@ -154,11 +153,11 @@ const QuoteView: React.FC = () => {
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-3 text-sm text-slate-600">
-                                <span className="material-symbols-outlined text-indigo-500 !text-lg">mail</span>
+                                <Icon name="mail" className="text-indigo-500 !text-lg" />
                                 {quote.client_email}
                             </div>
                             <div className="flex items-center gap-3 text-sm text-slate-600">
-                                <span className="material-symbols-outlined text-indigo-500 !text-lg">location_on</span>
+                                <Icon name="location_on" className="text-indigo-500 !text-lg" />
                                 Ciudad de Panamá, Panamá
                             </div>
                         </div>
@@ -170,7 +169,7 @@ const QuoteView: React.FC = () => {
                             {(quote as any).tenants?.settings?.logo_url ? (
                                 <img src={(quote as any).tenants.settings.logo_url} alt="Logo" className="max-h-8 max-w-24 object-contain" />
                             ) : (
-                                <span className="material-symbols-outlined text-indigo-400">storefront</span>
+                                <Icon name="storefront" className="text-indigo-400" />
                             )}
                             <h3 className="text-sm font-bold text-slate-900">Prestador de Servicios</h3>
                         </div>
@@ -188,7 +187,7 @@ const QuoteView: React.FC = () => {
                     {/* Terms Card */}
                     <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 print-shadow-none">
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="material-symbols-outlined text-indigo-600">gavel</span>
+                            <Icon name="gavel" className="text-indigo-600" />
                             <h3 className="text-sm font-bold text-slate-900">Términos y Condiciones</h3>
                         </div>
                         
@@ -224,7 +223,7 @@ const QuoteView: React.FC = () => {
                                     className="w-full bg-white font-bold py-4 px-6 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                                     style={{ color: '#13202E' }}
                                 >
-                                    <span className="material-symbols-outlined !text-xl">edit_document</span>
+                                    <Icon name="edit_document" className="!text-xl" />
                                     Aceptar y Firmar
                                 </button>
                             )}
@@ -232,7 +231,7 @@ const QuoteView: React.FC = () => {
                                 onClick={() => window.print()}
                                 className="w-full bg-transparent border border-current font-bold py-4 px-6 rounded-xl transition-all hover:bg-white/10 flex items-center justify-center gap-2 cursor-pointer"
                             >
-                                <span className="material-symbols-outlined !text-xl">download</span>
+                                <Icon name="download" className="!text-xl" />
                                 Descargar PDF
                             </button>
                         </div>
@@ -261,7 +260,7 @@ const QuoteView: React.FC = () => {
                                             <td className="py-6 px-8">
                                                 <div className="flex items-center gap-4">
                                                     <div className="size-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center shrink-0">
-                                                        <span className="material-symbols-outlined !text-xl">widgets</span>
+                                                        <Icon name="widgets" className="!text-xl" />
                                                     </div>
                                                     <div>
                                                         <p className="font-bold text-slate-900">{item.description}</p>
@@ -306,7 +305,7 @@ const QuoteView: React.FC = () => {
                         <div className="absolute inset-0 flex items-center justify-center p-8">
                             <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 text-center max-w-sm shadow-xl">
                                 <div className="size-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                                    <span className="material-symbols-outlined">verified_user</span>
+                                    <Icon name="verified_user" />
                                 </div>
                                 <h4 className="font-bold text-slate-900 mb-2">Workspace de Confianza</h4>
                                 <p className="text-xs text-slate-600">Únete a cientos de empresas que escalan sus operaciones con BURÓ Panamá.</p>
@@ -322,7 +321,7 @@ const QuoteView: React.FC = () => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm no-print">
                     <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center animate-slide-up">
                         <div className="size-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                            <span className="material-symbols-outlined !text-4xl">check_circle</span>
+                            <Icon name="check_circle" className="!text-4xl" />
                         </div>
                         <h2 className="text-2xl font-black text-slate-900 mb-2">¡Propuesta Aceptada!</h2>
                         <p className="text-slate-500 mb-8">Gracias por confiar en BURÓ Panamá. Un representante se pondrá en contacto contigo pronto.</p>

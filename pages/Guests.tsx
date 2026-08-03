@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import { Guest } from '../types';
 import { toast } from 'react-hot-toast';
+import { Icon } from '../components/ui/Icon';
 
 const Guests: React.FC = () => {
     const [guests, setGuests] = useState<Guest[]>([]);
@@ -83,7 +84,7 @@ const Guests: React.FC = () => {
                 <div className="flex flex-col">
                     <div className="flex items-center gap-5 mb-4">
                         <div className="size-14 bg-[#6b6d00] text-white rounded-2xl flex items-center justify-center shadow-lg">
-                            <span className="material-symbols-outlined !text-3xl">fingerprint</span>
+                            <Icon name="fingerprint" className="!text-3xl" />
                         </div>
                         <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none">Accesos & Visitas</h1>
                     </div>
@@ -96,7 +97,7 @@ const Guests: React.FC = () => {
                     onClick={() => setIsModalOpen(true)}
                     className="flex items-center gap-4 px-10 py-4 bg-[var(--on-primary-fixed)] text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-700 font-jakarta shadow-2xl hover:scale-105 active:scale-95 whitespace-nowrap"
                 >
-                    <span className="material-symbols-outlined !text-xl">add</span>
+                    <Icon name="add" className="!text-xl" />
                     Programar
                 </button>
             </header>
@@ -120,7 +121,7 @@ const Guests: React.FC = () => {
 
                                 <div className="space-y-8">
                                     <div className="size-16 bg-[var(--surface-container-high)] rounded-2xl flex items-center justify-center text-[var(--on-primary-fixed)] group-hover:bg-[var(--primary-container)] transition-colors duration-500">
-                                        <span className="material-symbols-outlined !text-3xl">{guest.status === 'arrived' ? 'how_to_reg' : 'person'}</span>
+                                        <Icon name={guest.status === 'arrived' ? 'how_to_reg' : 'person'} className="!text-3xl" />
                                     </div>
 
                                     <div>
@@ -143,7 +144,7 @@ const Guests: React.FC = () => {
                         ))
                     ) : (
                         <div className="col-span-full py-32 bg-[var(--surface-container-low)] rounded-3xl flex flex-col items-center justify-center gap-8 border-2 border-dashed border-[var(--outline-variant)]/20 px-6 text-center">
-                            <span className="material-symbols-outlined !text-7xl opacity-10">fingerprint</span>
+                            <Icon name="fingerprint" className="!text-7xl opacity-10" />
                             <div className="space-y-4">
                                 <p className="label-md text-sm font-black text-[var(--on-primary-fixed)]">No se han registrado visitas</p>
                                 <p className="text-xs opacity-40 max-w-xs mx-auto">Su historial de invitados aparecerá aquí una vez que comience a programar sus reuniones.</p>
@@ -175,7 +176,7 @@ const Guests: React.FC = () => {
                                 onClick={() => setIsModalOpen(false)}
                                 className="size-14 rounded-xl bg-[var(--surface-container-low)] flex items-center justify-center text-stone-400 hover:bg-red-50 hover:text-red-500 transition-all border border-[var(--outline-variant)]/20"
                             >
-                                <span className="material-symbols-outlined">close</span>
+                                <Icon name="close" />
                             </button>
                         </header>
 
@@ -245,7 +246,7 @@ const Guests: React.FC = () => {
                                         <div className="size-6 border-4 border-[var(--on-primary-fixed)] border-t-transparent rounded-full animate-spin"></div>
                                     ) : (
                                         <>
-                                            <span className="material-symbols-outlined !text-xl">verified_user</span>
+                                            <Icon name="verified_user" className="!text-xl" />
                                             CONFIRMAR INVITACIÓN
                                         </>
                                     )}

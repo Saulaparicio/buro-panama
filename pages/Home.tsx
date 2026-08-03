@@ -4,6 +4,7 @@ import { supabase } from '../supabase';
 import { Member, Quote } from '../types';
 import { useTranslation } from 'react-i18next';
 import { useTenant } from '../contexts/TenantContext';
+import { Icon } from '../components/ui/Icon';
 
 const Home: React.FC = () => {
     const { t } = useTranslation();
@@ -65,7 +66,7 @@ const Home: React.FC = () => {
                     <div className="mt-8 flex flex-wrap gap-4 z-10">
                         <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-center gap-4 min-w-[200px]">
                             <div className="size-10 rounded-full bg-[var(--primary-fixed)] flex items-center justify-center text-[var(--on-primary-fixed)]">
-                                <span className="material-symbols-outlined !text-xl">verified</span>
+                                <Icon name="verified" className="!text-xl" />
                             </div>
                             <div>
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Plan Actual</p>
@@ -74,7 +75,7 @@ const Home: React.FC = () => {
                         </div>
                         <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-center gap-4 min-w-[200px]">
                             <div className="size-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
-                                <span className="material-symbols-outlined !text-xl">account_balance_wallet</span>
+                                <Icon name="account_balance_wallet" className="!text-xl" />
                             </div>
                             <div>
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Créditos</p>
@@ -91,7 +92,7 @@ const Home: React.FC = () => {
                     <p className="text-xs font-bold text-slate-400 mb-6 uppercase tracking-widest">Llave de Acceso</p>
                     <div className="bg-gradient-to-br from-[var(--primary)] to-[var(--on-primary-fixed)] p-4 rounded-2xl shadow-lg mb-6 hover:scale-105 transition-transform cursor-pointer group">
                         <div className="bg-white p-3 rounded-xl flex items-center justify-center group-hover:bg-slate-50 transition-colors">
-                            <span className="material-symbols-outlined !text-[80px] text-slate-800">qr_code_2</span>
+                            <Icon name="qr_code_2" className="!text-[80px] text-slate-800" />
                         </div>
                     </div>
                     <div className="space-y-1">
@@ -171,7 +172,7 @@ const Home: React.FC = () => {
                         <p className="text-[9px] font-bold text-amber-600 uppercase tracking-widest mb-1">Próximo Evento</p>
                         <p className="text-sm font-bold text-slate-800">Founder's Friday Mixer</p>
                         <div className="flex items-center gap-1 mt-1 text-xs text-slate-500 mb-3">
-                            <span className="material-symbols-outlined !text-sm">schedule</span>
+                            <Icon name="schedule" className="!text-sm" />
                             <span>Mañana, 5:00 PM</span>
                         </div>
                         <Link to="/events" className="w-full py-2 bg-white border border-amber-200 rounded-lg text-xs font-bold text-amber-700 hover:bg-amber-100 transition-colors block text-center">RSVP Ahora</Link>
@@ -203,16 +204,16 @@ const Home: React.FC = () => {
                             <div>
                                 <p className="text-sm font-bold text-slate-800 mb-1">Boardroom A - Creative Session</p>
                                 <p className="text-xs text-slate-500 flex items-center gap-2">
-                                    <span className="material-symbols-outlined !text-sm">schedule</span> 02:00 PM - 04:00 PM
+                                    <Icon name="schedule" className="!text-sm" /> 02:00 PM - 04:00 PM
                                     <span className="text-slate-300">•</span>
-                                    <span className="material-symbols-outlined !text-sm">groups</span> 6 Invitados
+                                    <Icon name="groups" className="!text-sm" /> 6 Invitados
                                 </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4 mt-4 sm:mt-0 justify-end">
                             <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Confirmado</span>
                             <button className="size-8 rounded-full flex items-center justify-center bg-white border border-slate-200 text-slate-400 group-hover:text-[var(--primary)] group-hover:border-[var(--primary-container)] transition-colors">
-                                <span className="material-symbols-outlined !text-lg">chevron_right</span>
+                                <Icon name="chevron_right" className="!text-lg" />
                             </button>
                         </div>
                     </div>
@@ -227,16 +228,16 @@ const Home: React.FC = () => {
                             <div>
                                 <p className="text-sm font-bold text-slate-800 mb-1">Hot Desk #104</p>
                                 <p className="text-xs text-slate-500 flex items-center gap-2">
-                                    <span className="material-symbols-outlined !text-sm">schedule</span> 09:00 AM - 06:00 PM
+                                    <Icon name="schedule" className="!text-sm" /> 09:00 AM - 06:00 PM
                                     <span className="text-slate-300">•</span>
-                                    <span className="material-symbols-outlined !text-sm">repeat</span> Pase Diario
+                                    <Icon name="repeat" className="!text-sm" /> Pase Diario
                                 </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4 mt-4 sm:mt-0 justify-end">
                             <span className="px-3 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Recurrente</span>
                             <button className="size-8 rounded-full flex items-center justify-center bg-white border border-slate-200 text-slate-400 group-hover:text-[var(--primary)] group-hover:border-[var(--primary-container)] transition-colors">
-                                <span className="material-symbols-outlined !text-lg">chevron_right</span>
+                                <Icon name="chevron_right" className="!text-lg" />
                             </button>
                         </div>
                     </div>
@@ -245,7 +246,7 @@ const Home: React.FC = () => {
                 <div className="mt-8 flex justify-center">
                     <Link to="/reservations" className="flex items-center gap-2 text-sm font-bold text-[var(--primary)] hover:text-indigo-800 transition-colors bg-[var(--primary-container)] px-6 py-2 rounded-full">
                         Ver Agenda Completa
-                        <span className="material-symbols-outlined !text-lg">arrow_forward</span>
+                        <Icon name="arrow_forward" className="!text-lg" />
                     </Link>
                 </div>
             </div>

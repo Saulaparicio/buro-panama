@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
+import { Icon } from '../../components/ui/Icon';
 
 const ManagePlans: React.FC = () => {
     const { t } = useTranslation();
@@ -150,7 +151,7 @@ const ManagePlans: React.FC = () => {
                 <div className="flex items-center gap-6">
                     <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
                         <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-                            <span className="material-symbols-outlined !text-lg">card_membership</span>
+                            <Icon name="card_membership" className="!text-lg" />
                             Planes
                         </div>
                     </div>
@@ -167,7 +168,7 @@ const ManagePlans: React.FC = () => {
                         onClick={() => handleOpenForm()}
                         className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3 shadow-lg shadow-slate-200 border-none cursor-pointer"
                     >
-                        <span className="material-symbols-outlined !text-lg">architecture</span>
+                        <Icon name="architecture" className="!text-lg" />
                         Nuevo Plan
                     </button>
                 </div>
@@ -179,7 +180,7 @@ const ManagePlans: React.FC = () => {
                         <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                         <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">workspace_premium</span>
+                            <Icon name="workspace_premium" className="!text-4xl text-slate-200 animate-pulse" />
                         </div>
                     </div>
                     <div className="text-center space-y-4">
@@ -259,7 +260,7 @@ const ManagePlans: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className="size-12 bg-white/10 backdrop-blur-lg rounded-xl flex items-center justify-center border border-white/10 text-white shadow-inner">
-                                            <span className="material-symbols-outlined !text-2xl">workspace_premium</span>
+                                            <Icon name="workspace_premium" className="!text-2xl" />
                                         </div>
                                     </header>
 
@@ -281,7 +282,7 @@ const ManagePlans: React.FC = () => {
                                         <ul className="space-y-3">
                                             {tier.features?.slice(0, 4).map((feat, i) => (
                                                 <li key={i} className={`flex items-center gap-3 text-[11px] font-bold ${cardStyle.text} opacity-80`}>
-                                                    <span className="material-symbols-outlined !text-base opacity-60">verified</span>
+                                                    <Icon name="verified" className="!text-base opacity-60" />
                                                     <span className="line-clamp-1">{feat}</span>
                                                 </li>
                                             ))}
@@ -294,13 +295,13 @@ const ManagePlans: React.FC = () => {
                                             className="flex-1 h-14 bg-[#11171D] text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-95 transition-all shadow-xl flex items-center justify-center gap-3"
                                         >
                                             Editar
-                                            <span className="material-symbols-outlined !text-xl">edit_note</span>
+                                            <Icon name="edit_note" className="!text-xl" />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(tier.id)}
                                             className={`size-14 ${isPremium ? 'bg-white/10' : 'bg-white/20'} text-white hover:bg-rose-500 hover:text-white rounded-2xl transition-all flex items-center justify-center backdrop-blur-md border border-white/10 shadow-lg`}
                                         >
-                                            <span className="material-symbols-outlined !text-2xl">delete</span>
+                                            <Icon name="delete" className="!text-2xl" />
                                         </button>
                                     </footer>
                                 </div>
@@ -313,7 +314,7 @@ const ManagePlans: React.FC = () => {
                         className="bg-white border-2 border-dashed border-slate-200 rounded-[3rem] hover:border-indigo-500 hover:bg-indigo-50/10 transition-all flex flex-col items-center justify-center gap-8 group min-h-[550px] shadow-sm"
                     >
                         <div className="size-20 bg-slate-50 text-slate-300 rounded-[2rem] flex items-center justify-center group-hover:scale-110 group-hover:text-indigo-500 group-hover:bg-white transition-all shadow-inner">
-                            <span className="material-symbols-outlined !text-4xl font-light">architecture</span>
+                            <Icon name="architecture" className="!text-4xl font-light" />
                         </div>
                         <div className="text-center space-y-2">
                             <p className="text-sm font-black uppercase tracking-[0.3em] text-slate-900 group-hover:text-indigo-600">Nuevo Plan</p>
@@ -338,7 +339,7 @@ const ManagePlans: React.FC = () => {
                                 onClick={handleCloseForm} 
                                 className="size-14 rounded-2xl bg-white/10 backdrop-blur-md text-white border border-white/10 hover:bg-white/20 transition-all flex items-center justify-center group"
                             >
-                                <span className="material-symbols-outlined !text-2xl font-light group-hover:rotate-90 transition-transform">close</span>
+                                <Icon name="close" className="!text-2xl font-light group-hover:rotate-90 transition-transform" />
                             </button>
                         </header>
 
@@ -413,7 +414,7 @@ const ManagePlans: React.FC = () => {
                                         <div className="flex items-center justify-between px-2">
                                             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-900">Features / Ventajas</p>
                                             <button type="button" onClick={handleAddFeature} disabled={!newFeature.trim()} className="size-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all disabled:opacity-30">
-                                                <span className="material-symbols-outlined !text-xl">add</span>
+                                                <Icon name="add" className="!text-xl" />
                                             </button>
                                         </div>
                                         <div className="neu-input-wrapper">
@@ -430,7 +431,7 @@ const ManagePlans: React.FC = () => {
                                                 <div key={i} className="bg-white/10 border border-white/10 pl-4 pr-1 py-1 rounded-full flex items-center gap-3 group/feat hover:bg-white/20 transition-all">
                                                     <span className="text-[9px] font-black uppercase tracking-widest text-white">{feat}</span>
                                                     <button type="button" onClick={() => removeFeature(i)} className="size-6 bg-rose-500/20 text-rose-200 rounded-full flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all">
-                                                        <span className="material-symbols-outlined !text-[10px]">close</span>
+                                                        <Icon name="close" className="!text-[10px]" />
                                                     </button>
                                                 </div>
                                             ))}
@@ -475,7 +476,7 @@ const ManagePlans: React.FC = () => {
                                     ) : (
                                         <>
                                             <span>{editingTier.id ? 'GUARDAR ESTRUCTURA' : 'COMPONER PLAN'}</span>
-                                            <span className="material-symbols-outlined !text-2xl group-hover:rotate-12 transition-transform">architecture</span>
+                                            <Icon name="architecture" className="!text-2xl group-hover:rotate-12 transition-transform" />
                                         </>
                                     )}
                                 </button>

@@ -4,6 +4,7 @@ import { MembershipTier } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
+import { Icon } from '../components/ui/Icon';
 
 const Plans: React.FC = () => {
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ const Plans: React.FC = () => {
         <div className="flex flex-col">
             <div className="flex items-center gap-5 mb-4">
                 <div className="size-14 bg-[#6b6d00] text-white rounded-2xl flex items-center justify-center shadow-lg">
-                    <span className="material-symbols-outlined !text-3xl">workspace_premium</span>
+                    <Icon name="workspace_premium" className="!text-3xl" />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none">Planes & Membresías</h1>
             </div>
@@ -168,7 +169,7 @@ const Plans: React.FC = () => {
                                     Tier 0{(idx + 1)}
                                 </span>
                                 {isCurrent && (
-                                    <span className="material-symbols-outlined !text-lg text-emerald-400 animate-pulse">verified</span>
+                                    <Icon name="verified" className="!text-lg text-emerald-400 animate-pulse" />
                                 )}
                             </div>
                             <h3 className={`text-3xl lg:text-4xl font-black tracking-tighter leading-tight ${cardStyle.text}`}>
@@ -176,7 +177,7 @@ const Plans: React.FC = () => {
                             </h3>
                         </div>
                         <div className="size-14 bg-white/10 backdrop-blur-lg rounded-xl flex items-center justify-center border border-white/10 text-white shadow-inner">
-                            <span className="material-symbols-outlined !text-2xl">workspace_premium</span>
+                            <Icon name="workspace_premium" className="!text-2xl" />
                         </div>
                     </header>
 
@@ -192,7 +193,7 @@ const Plans: React.FC = () => {
                         <div className={`h-px ${isPremium ? 'bg-white/10' : 'bg-black/10'}`}></div>
                         <div className="space-y-6">
                             <div className="flex items-center gap-4">
-                                <span className="material-symbols-outlined !text-xl opacity-40">token</span>
+                                <Icon name="token" className="!text-xl opacity-40" />
                                 <p className={`text-[10px] font-black uppercase tracking-widest ${cardStyle.text}`}>{tier.monthly_credits} Créditos Mensuales</p>
                             </div>
                             
@@ -233,7 +234,7 @@ const Plans: React.FC = () => {
             { icon: 'speed', title: 'Velocidad', desc: 'Infraestructura digital de latencia cero' }
           ].map((item, idx) => (
             <div key={idx} className="space-y-6 text-center md:text-left animate-fade" style={{ animationDelay: `${idx * 100}ms` }}>
-              <span className="material-symbols-outlined !text-4xl text-[var(--on-primary-fixed)] opacity-20">{item.icon}</span>
+              <Icon name={item.icon} className="!text-4xl text-[var(--on-primary-fixed)] opacity-20" />
               <div className="space-y-2">
                 <h4 className="title-md font-display uppercase tracking-tight text-[var(--on-primary-fixed)]">{item.title}</h4>
                 <p className="label-md text-[10px] opacity-40 uppercase tracking-widest font-light">{item.desc}</p>

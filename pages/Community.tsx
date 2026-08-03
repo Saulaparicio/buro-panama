@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import { Member, Post } from '../types';
 import { toast } from 'react-hot-toast';
+import { Icon } from '../components/ui/Icon';
 
 const Community: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'wall' | 'directory'>('wall');
@@ -147,7 +148,7 @@ const Community: React.FC = () => {
       <section className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[var(--outline-variant)]">
         <div className="flex items-center gap-4">
             <div className="size-10 bg-[var(--secondary)] text-[var(--primary-container)] rounded-lg flex items-center justify-center">
-                <span className="material-symbols-outlined !text-xl">hub</span>
+                <Icon name="hub" className="!text-xl" />
             </div>
             <div>
                 <p className="label-md !text-[9px] tracking-[0.3em] mb-0.5">Comunidad</p>
@@ -189,13 +190,13 @@ const Community: React.FC = () => {
                     <div className="mb-4 relative rounded-lg overflow-hidden border border-[var(--outline-variant)]">
                         <img src={imagePreview} className="w-full max-h-[300px] object-cover" alt="Preview" />
                         <button onClick={() => {setNewPostImage(null); setImagePreview(null);}} className="absolute top-2 right-2 size-8 bg-black/50 text-white rounded-full flex items-center justify-center backdrop-blur-md">
-                            <span className="material-symbols-outlined !text-sm">close</span>
+                            <Icon name="close" className="!text-sm" />
                         </button>
                     </div>
                 )}
                 <div className="flex items-center justify-between pt-4 border-t border-[var(--outline-variant)]/50">
                     <label className="flex items-center gap-2 text-[var(--on-surface-subtle)] hover:text-[var(--secondary)] cursor-pointer transition-colors">
-                        <span className="material-symbols-outlined !text-lg">image</span>
+                        <Icon name="image" className="!text-lg" />
                         <span className="text-[10px] font-bold uppercase tracking-wider">Imagen</span>
                         <input type="file" accept="image/*" onChange={(e) => {
                             if (e.target.files?.[0]) {
@@ -262,7 +263,7 @@ const Community: React.FC = () => {
           {/* Members filters */}
           <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[18px] opacity-30">search</span>
+                  <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-[18px] opacity-30" />
                   <input 
                     type="text" 
                     placeholder="Buscar miembros o empresas..."

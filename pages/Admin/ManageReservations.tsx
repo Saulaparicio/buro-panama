@@ -12,6 +12,7 @@ import confetti from 'canvas-confetti';
 import { sendReservationEmail } from '../../supabase';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
+import { Icon } from '../../components/ui/Icon';
 
 const ManageReservations: React.FC = () => {
     const { tenant } = useTenant();
@@ -265,7 +266,7 @@ const ManageReservations: React.FC = () => {
                 <div className="flex items-center gap-6">
                     <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
                         <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-                            <span className="material-symbols-outlined !text-lg">calendar_month</span>
+                            <Icon name="calendar_month" className="!text-lg" />
                             Reservas
                         </div>
                     </div>
@@ -275,13 +276,13 @@ const ManageReservations: React.FC = () => {
                             onClick={() => setViewMode('calendar')}
                             className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'calendar' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                         >
-                            <span className="material-symbols-outlined !text-sm">calendar_today</span>
+                            <Icon name="calendar_today" className="!text-sm" />
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
                             className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${viewMode === 'list' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                         >
-                            <span className="material-symbols-outlined !text-sm">list_alt</span>
+                            <Icon name="list_alt" className="!text-sm" />
                         </button>
                     </div>
 
@@ -295,7 +296,7 @@ const ManageReservations: React.FC = () => {
                         onClick={() => setIsBookingModalOpen(true)}
                         className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3 shadow-lg shadow-slate-200 border-none cursor-pointer"
                     >
-                        <span className="material-symbols-outlined !text-lg">add</span>
+                        <Icon name="add" className="!text-lg" />
                         Nueva Reserva
                     </button>
                 </div>
@@ -311,7 +312,7 @@ const ManageReservations: React.FC = () => {
                 ].map((stat, idx) => (
                     <div key={idx} className={`${stat.color === 'card-workspace' ? 'card-workspace' : `${stat.color} p-10 rounded-3xl shadow-xl`} group hover:-translate-y-1 transition-all duration-500 relative overflow-hidden`}>
                         <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
-                            <span className="material-symbols-outlined !text-8xl scale-125">{stat.icon}</span>
+                            <Icon name={stat.icon} className="!text-8xl scale-125" />
                         </div>
                         <p className={`text-[9px] font-black uppercase tracking-[0.4em] mb-4 relative z-10 ${stat.color === 'card-workspace' ? 'text-[var(--on-surface-subtle)]' : 'opacity-60'}`}>{stat.label}</p>
                         <p className="text-5xl font-black tracking-tighter relative z-10">{stat.value}</p>
@@ -327,7 +328,7 @@ const ManageReservations: React.FC = () => {
                     <div className="relative size-32">
                         <div className="absolute inset-0 border-t-2 border-[var(--primary)] rounded-full animate-spin-slow"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-4xl text-[var(--on-surface)]/10 animate-pulse">hourglass_empty</span>
+                            <Icon name="hourglass_empty" className="!text-4xl text-[var(--on-surface)]/10 animate-pulse" />
                         </div>
                     </div>
                     <p className="label-md animate-pulse">Sincronizando Disponibilidad...</p>
@@ -397,7 +398,7 @@ const ManageReservations: React.FC = () => {
                     <div className="px-12 py-12 border-b border-[var(--outline-variant)]/10 flex flex-col md:flex-row md:items-center justify-between gap-8">
                         <div className="flex items-center gap-8">
                             <div className="size-20 rounded-2xl bg-[var(--secondary)] flex items-center justify-center text-[var(--primary)] shadow-xl transform hover:rotate-6 transition-transform">
-                                <span className="material-symbols-outlined !text-4xl font-light">inventory_2</span>
+                                <Icon name="inventory_2" className="!text-4xl font-light" />
                             </div>
                             <div className="space-y-1">
                                 <h2 className="text-3xl font-black text-[var(--on-surface)] tracking-tighter uppercase leading-none">Bitácora de <br/><span className="font-light opacity-40">Operaciones</span></h2>
@@ -463,7 +464,7 @@ const ManageReservations: React.FC = () => {
                                                         {startTime.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }).toUpperCase()}
                                                     </p>
                                                     <p className="text-[10px] font-black text-[var(--primary)] uppercase tracking-widest flex items-center gap-2">
-                                                        <span className="material-symbols-outlined !text-xs font-light">schedule</span>
+                                                        <Icon name="schedule" className="!text-xs font-light" />
                                                         {startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} — {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </p>
                                                 </div>
@@ -551,7 +552,7 @@ const ManageReservations: React.FC = () => {
                                 <div className="grid grid-cols-3 gap-4">
                                     {/* Capacidad */}
                                     <div className="bg-[var(--surface)] border border-[var(--outline-variant)]/30 p-4 rounded-xl flex items-center gap-3">
-                                        <span className="material-symbols-outlined text-[var(--primary)]">groups</span>
+                                        <Icon name="groups" className="text-[var(--primary)]" />
                                         <div>
                                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Capacidad</p>
                                             <p className="text-xs font-black text-slate-800 uppercase tracking-tight">{selectedSpace?.capacity || 12} Personas</p>
@@ -559,7 +560,7 @@ const ManageReservations: React.FC = () => {
                                     </div>
                                     {/* Precio */}
                                     <div className="bg-[var(--surface)] border border-[var(--outline-variant)]/30 p-4 rounded-xl flex items-center gap-3">
-                                        <span className="material-symbols-outlined text-[var(--secondary)]">payments</span>
+                                        <Icon name="payments" className="text-[var(--secondary)]" />
                                         <div>
                                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Precio</p>
                                             <p className="text-xs font-black text-slate-800 uppercase tracking-tight">${hourlyRate}/hr</p>
@@ -567,7 +568,7 @@ const ManageReservations: React.FC = () => {
                                     </div>
                                     {/* Ubicación */}
                                     <div className="bg-[var(--surface)] border border-[var(--outline-variant)]/30 p-4 rounded-xl flex items-center gap-3">
-                                        <span className="material-symbols-outlined text-emerald-600">location_on</span>
+                                        <Icon name="location_on" className="text-emerald-600" />
                                         <div>
                                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Ubicación</p>
                                             <p className="text-xs font-black text-slate-800 uppercase tracking-tight">Piso 4, Ala Norte</p>
@@ -578,7 +579,7 @@ const ManageReservations: React.FC = () => {
                                 {/* Features & Amenities */}
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-[var(--primary)] !text-lg">verified</span>
+                                        <Icon name="verified" className="text-[var(--primary)] !text-lg" />
                                         <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Características & Amenidades</h3>
                                     </div>
                                     <div className="grid grid-cols-3 gap-3">
@@ -591,7 +592,7 @@ const ManageReservations: React.FC = () => {
                                             { name: 'Audio System', icon: 'volume_up' }
                                         ].map((amenity, i) => (
                                             <div key={i} className="bg-[var(--surface)]/40 border border-[var(--outline-variant)]/10 p-3 rounded-xl flex flex-col gap-1 items-start text-left">
-                                                <span className="material-symbols-outlined text-[var(--primary)] !text-base">{amenity.icon}</span>
+                                                <Icon name={amenity.icon} className="text-[var(--primary)] !text-base" />
                                                 <span className="text-[9px] font-bold text-slate-700 tracking-tight">{amenity.name}</span>
                                             </div>
                                         ))}
@@ -613,7 +614,7 @@ const ManageReservations: React.FC = () => {
                                         onClick={() => setIsBookingModalOpen(false)} 
                                         className="size-8 bg-slate-200/60 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors border-none cursor-pointer text-slate-600"
                                     >
-                                        <span className="material-symbols-outlined !text-lg">close</span>
+                                        <Icon name="close" className="!text-lg" />
                                     </button>
                                 </div>
 
@@ -662,7 +663,7 @@ const ManageReservations: React.FC = () => {
                                                     required 
                                                     className="w-full border border-[var(--outline-variant)] rounded-xl p-3 text-xs bg-white font-bold uppercase tracking-wider" 
                                                 />
-                                                <span className="material-symbols-outlined absolute right-3 top-3.5 text-slate-400 pointer-events-none">calendar_today</span>
+                                                <Icon name="calendar_today" className="absolute right-3 top-3.5 text-slate-400 pointer-events-none" />
                                             </div>
                                         </div>
 
@@ -738,7 +739,7 @@ const ManageReservations: React.FC = () => {
                                                 onClick={() => setIsBookingModalOpen(false)}
                                                 className="w-full py-3.5 bg-slate-200/50 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-colors border-none cursor-pointer"
                                             >
-                                                <span className="material-symbols-outlined !text-base">shopping_cart</span>
+                                                <Icon name="shopping_cart" className="!text-base" />
                                                 Añadir al Carrito
                                             </button>
                                         </div>
@@ -788,12 +789,12 @@ const ManageReservations: React.FC = () => {
                                     <div>
                                         <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">{space?.name || 'Espacio'}</h2>
                                         <p className="text-[12px] font-bold text-slate-400 flex items-center gap-1 uppercase tracking-wider mt-1">
-                                            <span className="material-symbols-outlined text-[16px]">qr_code</span>
+                                            <Icon name="qr_code" className="text-[16px]" />
                                             REF: {selectedReservation.reference_code}
                                         </p>
                                     </div>
                                     <button onClick={() => setIsDetailModalOpen(false)} className="size-8 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors border-none cursor-pointer text-slate-600">
-                                        <span className="material-symbols-outlined !text-lg">close</span>
+                                        <Icon name="close" className="!text-lg" />
                                     </button>
                                 </div>
                                 

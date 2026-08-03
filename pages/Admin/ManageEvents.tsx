@@ -4,6 +4,7 @@ import { useTenant } from '../../contexts/TenantContext';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 import { supabase, sendRsvpEmail } from '../../supabase';
+import { Icon } from '../../components/ui/Icon';
 
 const ManageEvents: React.FC = () => {
     const { tenant } = useTenant();
@@ -217,7 +218,7 @@ const ManageEvents: React.FC = () => {
                 <div className="flex items-center gap-6">
                     <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
                         <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-                            <span className="material-symbols-outlined !text-lg">event_available</span>
+                            <Icon name="event_available" className="!text-lg" />
                             Eventos
                         </div>
                     </div>
@@ -234,7 +235,7 @@ const ManageEvents: React.FC = () => {
                         onClick={() => { setEditingEvent({ title: '', description: '', event_date: '', location: '', is_active: true } as CommunityEvent); setIsModalOpen(true); }}
                         className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3 shadow-lg shadow-slate-200 border-none cursor-pointer"
                     >
-                        <span className="material-symbols-outlined !text-lg">add</span>
+                        <Icon name="add" className="!text-lg" />
                         Nuevo Evento
                     </button>
                 </div>
@@ -246,7 +247,7 @@ const ManageEvents: React.FC = () => {
                         <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                         <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">event_note</span>
+                            <Icon name="event_note" className="!text-4xl text-slate-200 animate-pulse" />
                         </div>
                     </div>
                     <div className="text-center space-y-4">
@@ -290,7 +291,7 @@ const ManageEvents: React.FC = () => {
                                             <span className="text-[10px] font-bold text-slate-900">
                                                 {event.rsvps_count || 0} / {event.capacity || '∞'}
                                             </span>
-                                            <span className="material-symbols-outlined !text-sm text-indigo-600">group</span>
+                                            <Icon name="group" className="!text-sm text-indigo-600" />
                                         </div>
                                     </div>
                                     <h3 className="text-2xl font-bold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">
@@ -300,7 +301,7 @@ const ManageEvents: React.FC = () => {
 
                                 <div className="flex items-center justify-between pt-6 border-t border-slate-50">
                                     <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                                        <span className="material-symbols-outlined !text-lg text-indigo-500">location_on</span>
+                                        <Icon name="location_on" className="!text-lg text-indigo-500" />
                                         {event.location}
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -309,14 +310,14 @@ const ManageEvents: React.FC = () => {
                                             className="size-10 rounded-xl flex items-center justify-center bg-slate-50 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all"
                                             title="Ver asistentes"
                                         >
-                                            <span className="material-symbols-outlined !text-xl">group</span>
+                                            <Icon name="group" className="!text-xl" />
                                         </button>
                                         <button
                                             onClick={(e) => { e.stopPropagation(); handleDelete(event.id); }}
                                             className="size-10 rounded-xl flex items-center justify-center bg-slate-50 text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all"
                                             title="Eliminar evento"
                                         >
-                                            <span className="material-symbols-outlined !text-xl">delete</span>
+                                            <Icon name="delete" className="!text-xl" />
                                         </button>
                                     </div>
                                 </div>
@@ -330,7 +331,7 @@ const ManageEvents: React.FC = () => {
                         className="bg-white border-2 border-dashed border-slate-100 rounded-[2.5rem] hover:border-indigo-500/50 hover:bg-indigo-50/10 transition-all flex flex-col items-center justify-center gap-6 group min-h-[500px]"
                     >
                         <div className="size-16 bg-slate-50 text-slate-300 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:text-indigo-500 group-hover:bg-indigo-50 transition-all">
-                            <span className="material-symbols-outlined !text-3xl">add</span>
+                            <Icon name="add" className="!text-3xl" />
                         </div>
                         <div className="text-center">
                             <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600">Nuevo Evento</p>
@@ -355,7 +356,7 @@ const ManageEvents: React.FC = () => {
                                 onClick={() => setIsModalOpen(false)} 
                                 className="size-16 rounded-2xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--on-surface)] hover:shadow-[var(--neu-pressed-sm)] transition-all flex items-center justify-center group"
                             >
-                                <span className="material-symbols-outlined !text-3xl font-light group-hover:rotate-90 transition-transform">close</span>
+                                <Icon name="close" className="!text-3xl font-light group-hover:rotate-90 transition-transform" />
                             </button>
                         </header>
 
@@ -444,7 +445,7 @@ const ManageEvents: React.FC = () => {
                                                 </>
                                             ) : (
                                                 <div className="text-center space-y-4 opacity-20 group-hover/img:opacity-100 transition-all text-[var(--on-surface)]">
-                                                    <span className="material-symbols-outlined !text-6xl font-thin">photo_camera</span>
+                                                    <Icon name="photo_camera" className="!text-6xl font-thin" />
                                                     <p className="label-md">Inyectar Material</p>
                                                 </div>
                                             )}
@@ -494,7 +495,7 @@ const ManageEvents: React.FC = () => {
                                     ) : (
                                         <>
                                             <span>{editingEvent?.id ? 'ACTUALIZAR EVENTO' : 'PUBLICAR EXPERIENCIA'}</span>
-                                            <span className="material-symbols-outlined !text-2xl group-hover:translate-x-2 transition-transform">send</span>
+                                            <Icon name="send" className="!text-2xl group-hover:translate-x-2 transition-transform" />
                                         </>
                                     )}
                                 </button>
@@ -522,7 +523,7 @@ const ManageEvents: React.FC = () => {
                                 onClick={() => setIsAttendeesModalOpen(false)}
                                 className="size-14 rounded-2xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--on-surface)] hover:shadow-[var(--neu-pressed-sm)] transition-all flex items-center justify-center group"
                             >
-                                <span className="material-symbols-outlined !text-2xl font-light group-hover:rotate-90 transition-transform">close</span>
+                                <Icon name="close" className="!text-2xl font-light group-hover:rotate-90 transition-transform" />
                             </button>
                         </header>
 
@@ -562,14 +563,14 @@ const ManageEvents: React.FC = () => {
                                                 className="size-12 rounded-xl bg-white border border-slate-100 text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white transition-all flex items-center justify-center group/btn shadow-sm"
                                                 title="Reenviar Confirmación"
                                             >
-                                                <span className="material-symbols-outlined !text-xl group-hover/btn:rotate-12 transition-transform">mail</span>
+                                                <Icon name="mail" className="!text-xl group-hover/btn:rotate-12 transition-transform" />
                                             </button>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
                                 <div className="py-32 text-center rounded-[3rem] border-2 border-dashed border-slate-100 space-y-6">
-                                    <span className="material-symbols-outlined !text-6xl text-slate-200">group_off</span>
+                                    <Icon name="group_off" className="!text-6xl text-slate-200" />
                                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Cero Asistentes Registrados</p>
                                 </div>
                             )}

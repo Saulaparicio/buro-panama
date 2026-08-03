@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Icon } from '../components/ui/Icon';
 
 const CheckIn: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(180); // 3 minutes
@@ -27,7 +28,7 @@ const CheckIn: React.FC = () => {
           to="/"
           className="size-12 rounded-2xl bg-[var(--surface-container-low)] flex items-center justify-center text-[var(--on-primary-fixed)] hover:bg-[var(--on-primary-fixed)] hover:text-white transition-all duration-500 border border-[var(--outline-variant)]/10"
         >
-          <span className="material-symbols-outlined !text-xl">arrow_back</span>
+          <Icon name="arrow_back" className="!text-xl" />
         </Link>
         <div className="bg-[var(--on-primary-fixed)] px-6 py-2.5 flex items-center justify-center rounded-xl shadow-xl">
           <span className="text-[10px] font-black tracking-[0.5em] text-[var(--primary)] uppercase">BURÓ</span>
@@ -85,7 +86,7 @@ const CheckIn: React.FC = () => {
           onClick={() => setTimeLeft(180)}
           className="flex items-center gap-4 px-10 md:px-14 py-5 md:py-6 bg-[var(--on-primary-fixed)] text-[var(--primary)] rounded-2xl label-md text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] hover:scale-105 transition-all duration-700 shadow-2xl active:scale-95"
         >
-          <span className="material-symbols-outlined !text-xl">refresh</span>
+          <Icon name="refresh" className="!text-xl" />
           Renovar Protocolo
         </button>
       </main>

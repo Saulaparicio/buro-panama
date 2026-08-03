@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
+import { Icon } from '../components/ui/Icon';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -131,13 +132,13 @@ const Login: React.FC = () => {
             <form onSubmit={isResetMode ? handleResetPassword : handleLogin} className="space-y-8">
               {error && (
                 <div className="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3 border border-red-100">
-                  <span className="material-symbols-outlined text-lg">error</span>
+                  <Icon name="error" className="text-lg" />
                   <span className="flex-1">{error}</span>
                 </div>
               )}
               {message && (
                 <div className="p-4 bg-green-50 text-green-600 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-3 border border-green-100">
-                  <span className="material-symbols-outlined text-lg">check_circle</span>
+                  <Icon name="check_circle" className="text-lg" />
                   <span className="flex-1">{message}</span>
                 </div>
               )}
@@ -173,7 +174,7 @@ const Login: React.FC = () => {
                       </button>
                     </div>
                     <div className="relative flex items-center border border-slate-200 rounded-xl px-4 bg-slate-50 focus-within:bg-white focus-within:border-indigo-500 transition-all">
-                      <span className="material-symbols-outlined text-slate-400 text-base mr-2 select-none">fingerprint</span>
+                      <Icon name="fingerprint" className="text-slate-400 text-base mr-2 select-none" />
                       <input 
                         type={showPassword ? "text" : "password"}
                         required
@@ -187,7 +188,7 @@ const Login: React.FC = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         className="text-slate-400 hover:text-slate-600 transition-colors bg-transparent border-none cursor-pointer flex items-center"
                       >
-                        <span className="material-symbols-outlined !text-base">{showPassword ? "visibility_off" : "visibility"}</span>
+                        <Icon name={showPassword ? "visibility_off" : "visibility"} className="!text-base" />
                       </button>
                     </div>
                   </div>
@@ -205,7 +206,7 @@ const Login: React.FC = () => {
                 ) : (
                   <>
                     {isResetMode ? 'Enviar Enlace' : 'Autenticar Acceso'}
-                    <span className="material-symbols-outlined !text-base">{isResetMode ? 'send' : 'verified_user'}</span>
+                    <Icon name={isResetMode ? 'send' : 'verified_user'} className="!text-base" />
                   </>
                 )}
               </button>

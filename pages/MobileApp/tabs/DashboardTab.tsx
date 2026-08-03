@@ -3,6 +3,7 @@ import { TabValue } from '../components/BottomNav';
 import { supabase } from '../../../supabase';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { Icon } from '../../../components/ui/Icon';
 
 export const DashboardTab: React.FC<{ profile: any; onNavigate: (tab: TabValue) => void }> = ({ profile, onNavigate }) => {
   const firstName = profile?.name?.split(' ')[0] || 'Miembro';
@@ -106,7 +107,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (tab: TabValue) 
         onClick={() => onNavigate('access')}
         className="w-full bg-[#FDE910] text-black font-semibold text-sm rounded-xl py-4 shadow-sm flex items-center justify-center gap-3 transition-all active:scale-95 border-none"
       >
-        <span className="material-symbols-outlined !text-xl">qr_code_scanner</span>
+        <Icon name="qr_code_scanner" className="!text-xl" />
         ABRIR PUERTA CON QR
       </button>
 
@@ -122,9 +123,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (tab: TabValue) 
           <div className="bg-white border border-gray-100 p-5 rounded-[20px] shadow-sm space-y-4">
             <div className="flex gap-4">
               <div className="size-12 bg-[#F9F9FB] rounded-xl flex items-center justify-center shrink-0 border border-gray-100">
-                <span className="material-symbols-outlined text-[#111111] !text-2xl">
-                  {nextReservation.space?.type === 'office' ? 'door_front' : nextReservation.space?.type === 'meeting' ? 'meeting_room' : 'desk'}
-                </span>
+                <Icon name={nextReservation.space?.type === 'office' ? 'door_front' : nextReservation.space?.type === 'meeting' ? 'meeting_room' : 'desk'} className="text-[#111111] !text-2xl" />
               </div>
               <div>
                 <h3 className="text-sm font-black uppercase text-[#111111]">
@@ -142,7 +141,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (tab: TabValue) 
           </div>
         ) : (
           <div className="bg-[#F9F9FB] border border-gray-100 border-dashed p-6 rounded-[20px] text-center">
-            <span className="material-symbols-outlined text-gray-300 !text-4xl mb-2">event_busy</span>
+            <Icon name="event_busy" className="text-gray-300 !text-4xl mb-2" />
             <p className="text-sm font-bold text-gray-500">No tienes reservas próximas</p>
             <button 
               onClick={() => onNavigate('reservations')}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../supabase';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { Icon } from '../../../components/ui/Icon';
 
 export const CommunityTab: React.FC<{ profile: any }> = ({ profile }) => {
   const [events, setEvents] = useState<any[]>([]);
@@ -64,7 +65,7 @@ export const CommunityTab: React.FC<{ profile: any }> = ({ profile }) => {
           <div className="bg-gray-100 rounded-[24px] p-6 h-[200px] animate-pulse"></div>
         ) : events.length === 0 ? (
           <div className="bg-white border border-gray-100 rounded-[24px] p-6 text-center shadow-sm">
-            <span className="material-symbols-outlined text-gray-300 !text-4xl mb-2">event_busy</span>
+            <Icon name="event_busy" className="text-gray-300 !text-4xl mb-2" />
             <p className="text-sm font-bold text-gray-500">No hay eventos próximos</p>
           </div>
         ) : (
@@ -75,7 +76,7 @@ export const CommunityTab: React.FC<{ profile: any }> = ({ profile }) => {
                 className={`w-full min-w-[280px] shrink-0 snap-center rounded-[24px] p-6 relative overflow-hidden shadow-sm ${idx % 2 === 0 ? 'bg-[#FDE910] text-[#111111]' : 'bg-[#111111] text-white'}`}
               >
                 <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <span className="material-symbols-outlined !text-6xl">campaign</span>
+                  <Icon name="campaign" className="!text-6xl" />
                 </div>
                 <p className={`text-[10px] font-black uppercase tracking-widest mb-2 ${idx % 2 === 0 ? 'text-[#111111]/50' : 'text-white/50'}`}>
                   {format(parseISO(event.event_date), "EEEE d 'de' MMMM, h:mm a", { locale: es })}
@@ -100,7 +101,7 @@ export const CommunityTab: React.FC<{ profile: any }> = ({ profile }) => {
         </div>
         <div className="bg-white border border-gray-100 rounded-[24px] shadow-sm p-4 space-y-4">
           <div className="relative">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+            <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input 
               type="text" 
               value={search}

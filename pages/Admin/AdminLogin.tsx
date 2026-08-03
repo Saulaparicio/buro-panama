@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabase';
+import { Icon } from '../../components/ui/Icon';
 
 interface AdminLoginProps {
   onLoginSuccess: (role: 'admin' | 'staff') => void;
@@ -100,7 +101,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
             to="/" 
             className="text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-wider flex items-center gap-2"
           >
-            <span className="material-symbols-outlined text-sm">arrow_back</span>
+            <Icon name="arrow_back" className="text-sm" />
             Volver al inicio
           </Link>
         </div>
@@ -120,7 +121,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
           <form onSubmit={handleLogin} className="space-y-6">
             {error && (
               <div className="p-4 bg-rose-50 text-rose-600 rounded-xl text-xs font-semibold flex items-center gap-3 border border-rose-100 animate-fade">
-                <span className="material-symbols-outlined text-lg">error</span>
+                <Icon name="error" className="text-lg" />
                 <span className="flex-1">{error}</span>
               </div>
             )}
@@ -132,7 +133,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                   Correo Electrónico
                 </label>
                 <div className="relative flex items-center border border-slate-200 rounded-xl px-4 bg-white focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-100 transition-all shadow-sm">
-                  <span className="material-symbols-outlined text-slate-400 text-lg mr-2 select-none">mail</span>
+                  <Icon name="mail" className="text-slate-400 text-lg mr-2 select-none" />
                   <input 
                     type="email" 
                     required
@@ -158,7 +159,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                   </Link>
                 </div>
                 <div className="relative flex items-center border border-slate-200 rounded-xl px-4 bg-white focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-100 transition-all shadow-sm">
-                  <span className="material-symbols-outlined text-slate-400 text-lg mr-2 select-none">key</span>
+                  <Icon name="key" className="text-slate-400 text-lg mr-2 select-none" />
                   <input 
                     type={showPassword ? "text" : "password"}
                     required
@@ -172,7 +173,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="text-slate-400 hover:text-slate-600 transition-colors bg-transparent border-none cursor-pointer flex items-center ml-2"
                   >
-                    <span className="material-symbols-outlined text-lg">{showPassword ? "visibility_off" : "visibility"}</span>
+                    <Icon name={showPassword ? "visibility_off" : "visibility"} className="text-lg" />
                   </button>
                 </div>
               </div>
@@ -189,7 +190,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
               ) : (
                 <>
                   Verificar Identidad
-                  <span className="material-symbols-outlined text-sm">shield</span>
+                  <Icon name="shield" className="text-sm" />
                 </>
               )}
             </button>
@@ -203,14 +204,14 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 to="/login"
                 className="flex-1 py-3.5 border border-slate-200 hover:border-slate-300 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 bg-white hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
               >
-                <span className="material-symbols-outlined text-base">person</span>
+                <Icon name="person" className="text-base" />
                 Portal Miembros
               </Link>
               <Link 
                 to="/registro"
                 className="flex-1 py-3.5 border border-slate-200 hover:border-slate-300 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 bg-white hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
               >
-                <span className="material-symbols-outlined text-base">workspace_premium</span>
+                <Icon name="workspace_premium" className="text-base" />
                 Iniciar Afiliación
               </Link>
             </div>
@@ -221,7 +222,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
         <div className="flex justify-between items-center text-xs text-slate-400 font-semibold pt-8">
           <span>¿Ya tienes cuenta? <Link to="/login" className="text-indigo-600 hover:underline">Inicia sesión</Link></span>
           <a href="#" className="hover:text-indigo-600 transition-colors flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-sm">help_outline</span>
+            <Icon name="help_outline" className="text-sm" />
             Ayuda
           </a>
         </div>

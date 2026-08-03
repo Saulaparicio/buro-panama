@@ -3,6 +3,7 @@ import { CommunityEvent } from '../types';
 import { useTenant } from '../contexts/TenantContext';
 import { toast } from 'react-hot-toast';
 import { supabase, sendRsvpEmail } from '../supabase';
+import { Icon } from '../components/ui/Icon';
 
 const Events: React.FC = () => {
     const { tenant } = useTenant();
@@ -111,7 +112,7 @@ const Events: React.FC = () => {
                 <div className="flex flex-col">
                     <div className="flex items-center gap-5 mb-4">
                         <div className="size-14 bg-[#6b6d00] text-white rounded-2xl flex items-center justify-center shadow-lg">
-                            <span className="material-symbols-outlined !text-3xl">event</span>
+                            <Icon name="event" className="!text-3xl" />
                         </div>
                         <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase leading-none">Eventos & Agenda</h1>
                     </div>

@@ -6,6 +6,7 @@ import { es } from 'date-fns/locale';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useTenant } from '../contexts/TenantContext';
+import { Icon } from '../components/ui/Icon';
 
 type UserRole = 'admin' | 'member' | 'staff';
 
@@ -201,7 +202,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
         <div className="flex flex-col">
             <div className="flex items-center gap-5 mb-4">
                 <div className="size-12 bg-[#6b6d00] text-white rounded-xl flex items-center justify-center shadow-md">
-                    <span className="material-symbols-outlined !text-2xl">calendar_month</span>
+                    <Icon name="calendar_month" className="!text-2xl" />
                 </div>
                 <h1 className="text-xl md:text-2xl font-black tracking-tight uppercase leading-none">Reservas & Agenda</h1>
             </div>
@@ -215,7 +216,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
                 onClick={() => navigate('/home')}
                 className="w-full md:w-auto px-8 py-3.5 bg-[var(--on-primary-fixed)] text-[var(--primary)] rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:scale-105 transition-all duration-500 flex items-center justify-center gap-2"
             >
-                <span className="material-symbols-outlined !text-sm">add</span>
+                <Icon name="add" className="!text-sm" />
                 Nueva Reserva
             </button>
             
@@ -224,13 +225,13 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
                     onClick={() => setView('calendar')}
                     className={`px-6 py-2 rounded-lg transition-all duration-500 flex items-center justify-center ${view === 'calendar' ? 'bg-white text-[var(--on-primary-fixed)] shadow-md' : 'text-[var(--on-primary-fixed)]/30 hover:text-[var(--on-primary-fixed)]'}`}
                 >
-                    <span className="material-symbols-outlined !text-xl">calendar_view_month</span>
+                    <Icon name="calendar_view_month" className="!text-xl" />
                 </button>
                 <button 
                     onClick={() => setView('list')}
                     className={`px-6 py-2 rounded-lg transition-all duration-500 flex items-center justify-center ${view === 'list' ? 'bg-white text-[var(--on-primary-fixed)] shadow-md' : 'text-[var(--on-primary-fixed)]/30 hover:text-[var(--on-primary-fixed)]'}`}
                 >
-                    <span className="material-symbols-outlined !text-xl">view_list</span>
+                    <Icon name="view_list" className="!text-xl" />
                 </button>
             </div>
         </div>
@@ -244,7 +245,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
                 onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
                 className="size-12 rounded-xl border border-[var(--outline-variant)]/30 flex items-center justify-center hover:bg-[var(--on-primary-fixed)] hover:text-white transition-all duration-500"
               >
-                <span className="material-symbols-outlined !text-xl">chevron_left</span>
+                <Icon name="chevron_left" className="!text-xl" />
               </button>
               <h2 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-[var(--on-primary-fixed)] min-w-[180px] text-center">
                 {format(currentMonth, 'MMMM yyyy', { locale: es })}
@@ -253,7 +254,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
                 onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
                 className="size-12 rounded-xl border border-[var(--outline-variant)]/30 flex items-center justify-center hover:bg-[var(--on-primary-fixed)] hover:text-white transition-all duration-500"
               >
-                <span className="material-symbols-outlined !text-xl">chevron_right</span>
+                <Icon name="chevron_right" className="!text-xl" />
               </button>
           </div>
 
@@ -288,7 +289,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
               <div className="space-y-6">
                 {filteredReservations.length === 0 ? (
                   <div className="py-40 text-center space-y-6 opacity-20 card-workspace">
-                    <span className="material-symbols-outlined !text-7xl">event_busy</span>
+                    <Icon name="event_busy" className="!text-7xl" />
                     <p className="label-md tracking-[0.5em] uppercase font-black">Sin registros en este periodo</p>
                   </div>
                 ) : (
@@ -312,7 +313,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
                             </span>
                           </div>
                           <p className="label-md text-[10px] opacity-40 uppercase tracking-widest flex items-center gap-2">
-                             <span className="material-symbols-outlined !text-base">schedule</span>
+                             <Icon name="schedule" className="!text-base" />
                              {res.start_time} — {res.end_time}
                           </p>
                         </div>
@@ -331,7 +332,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
                             className="size-14 rounded-xl border border-red-200 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all duration-500"
                             title="Anular Reserva"
                           >
-                            <span className="material-symbols-outlined !text-xl">close</span>
+                            <Icon name="close" className="!text-xl" />
                           </button>
                         )}
                       </div>

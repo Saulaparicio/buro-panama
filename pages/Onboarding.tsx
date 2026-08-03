@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { toast } from 'react-hot-toast';
+import { Icon } from '../components/ui/Icon';
 
 const Onboarding: React.FC = () => {
   const navigate = useNavigate();
@@ -183,12 +184,12 @@ const Onboarding: React.FC = () => {
                 {formData.avatarUrl ? (
                   <img src={formData.avatarUrl} alt="Avatar Preview" className="w-full h-full object-cover rounded-full" />
                 ) : (
-                  <span className="material-symbols-outlined !text-3xl text-slate-400 group-hover:scale-110 transition-transform">add_a_photo</span>
+                  <Icon name="add_a_photo" className="!text-3xl text-slate-400 group-hover:scale-110 transition-transform" />
                 )}
                 
                 {/* Pencil indicator icon */}
                 <div className="absolute bottom-1 right-1 size-7 bg-indigo-600 text-white rounded-full flex items-center justify-center border-2 border-white shadow-md">
-                  <span className="material-symbols-outlined !text-sm">edit</span>
+                  <Icon name="edit" className="!text-sm" />
                 </div>
               </div>
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Sube tu logo o foto de perfil</span>
@@ -229,7 +230,7 @@ const Onboarding: React.FC = () => {
                     <option value="Marketing">Marketing & Creatividad</option>
                     <option value="Other">Otro Sector</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                  <Icon name="expand_more" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 </div>
               </div>
             </div>
@@ -275,7 +276,7 @@ const Onboarding: React.FC = () => {
               onClick={() => navigate('/login')}
               className="flex items-center gap-1.5 text-slate-400 hover:text-slate-600 transition-colors bg-transparent border-none cursor-pointer text-xs font-bold uppercase tracking-wider"
             >
-              <span className="material-symbols-outlined !text-base">arrow_back</span> Atrás
+              <Icon name="arrow_back" className="!text-base" /> Atrás
             </button>
             <span className="text-[8px] text-slate-300 font-bold uppercase tracking-widest">
               © 2026 BURÓ COWORKING

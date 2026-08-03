@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
+import { Icon } from '../../components/ui/Icon';
 
 
 const ManageBenefits: React.FC = () => {
@@ -127,7 +128,7 @@ const ManageBenefits: React.FC = () => {
                 <div className="flex items-center gap-6">
                     <div className="flex bg-white p-1.5 rounded-xl border border-slate-100 shadow-sm">
                         <div className="px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest bg-slate-900 text-white shadow-lg flex items-center gap-2">
-                            <span className="material-symbols-outlined !text-lg">loyalty</span>
+                            <Icon name="loyalty" className="!text-lg" />
                             Beneficios
                         </div>
                     </div>
@@ -144,7 +145,7 @@ const ManageBenefits: React.FC = () => {
                         onClick={() => { setEditingBenefit({}); setIsModalOpen(true); }}
                         className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all flex items-center gap-3 shadow-lg shadow-slate-200 border-none cursor-pointer"
                     >
-                        <span className="material-symbols-outlined !text-lg">add</span>
+                        <Icon name="add" className="!text-lg" />
                         Nueva Alianza
                     </button>
                 </div>
@@ -156,7 +157,7 @@ const ManageBenefits: React.FC = () => {
                         <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
                         <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="material-symbols-outlined !text-4xl text-slate-200 animate-pulse">loyalty</span>
+                            <Icon name="loyalty" className="!text-4xl text-slate-200 animate-pulse" />
                         </div>
                     </div>
                     <div className="text-center space-y-4">
@@ -199,14 +200,14 @@ const ManageBenefits: React.FC = () => {
                                         onClick={() => { setEditingBenefit(benefit); setIsModalOpen(true); }}
                                         className="h-11 px-6 bg-slate-100 text-slate-600 hover:bg-slate-900 hover:text-white rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all flex items-center gap-2"
                                     >
-                                        <span className="material-symbols-outlined !text-lg">edit_note</span>
+                                        <Icon name="edit_note" className="!text-lg" />
                                         Gestionar
                                     </button>
                                     <button
                                         onClick={() => handleDelete(benefit.id)}
                                         className="size-11 rounded-xl bg-rose-50 text-rose-400 hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center"
                                     >
-                                        <span className="material-symbols-outlined !text-xl">delete</span>
+                                        <Icon name="delete" className="!text-xl" />
                                     </button>
                                 </div>
                             </div>
@@ -218,7 +219,7 @@ const ManageBenefits: React.FC = () => {
                         className="rounded-[2rem] border-2 border-dashed border-slate-100 hover:border-indigo-600 hover:bg-indigo-50/30 transition-all flex flex-col items-center justify-center gap-6 group min-h-[400px]"
                     >
                         <div className="size-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:bg-white transition-all">
-                            <span className="material-symbols-outlined !text-3xl">loyalty</span>
+                            <Icon name="loyalty" className="!text-3xl" />
                         </div>
                         <div className="text-center">
                             <p className="text-xs font-bold uppercase tracking-widest text-slate-900">Nueva Alianza</p>
@@ -243,7 +244,7 @@ const ManageBenefits: React.FC = () => {
                                 onClick={() => setIsModalOpen(false)} 
                                 className="size-14 rounded-2xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--on-surface)] hover:shadow-[var(--neu-pressed-sm)] transition-all flex items-center justify-center group"
                             >
-                                <span className="material-symbols-outlined !text-2xl font-light group-hover:rotate-90 transition-transform">close</span>
+                                <Icon name="close" className="!text-2xl font-light group-hover:rotate-90 transition-transform" />
                             </button>
                         </header>
 
@@ -311,7 +312,7 @@ const ManageBenefits: React.FC = () => {
                                         >
                                             <input id="benefit-file" type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
                                             <div className="size-16 bg-white rounded-2xl shadow-sm flex items-center justify-center text-slate-300 group-hover:scale-110 group-hover:text-[var(--primary)] transition-all">
-                                                <span className="material-symbols-outlined !text-3xl font-light">cloud_upload</span>
+                                                <Icon name="cloud_upload" className="!text-3xl font-light" />
                                             </div>
                                             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-900">Subir Activo</p>
                                         </div>
@@ -321,7 +322,7 @@ const ManageBenefits: React.FC = () => {
                                                 <img src={imagePreview || editingBenefit?.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt="" />
                                             ) : (
                                                 <div className="h-full flex items-center justify-center opacity-10">
-                                                    <span className="material-symbols-outlined !text-7xl font-thin">image</span>
+                                                    <Icon name="image" className="!text-7xl font-thin" />
                                                 </div>
                                             )}
                                         </div>
@@ -347,7 +348,7 @@ const ManageBenefits: React.FC = () => {
                                     ) : (
                                         <>
                                             <span>{editingBenefit?.id ? 'ACTUALIZAR ALIANZA' : 'REGISTRAR SOCIO'}</span>
-                                            <span className="material-symbols-outlined !text-2xl group-hover:translate-x-2 transition-transform">verified</span>
+                                            <Icon name="verified" className="!text-2xl group-hover:translate-x-2 transition-transform" />
                                         </>
                                     )}
                                 </button>

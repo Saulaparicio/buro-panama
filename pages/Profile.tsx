@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Payment, Membership, Member } from '../types';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
+import { Icon } from '../components/ui/Icon';
 
 interface ProfileProps {
   role: UserRole;
@@ -25,14 +26,14 @@ const PaymentsModal: React.FC<{ payments: Payment[]; onClose: () => void }> = ({
             onClick={onClose}
             className="size-16 rounded-xl bg-white border border-[var(--outline-variant)]/20 flex items-center justify-center hover:bg-[var(--on-primary-fixed)] hover:text-white transition-all duration-500 active:scale-95 shadow-sm"
           >
-            <span className="material-symbols-outlined !text-xl">close</span>
+            <Icon name="close" className="!text-xl" />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto no-scrollbar space-y-6 pr-2">
           {payments.length === 0 ? (
             <div className="py-24 text-center space-y-6 opacity-20">
-              <span className="material-symbols-outlined !text-6xl">receipt_long</span>
+              <Icon name="receipt_long" className="!text-6xl" />
               <p className="label-md tracking-widest uppercase">Sin registros detectados</p>
             </div>
           ) : (
@@ -45,7 +46,7 @@ const PaymentsModal: React.FC<{ payments: Payment[]; onClose: () => void }> = ({
                   <div className={`size-16 rounded-xl flex items-center justify-center transition-all duration-700 group-hover:bg-white/10 ${
                     payment.status === 'completed' ? 'bg-[var(--on-primary-fixed)]/5 text-[var(--on-primary-fixed)]' : 'bg-[var(--primary)]/20 text-[var(--on-primary-fixed)]'
                   } group-hover:text-[var(--primary)]`}>
-                    <span className="material-symbols-outlined !text-3xl">{payment.status === 'completed' ? 'check' : 'pending'}</span>
+                    <Icon name={payment.status === 'completed' ? 'check' : 'pending'} className="!text-3xl" />
                   </div>
                   <div>
                     <p className="title-md font-display uppercase tracking-tighter text-[var(--on-primary-fixed)] group-hover:text-white transition-colors">{payment.description || 'Cuota de Membresía'}</p>
@@ -262,7 +263,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
         <div className="flex flex-col">
             <div className="flex items-center gap-5 mb-4">
                 <div className="size-14 bg-[#6b6d00] text-white rounded-xl flex items-center justify-center shadow-lg">
-                    <span className="material-symbols-outlined !text-3xl">person</span>
+                    <Icon name="person" className="!text-3xl" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-black tracking-tighter uppercase leading-none">Mi Perfil</h1>
             </div>
@@ -276,7 +277,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
                 onClick={handleLogout}
                 className="px-6 py-3 bg-red-50 text-red-500 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] hover:bg-red-500 hover:text-white transition-all duration-500 flex items-center gap-2"
             >
-                <span className="material-symbols-outlined !text-sm">logout</span>
+                <Icon name="logout" className="!text-sm" />
                 Salir
             </button>
         </div>
@@ -296,7 +297,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
             onClick={() => fileInputRef.current?.click()}
             className="absolute -bottom-4 -right-4 size-16 bg-[var(--on-primary-fixed)] text-[var(--primary)] rounded-lg flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-500 border border-white/20 z-10"
           >
-            <span className="material-symbols-outlined !text-2xl">photo_camera</span>
+            <Icon name="photo_camera" className="!text-2xl" />
           </button>
           <input type="file" ref={fileInputRef} onChange={handleAvatarUpload} className="hidden" accept="image/*" />
         </div>
@@ -414,7 +415,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
                 <p className="label-md text-[10px] opacity-40 uppercase tracking-widest mb-2 font-black">Capital Corporativo</p>
                 <p className="display-lg text-6xl tracking-tighter font-display leading-none">$0.<span className="opacity-30">00</span></p>
               </div>
-              <span className="material-symbols-outlined !text-4xl text-[var(--primary)]">account_balance_wallet</span>
+              <Icon name="account_balance_wallet" className="!text-4xl text-[var(--primary)]" />
             </div>
             <div className="flex gap-4 relative z-10">
               <button className="flex-1 py-5 bg-white/5 hover:bg-white/10 rounded-xl label-md font-black text-[10px] uppercase tracking-widest transition-all border border-white/10 backdrop-blur-md">Recargar</button>
@@ -501,7 +502,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
                   <span className="label-md text-[10px] opacity-30 uppercase tracking-widest font-black">Dirección Digital</span>
                   <div className="flex items-center gap-4">
                     <p className="title-md font-display uppercase text-[var(--on-primary-fixed)] truncate">{profile?.email}</p>
-                    <span className="material-symbols-outlined !text-base text-green-500 animate-pulse">verified_user</span>
+                    <Icon name="verified_user" className="!text-base text-green-500 animate-pulse" />
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -525,7 +526,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
               className="card-workspace p-10 group hover:shadow-2xl hover:border-[var(--on-primary-fixed)] transition-all duration-1000"
             >
               <div className="size-16 bg-[var(--surface-container-low)] rounded-xl flex items-center justify-center mb-6 group-hover:bg-[var(--on-primary-fixed)] group-hover:text-[var(--primary)] transition-all">
-                <span className="material-symbols-outlined !text-3xl">lock</span>
+                <Icon name="lock" className="!text-3xl" />
               </div>
               <p className="label-md font-black uppercase tracking-widest text-[var(--on-primary-fixed)] mt-8">Seguridad</p>
               <p className="label-md text-[9px] opacity-40 lowercase mt-2 tracking-widest font-light">Gestión de accesos y protocolos</p>
@@ -536,7 +537,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
               className="card-workspace p-10 group hover:shadow-2xl hover:border-[var(--on-primary-fixed)] transition-all duration-1000"
             >
               <div className="size-16 bg-[var(--surface-container-low)] rounded-xl flex items-center justify-center mb-6 group-hover:bg-[var(--on-primary-fixed)] group-hover:text-[var(--primary)] transition-all">
-                <span className="material-symbols-outlined !text-3xl">notifications_active</span>
+                <Icon name="notifications_active" className="!text-3xl" />
               </div>
               <p className="label-md font-black uppercase tracking-widest text-[var(--on-primary-fixed)] mt-8">Canales</p>
               <p className="label-md text-[9px] opacity-40 lowercase mt-2 tracking-widest font-light">Preferencias de alerta y avisos</p>
@@ -547,7 +548,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
               className="p-10 bg-red-50 hover:bg-red-500 group transition-all duration-700 rounded-3xl space-y-6 text-left border border-red-100/50 shadow-xl shadow-red-500/5"
             >
               <div className="size-16 bg-white/50 backdrop-blur-md rounded-xl flex items-center justify-center group-hover:bg-white group-hover:scale-110 transition-all border border-red-100/20">
-                <span className="material-symbols-outlined !text-3xl text-red-400 group-hover:text-red-500">logout</span>
+                <Icon name="logout" className="!text-3xl text-red-400 group-hover:text-red-500" />
               </div>
               <div>
                 <p className="label-md font-black uppercase tracking-widest text-red-500 group-hover:text-white">Cerrar Sesión</p>
@@ -565,7 +566,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
           <div className="relative w-full max-w-md bg-white rounded-3xl p-12 space-y-12 shadow-[0_100px_200px_-50px_rgba(0,0,0,0.5)] border border-[var(--outline-variant)]/20">
             <div className="text-center space-y-6">
               <div className="size-24 bg-[var(--surface-container-low)] rounded-lg mx-auto flex items-center justify-center text-[var(--on-primary-fixed)]">
-                  <span className="material-symbols-outlined !text-5xl">key_visualizer</span>
+                  <Icon name="key_visualizer" className="!text-5xl" />
               </div>
               <h2 className="display-lg text-4xl uppercase font-display tracking-tighter text-[var(--on-primary-fixed)]">Acceso Maestro</h2>
             </div>
@@ -610,7 +611,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
           <div className="relative w-full max-w-md bg-white rounded-3xl p-12 space-y-12 shadow-[0_100px_200px_-50px_rgba(0,0,0,0.5)] border border-[var(--outline-variant)]/20">
             <div className="text-center space-y-6">
                <div className="size-24 bg-[var(--surface-container-low)] rounded-lg mx-auto flex items-center justify-center text-[var(--on-primary-fixed)]">
-                  <span className="material-symbols-outlined !text-5xl">settings_input_antenna</span>
+                  <Icon name="settings_input_antenna" className="!text-5xl" />
               </div>
               <h2 className="display-lg text-4xl uppercase font-display tracking-tighter text-[var(--on-primary-fixed)]">Canales de Alerta</h2>
             </div>
@@ -628,7 +629,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
                   })}
                   className={`size-14 rounded-xl flex items-center justify-center transition-all duration-700 shadow-xl ${notificationSettings.notifications.email ? 'bg-[var(--on-primary-fixed)] text-[var(--primary)]' : 'bg-white text-[var(--on-primary-fixed)]'}`}
                 >
-                  <span className="material-symbols-outlined !text-xl">{notificationSettings.notifications.email ? 'check' : 'close'}</span>
+                  <Icon name={notificationSettings.notifications.email ? 'check' : 'close'} className="!text-xl" />
                 </button>
               </div>
 
@@ -644,7 +645,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
                   })}
                   className={`size-14 rounded-xl flex items-center justify-center transition-all duration-700 shadow-xl ${notificationSettings.notifications.push ? 'bg-[var(--on-primary-fixed)] text-[var(--primary)]' : 'bg-white text-[var(--on-primary-fixed)]'}`}
                 >
-                  <span className="material-symbols-outlined !text-xl">{notificationSettings.notifications.push ? 'check' : 'close'}</span>
+                  <Icon name={notificationSettings.notifications.push ? 'check' : 'close'} className="!text-xl" />
                 </button>
               </div>
             </div>
