@@ -27,6 +27,16 @@ const Onboarding: React.FC = () => {
       if (user) {
         const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
         if (data) {
+          // If already onboarded, send them directly to dashboard/admin
+          if (data.settings?.onboardingCompleted) {
+            if (data.role === 'admin' || data.role === 'staff') {
+              navigate('/admin');
+            } else {
+              navigate('/');
+            }
+            return;
+          }
+
           setProfile(data);
           setFormData({
             companyName: data.company || '',
