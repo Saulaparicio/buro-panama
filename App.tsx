@@ -327,7 +327,6 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
          {/* SaaS Top Bar */}
          <header className="h-20 bg-white border-b border-[var(--outline-variant)] px-10 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-8">
-                <button className="material-symbols-outlined text-slate-400 hover:text-slate-900 transition-colors bg-transparent border-none cursor-pointer !text-2xl">menu</button>
                 <h1 className="text-xl font-bold text-slate-900 tracking-tight capitalize">{getPageTitle().toLowerCase()}</h1>
             </div>
 

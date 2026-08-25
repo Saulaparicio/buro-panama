@@ -13,6 +13,16 @@ AS $$
     SELECT role FROM profiles WHERE id = auth.uid() LIMIT 1;
 $$;
 
+-- 1.5 Función auxiliar segura para obtener el tenant del usuario actual
+CREATE OR REPLACE FUNCTION public.get_auth_tenant_id() 
+RETURNS UUID
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+    SELECT tenant_id FROM profiles WHERE id = auth.uid() LIMIT 1;
+$$;
+
 -- 2. Eliminar la política genérica previa que daba acceso total, comprobando si la tabla existe
 DO $$
 DECLARE
@@ -42,9 +52,9 @@ BEGIN
         DROP POLICY IF EXISTS "profiles_insert_self_or_admin" ON profiles;
         
         CREATE POLICY "profiles_read_own" ON profiles FOR SELECT USING (id = auth.uid());
-        CREATE POLICY "profiles_read_tenant" ON profiles FOR SELECT USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid);
-        CREATE POLICY "profiles_update_self_or_admin" ON profiles FOR UPDATE USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND (id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
-        CREATE POLICY "profiles_insert_self_or_admin" ON profiles FOR INSERT WITH CHECK (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND (id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
+        CREATE POLICY "profiles_read_tenant" ON profiles FOR SELECT USING (tenant_id = public.get_auth_tenant_id());
+        CREATE POLICY "profiles_update_self_or_admin" ON profiles FOR UPDATE USING (tenant_id = public.get_auth_tenant_id() AND (id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
+        CREATE POLICY "profiles_insert_self_or_admin" ON profiles FOR INSERT WITH CHECK (tenant_id = public.get_auth_tenant_id() AND (id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
     END IF;
 
     -- TABLA: spaces
@@ -52,8 +62,8 @@ BEGIN
         DROP POLICY IF EXISTS "spaces_read_tenant" ON spaces;
         DROP POLICY IF EXISTS "spaces_write_admin" ON spaces;
         
-        CREATE POLICY "spaces_read_tenant" ON spaces FOR SELECT USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid);
-        CREATE POLICY "spaces_write_admin" ON spaces FOR ALL USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND public.get_auth_user_role() IN ('admin', 'staff'));
+        CREATE POLICY "spaces_read_tenant" ON spaces FOR SELECT USING (tenant_id = public.get_auth_tenant_id());
+        CREATE POLICY "spaces_write_admin" ON spaces FOR ALL USING (tenant_id = public.get_auth_tenant_id() AND public.get_auth_user_role() IN ('admin', 'staff'));
     END IF;
 
     -- TABLA: reservations
@@ -63,10 +73,10 @@ BEGIN
         DROP POLICY IF EXISTS "reservations_update_delete" ON reservations;
         DROP POLICY IF EXISTS "reservations_delete" ON reservations;
 
-        CREATE POLICY "reservations_read_tenant" ON reservations FOR SELECT USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid);
-        CREATE POLICY "reservations_insert" ON reservations FOR INSERT WITH CHECK (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND (member_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
-        CREATE POLICY "reservations_update_delete" ON reservations FOR UPDATE USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND (member_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
-        CREATE POLICY "reservations_delete" ON reservations FOR DELETE USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND (member_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
+        CREATE POLICY "reservations_read_tenant" ON reservations FOR SELECT USING (tenant_id = public.get_auth_tenant_id());
+        CREATE POLICY "reservations_insert" ON reservations FOR INSERT WITH CHECK (tenant_id = public.get_auth_tenant_id() AND (member_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
+        CREATE POLICY "reservations_update_delete" ON reservations FOR UPDATE USING (tenant_id = public.get_auth_tenant_id() AND (member_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
+        CREATE POLICY "reservations_delete" ON reservations FOR DELETE USING (tenant_id = public.get_auth_tenant_id() AND (member_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
     END IF;
 
     -- TABLA: posts
@@ -76,10 +86,10 @@ BEGIN
         DROP POLICY IF EXISTS "posts_update" ON posts;
         DROP POLICY IF EXISTS "posts_delete" ON posts;
 
-        CREATE POLICY "posts_read" ON posts FOR SELECT USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid);
-        CREATE POLICY "posts_write" ON posts FOR INSERT WITH CHECK (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND profile_id = auth.uid());
-        CREATE POLICY "posts_update" ON posts FOR UPDATE USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND profile_id = auth.uid());
-        CREATE POLICY "posts_delete" ON posts FOR DELETE USING (tenant_id = (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid AND (profile_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
+        CREATE POLICY "posts_read" ON posts FOR SELECT USING (tenant_id = public.get_auth_tenant_id());
+        CREATE POLICY "posts_write" ON posts FOR INSERT WITH CHECK (tenant_id = public.get_auth_tenant_id() AND profile_id = auth.uid());
+        CREATE POLICY "posts_update" ON posts FOR UPDATE USING (tenant_id = public.get_auth_tenant_id() AND profile_id = auth.uid());
+        CREATE POLICY "posts_delete" ON posts FOR DELETE USING (tenant_id = public.get_auth_tenant_id() AND (profile_id = auth.uid() OR public.get_auth_user_role() IN ('admin', 'staff')));
     END IF;
 END $$;
 

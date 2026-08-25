@@ -146,16 +146,16 @@ const Login: React.FC = () => {
               <div className="space-y-6">
                 {/* Email field in screenshot style */}
                 <div className="space-y-2">
-                  <label className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block ml-1">Credencial de Enlace (Email)</label>
-                  <div className="relative flex items-center border border-slate-200 rounded-xl px-4 bg-slate-50 focus-within:bg-white focus-within:border-indigo-500 transition-all">
-                    <span className="text-slate-400 text-sm mr-2 select-none">@</span>
+                  <label className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Correo Electrónico</label>
+                  <div className="relative flex items-center border border-slate-200 rounded-2xl px-5 bg-white focus-within:border-indigo-500 transition-all shadow-sm">
+                    <Icon name="mail" className="text-slate-400 text-xl mr-3 select-none" />
                     <input 
                       type="email" 
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="socio@buro.com"
-                      className="w-full py-4 text-xs font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none bg-transparent tracking-wider border-none"
+                      placeholder="usuario@ejemplo.com"
+                      className="w-full py-4.5 text-sm font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none bg-transparent tracking-wider border-none [&:-webkit-autofill]:shadow-[0_0_0px_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:#1e293b]"
                     />
                   </div>
                 </div>
@@ -163,32 +163,32 @@ const Login: React.FC = () => {
                 {/* Password field in screenshot style */}
                 {!isResetMode && (
                   <div className="space-y-2">
-                    <div className="flex justify-between items-center px-1">
-                      <label className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Código de Entrada (Pass)</label>
+                    <div className="flex justify-between items-center">
+                      <label className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Contraseña</label>
                       <button 
                         type="button" 
                         onClick={() => { setIsResetMode(true); setError(null); setMessage(null); }}
-                        className="text-[8px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer"
+                        className="text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 bg-transparent border-none cursor-pointer"
                       >
                         Recuperar
                       </button>
                     </div>
-                    <div className="relative flex items-center border border-slate-200 rounded-xl px-4 bg-slate-50 focus-within:bg-white focus-within:border-indigo-500 transition-all">
-                      <Icon name="fingerprint" className="text-slate-400 text-base mr-2 select-none" />
+                    <div className="relative flex items-center border border-slate-200 rounded-2xl px-5 bg-white focus-within:border-indigo-500 transition-all shadow-sm">
+                      <Icon name="key" className="text-slate-400 text-xl mr-3 select-none" />
                       <input 
                         type={showPassword ? "text" : "password"}
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full py-4 text-xs font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none bg-transparent tracking-widest border-none"
+                        placeholder="Mínimo 8 caracteres"
+                        className="w-full py-4.5 text-sm font-bold text-slate-800 placeholder:text-slate-300 focus:outline-none bg-transparent tracking-widest border-none [&:-webkit-autofill]:shadow-[0_0_0px_1000px_white_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:#1e293b]"
                       />
                       <button 
                         type="button" 
                         onClick={() => setShowPassword(!showPassword)}
                         className="text-slate-400 hover:text-slate-600 transition-colors bg-transparent border-none cursor-pointer flex items-center"
                       >
-                        <Icon name={showPassword ? "visibility_off" : "visibility"} className="!text-base" />
+                        <Icon name={showPassword ? "visibility_off" : "visibility"} className="!text-xl" />
                       </button>
                     </div>
                   </div>
@@ -199,14 +199,14 @@ const Login: React.FC = () => {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full py-4.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-lg shadow-indigo-100 flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer border-none"
+                className="w-full py-5 mt-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-sm font-bold uppercase tracking-[0.15em] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer border-none"
               >
                 {loading ? (
-                  <div className="size-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="size-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    {isResetMode ? 'Enviar Enlace' : 'Autenticar Acceso'}
-                    <Icon name={isResetMode ? 'send' : 'verified_user'} className="!text-base" />
+                    {isResetMode ? 'Enviar Enlace' : 'Verificar Identidad'}
+                    <Icon name={isResetMode ? 'send' : 'shield'} className="!text-xl" />
                   </>
                 )}
               </button>

@@ -305,10 +305,10 @@ const ManageReservations: React.FC = () => {
             {/* KPI Analytics Strip */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {[
-                    { label: 'Volumen Total', value: stats.total, icon: 'receipt_long', color: 'bg-[var(--secondary)] text-white' },
-                    { label: 'Confirmadas', value: stats.confirmed, icon: 'verified', color: 'card-workspace' },
-                    { label: 'Pendientes', value: stats.pending, icon: 'pending', color: 'card-workspace' },
-                    { label: 'Activos en Uso', value: stats.uniqueSpaces, icon: 'architecture', color: 'bg-[var(--primary-container)] text-[var(--secondary)]' },
+                    { label: 'Volumen Total', value: stats.total, icon: 'receipt_long', color: 'bg-[#2563eb] text-white' },
+                    { label: 'Reservas Confirmadas', value: stats.confirmed, icon: 'verified', color: 'card-workspace' },
+                    { label: 'Reservas Pendientes', value: stats.pending, icon: 'pending', color: 'card-workspace' },
+                    { label: 'Areas en uso', value: stats.uniqueSpaces, icon: 'architecture', color: 'bg-[var(--primary-container)] text-[var(--secondary)]' },
                 ].map((stat, idx) => (
                     <div key={idx} className={`${stat.color === 'card-workspace' ? 'card-workspace' : `${stat.color} p-10 rounded-3xl shadow-xl`} group hover:-translate-y-1 transition-all duration-500 relative overflow-hidden`}>
                         <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
