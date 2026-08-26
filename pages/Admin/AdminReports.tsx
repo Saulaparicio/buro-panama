@@ -211,27 +211,26 @@ const AdminReports: React.FC = () => {
             </div>
 
             {/* KPI Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                     { label: 'Ingresos Mensuales', value: `$${stats.monthlyIncome.toLocaleString()}`, change: '+12%', icon: 'payments', up: true },
                     { label: 'Tasa de Ocupación', value: `${stats.occupancyRate}%`, change: '+5%', icon: 'chair_alt', up: true },
                     { label: 'Comunidad Total', value: stats.activeMembers.toString(), change: '+8%', icon: 'groups', up: true },
                     { label: 'Tasa de Abandono', value: `${stats.churnRate}%`, change: '-0.5%', icon: 'heart_minus', up: false },
                 ].map((stat, idx) => (
-                    <div key={idx} className="card-workspace group relative overflow-hidden">
-                        <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                            <Icon name={stat.icon} className="!text-[120px]" />
-                        </div>
-                        <div className="flex justify-between items-start mb-10 relative z-10">
-                            <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-                                <Icon name={stat.icon} className="!text-2xl" />
+                    <div key={idx} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+                        <div className="flex justify-between items-start mb-10">
+                            <div className="size-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-500">
+                                <Icon name={stat.icon} className="!text-[20px] font-light" />
                             </div>
-                            <span className={`text-[10px] font-black uppercase px-3 py-1.5 rounded-xl shadow-sm ${stat.up ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                            <span className={`text-[9px] font-bold px-2 py-1 rounded-md ${stat.up ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                                 {stat.change}
                             </span>
                         </div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-subtle)] relative z-10">{stat.label}</p>
-                        <p className="text-4xl font-black tracking-tighter text-[var(--on-surface)] mt-3 relative z-10">{stat.value}</p>
+                        <div>
+                            <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 mb-2">{stat.label}</p>
+                            <p className="text-4xl font-black tracking-tighter text-slate-900">{stat.value}</p>
+                        </div>
                     </div>
                 ))}
             </div>
