@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'motion/react';
+import { LabeledProgressIndicator } from './LabeledProgressIndicator';
 
 type Type = 'curved' | 'slide';
 type Dir = 'top' | 'bottom' | 'left' | 'right';
@@ -162,9 +163,11 @@ export const Transition: React.FC<TransitionProps> = ({
             <div className='absolute inset-0 flex items-center justify-center'>
               {intro && (typeof intro === 'function' ? intro(triggerExit) : intro)}
               {!intro && (
-                <div className="flex flex-col items-center gap-6">
-                  <div className="size-20 bg-[#11171D] text-[#FDE910] flex items-center justify-center font-black text-4xl rounded-2xl shadow-2xl">B</div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.5em] text-[#11171D]">Loading Workspace</p>
+                <div className="flex flex-col items-center justify-center p-8">
+                  <LabeledProgressIndicator 
+                    labels={['Conectando al servidor...', 'Cargando interfaz...', 'Preparando espacio de trabajo...', 'Casi listo...']} 
+                    intervalMs={1500} 
+                  />
                 </div>
               )}
             </div>

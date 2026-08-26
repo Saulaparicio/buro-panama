@@ -3,6 +3,7 @@ import { supabase } from '../../supabase';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { toast } from 'react-hot-toast';
 import { Icon } from '../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../components/ui/LabeledProgressIndicator';
 
 const AdminReports: React.FC = () => {
     const [stats, setStats] = useState({
@@ -151,17 +152,10 @@ const AdminReports: React.FC = () => {
 
     if (loading) return (
         <div className="py-48 flex flex-col items-center justify-center gap-12">
-            <div className="relative size-32">
-                <div className="absolute inset-0 border-[1px] border-[var(--outline-variant)]/20 rounded-full scale-150"></div>
-                <div className="absolute inset-0 border-t-2 border-[var(--primary)] rounded-full animate-spin-slow"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <Icon name="analytics" className="!text-4xl text-[var(--on-surface)]/10 animate-pulse" />
-                </div>
-            </div>
-            <div className="text-center space-y-4">
-                <p className="label-md animate-pulse">Sincronizando Ledger Analítico</p>
-                <p className="text-[9px] font-bold text-[var(--on-surface-subtle)] uppercase tracking-[0.3em]">Procesando métricas transaccionales...</p>
-            </div>
+            <LabeledProgressIndicator 
+              labels={['Sincronizando Ledger Analítico', 'Procesando métricas transaccionales...', 'Calculando KPIs...']} 
+              intervalMs={1200} 
+            />
         </div>
     );
 

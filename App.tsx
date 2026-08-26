@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route, Link, useLocation, Navigate, useNa
 import { Toaster } from 'react-hot-toast';
 import { supabase } from './supabase';
 import { useTranslation } from 'react-i18next';
+import { LabeledProgressIndicator } from './components/ui/LabeledProgressIndicator';
 import SplashScreen from './pages/SplashScreen';
 import { Transition } from './components/ui/Transition';
 import { CreateNewDisclosure } from './components/ui/create-new-disclosure';
@@ -463,11 +464,10 @@ const App: React.FC = () => {
     <Router>
       <Suspense fallback={
         <div className="min-h-screen flex flex-col items-center justify-center gap-8 bg-white dark:bg-buro-black transition-colors duration-1000">
-          <div className="size-20 border-[6px] border-stone-100 border-t-primary rounded-full animate-spin"></div>
-          <div className="text-center space-y-2">
-            <p className="text-[10px] font-black uppercase text-stone-300 tracking-[0.5em] font-mono animate-pulse">Initializing Buro Core</p>
-            <p className="text-xs text-stone-200 font-bold uppercase tracking-widest font-mono">Quantum Interface Loading</p>
-          </div>
+          <LabeledProgressIndicator 
+            labels={['Cargando módulos...', 'Inicializando interfaz...', 'Obteniendo datos...']} 
+            intervalMs={800} 
+          />
         </div>
       }>
         <Routes>

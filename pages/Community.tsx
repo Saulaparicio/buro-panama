@@ -3,6 +3,7 @@ import { supabase } from '../supabase';
 import { Member, Post } from '../types';
 import { toast } from 'react-hot-toast';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 const Community: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'wall' | 'directory'>('wall');
@@ -219,7 +220,7 @@ const Community: React.FC = () => {
             <div className="space-y-6">
               {loading ? (
                 <div className="flex justify-center p-12">
-                   <div className="size-8 border-2 border-[var(--outline-variant)]/20 border-t-[var(--secondary)] rounded-full animate-spin"></div>
+                   <LabeledProgressIndicator labels={['Buscando publicaciones...']} intervalMs={1500} />
                 </div>
               ) : posts.length > 0 ? (
                 posts.map(post => (
