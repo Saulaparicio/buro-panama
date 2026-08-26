@@ -207,10 +207,10 @@ const AdminReports: React.FC = () => {
             {/* KPI Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                    { label: 'Ingresos Mensuales', value: `$${stats.monthlyIncome.toLocaleString()}`, change: '+12%', icon: 'payments', up: true, colorClass: 'bg-emerald-600 shadow-emerald-600/20' },
-                    { label: 'Tasa de Ocupación', value: `${stats.occupancyRate}%`, change: '+5%', icon: 'chair_alt', up: true, colorClass: 'bg-emerald-600 shadow-emerald-600/20' },
-                    { label: 'Comunidad Total', value: stats.activeMembers.toString(), change: '+8%', icon: 'groups', up: true, colorClass: 'bg-emerald-600 shadow-emerald-600/20' },
-                    { label: 'Tasa de Abandono', value: `${stats.churnRate}%`, change: '-0.5%', icon: 'heart_minus', up: false, colorClass: 'bg-emerald-600 shadow-emerald-600/20' },
+                    { label: 'Ingresos Mensuales', value: `$${stats.monthlyIncome.toLocaleString()}`, change: '+12%', icon: 'payments', up: true, colorClass: 'bg-blue-600 shadow-blue-600/20' },
+                    { label: 'Tasa de Ocupación', value: `${stats.occupancyRate}%`, change: '+5%', icon: 'chair_alt', up: true, colorClass: 'bg-rose-500 shadow-rose-500/20' },
+                    { label: 'Comunidad Total', value: stats.activeMembers.toString(), change: '+8%', icon: 'groups', up: true, colorClass: 'bg-orange-500 shadow-orange-500/20' },
+                    { label: 'Tasa de Abandono', value: `${stats.churnRate}%`, change: '-0.5%', icon: 'heart_minus', up: false, colorClass: 'bg-emerald-500 shadow-emerald-500/20' },
                 ].map((stat, idx) => (
                     <div key={idx} className={`group relative overflow-hidden flex flex-col justify-center min-h-[160px] ${stat.colorClass.split(' ')[0]} text-white border-none shadow-lg ${stat.colorClass.split(' ')[1]} p-6 rounded-2xl`}>
                         <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
