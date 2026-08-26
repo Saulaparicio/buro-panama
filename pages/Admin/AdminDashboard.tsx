@@ -430,8 +430,8 @@ const AdminDashboard: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Members Onsite */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-blue-600 text-white border-none shadow-lg shadow-blue-600/20 !p-6">
-          <div className="absolute -right-4 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
-            <Icon name="groups" className="!text-[180px] leading-none" />
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
+            <Icon name="groups" size={220} className="leading-none" />
           </div>
           <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('members_onsite', "Members onsite")}</p>
           <div className="relative z-10">
@@ -444,8 +444,8 @@ const AdminDashboard: React.FC = () => {
  
         {/* Unpaid Invoices */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-rose-500 text-white border-none shadow-lg shadow-rose-500/20 !p-6">
-          <div className="absolute -right-4 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
-            <Icon name="receipt_long" className="!text-[180px] leading-none" />
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
+            <Icon name="receipt_long" size={220} className="leading-none" />
           </div>
           <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('unpaid_invoices', "Unpaid Invoices")}</p>
           <div className="relative z-10">
@@ -458,8 +458,8 @@ const AdminDashboard: React.FC = () => {
  
         {/* Unread Messages */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-orange-500 text-white border-none shadow-lg shadow-orange-500/20 !p-6">
-          <div className="absolute -right-4 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
-            <Icon name="mail" className="!text-[180px] leading-none" />
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
+            <Icon name="mail" size={220} className="leading-none" />
           </div>
           <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('unread_messages', "Unread Messages")}</p>
           <div className="relative z-10">
@@ -473,8 +473,8 @@ const AdminDashboard: React.FC = () => {
  
         {/* Active Bookings */}
         <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-emerald-500 text-white border-none shadow-lg shadow-emerald-500/20 !p-6">
-          <div className="absolute -right-4 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
-            <Icon name="calendar_today" className="!text-[180px] leading-none" />
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
+            <Icon name="calendar_today" size={220} className="leading-none" />
           </div>
           <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('active_bookings', "Active Bookings")}</p>
           <div className="relative z-10">
