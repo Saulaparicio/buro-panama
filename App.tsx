@@ -378,16 +378,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
                   {i18n.language === 'es' ? 'EN' : 'ES'}
                 </button>
 
-                <div className="flex items-center gap-2 border-r border-slate-100 pr-6 mr-2">
-                    <button className="relative size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 transition-colors bg-transparent border-none cursor-pointer">
-                        <Icon name="notifications" className="text-slate-400" />
-                        <span className="absolute top-2 right-2 size-4 bg-orange-500 text-[9px] text-white font-bold flex items-center justify-center rounded-full border-2 border-white">12</span>
-                    </button>
-                    <button className="relative size-10 flex items-center justify-center rounded-lg hover:bg-slate-50 transition-colors bg-transparent border-none cursor-pointer">
-                        <Icon name="mail" className="text-slate-400" />
-                        <span className="absolute top-2 right-2 size-4 bg-orange-400 text-[9px] text-white font-bold flex items-center justify-center rounded-full border-2 border-white">65</span>
-                    </button>
-                </div>
+
                 
                 {/* Quick Actions Menu */}
                 <div className="relative z-[200]">
