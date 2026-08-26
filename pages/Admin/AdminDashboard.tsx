@@ -429,66 +429,60 @@ const AdminDashboard: React.FC = () => {
       {/* 2. Bento Grid of KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Members Onsite */}
-        <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
-          <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <Icon name="groups" className="!text-[120px]" />
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-blue-600 text-white border-none shadow-lg shadow-blue-600/20 !p-6">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-40 transition-opacity">
+            <Icon name="groups" className="!text-[110px]" />
           </div>
-          <div className="flex justify-between items-start mb-6 relative z-10">
-            <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <Icon name="groups" className="!text-2xl" />
-            </div>
-            <span className="text-[10px] font-black uppercase px-3 py-1.5 rounded-xl shadow-sm bg-green-500/10 text-green-500">
-              +12%
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('members_onsite', "Members onsite")}</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">{tables[0].count > 0 ? `${tables[0].count}/88` : '26/88'}</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white">
+              +12% En planilla
             </span>
           </div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-subtle)] relative z-10">{t('members_onsite', "Members onsite")}</p>
-          <p className="text-3xl font-black tracking-tighter text-[var(--on-surface)] mt-2 relative z-10">{tables[0].count > 0 ? `${tables[0].count}/88` : '26/88'}</p>
         </div>
  
         {/* Unpaid Invoices */}
-        <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
-          <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <Icon name="receipt_long" className="!text-[120px]" />
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-rose-500 text-white border-none shadow-lg shadow-rose-500/20 !p-6">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-40 transition-opacity">
+            <Icon name="receipt_long" className="!text-[110px]" />
           </div>
-          <div className="flex justify-between items-start mb-6 relative z-10">
-            <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <Icon name="receipt_long" className="!text-2xl" />
-            </div>
-            <span className="text-[10px] font-black uppercase px-3 py-1.5 rounded-xl shadow-sm bg-red-500/10 text-red-500">
-              Urgent
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('unpaid_invoices', "Unpaid Invoices")}</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">4</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white">
+              URGENT
             </span>
           </div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-subtle)] relative z-10">{t('unpaid_invoices', "Unpaid Invoices")}</p>
-          <p className="text-3xl font-black tracking-tighter text-[var(--on-surface)] mt-2 relative z-10">4</p>
         </div>
  
         {/* Unread Messages */}
-        <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
-          <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <Icon name="mail" className="!text-[120px]" />
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-orange-500 text-white border-none shadow-lg shadow-orange-500/20 !p-6">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-40 transition-opacity">
+            <Icon name="mail" className="!text-[110px]" />
           </div>
-          <div className="flex justify-between items-start mb-6 relative z-10">
-            <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <Icon name="mail" className="!text-2xl" />
-            </div>
-            <div className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse mt-2"></div>
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('unread_messages', "Unread Messages")}</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">2</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white flex items-center gap-2 inline-flex">
+              <div className="size-2 bg-white rounded-full animate-pulse"></div>
+              Nuevos
+            </span>
           </div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-subtle)] relative z-10">{t('unread_messages', "Unread Messages")}</p>
-          <p className="text-3xl font-black tracking-tighter text-[var(--on-surface)] mt-2 relative z-10">2</p>
         </div>
  
         {/* Active Bookings */}
-        <div className="card-workspace group relative overflow-hidden flex flex-col justify-between min-h-[160px]">
-          <div className="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-            <Icon name="calendar_today" className="!text-[120px]" />
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-emerald-500 text-white border-none shadow-lg shadow-emerald-500/20 !p-6">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-40 transition-opacity">
+            <Icon name="calendar_today" className="!text-[110px]" />
           </div>
-          <div className="flex justify-between items-start mb-6 relative z-10">
-            <div className="size-14 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] rounded-2xl flex items-center justify-center text-[var(--on-surface-subtle)] group-hover:shadow-[var(--neu-pressed-sm)] group-hover:text-[var(--primary)] transition-all">
-              <Icon name="calendar_today" className="!text-2xl" />
-            </div>
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{t('active_bookings', "Active Bookings")}</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">{tables[2].count > 0 ? tables[2].count : '14'}</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white">
+              En el día
+            </span>
           </div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--on-surface-subtle)] relative z-10">{t('active_bookings', "Active Bookings")}</p>
-          <p className="text-3xl font-black tracking-tighter text-[var(--on-surface)] mt-2 relative z-10">{tables[2].count > 0 ? tables[2].count : '14'}</p>
         </div>
       </div>
  
