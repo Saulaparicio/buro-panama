@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 import { supabase, sendRsvpEmail } from '../../supabase';
 import { Icon } from '../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../components/ui/LabeledProgressIndicator';
 
 const ManageEvents: React.FC = () => {
     const { tenant } = useTenant();
@@ -242,18 +243,9 @@ const ManageEvents: React.FC = () => {
             </div>
 
             {loading ? (
-                <div className="py-48 flex flex-col items-center justify-center gap-12">
-                    <div className="relative size-32">
-                        <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
-                        <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <Icon name="event_note" className="!text-4xl text-slate-200 animate-pulse" />
-                        </div>
-                    </div>
-                    <div className="text-center space-y-4">
-                        <p className="text-sm font-bold text-slate-400 animate-pulse">Sincronizando Agenda Cultural</p>
-                    </div>
-                </div>
+        <div className="py-48 flex flex-col items-center justify-center gap-12">
+            <LabeledProgressIndicator labels={['Sincronizando Agenda Cultural...', 'Consultando eventos...', 'Preparando calendario...']} intervalMs={1200} />
+        </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {events.map((event, index) => (
@@ -530,8 +522,7 @@ const ManageEvents: React.FC = () => {
                         <div className="modal-body !p-12 !pt-4">
                             {loadingAttendees ? (
                                 <div className="py-24 flex flex-col items-center justify-center gap-8">
-                                    <div className="size-16 border-t-2 border-[var(--primary)] rounded-full animate-spin"></div>
-                                    <p className="label-md animate-pulse">Sincronizando Archivo...</p>
+                                    <LabeledProgressIndicator labels={['Sincronizando Archivo...']} intervalMs={1500} />
                                 </div>
                             ) : attendees.length > 0 ? (
                                 <div className="space-y-4 max-h-[400px] overflow-y-auto pr-4 no-scrollbar">

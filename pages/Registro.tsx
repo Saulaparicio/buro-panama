@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase, sendWelcomeEmail } from '../supabase';
 import { toast } from 'react-hot-toast';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 const Registro: React.FC = () => {
   const navigate = useNavigate();
@@ -714,7 +715,7 @@ const Registro: React.FC = () => {
                   Estamos configurando tu espacio de trabajo. Redirigiéndote al Dashboard...
                 </p>
               </div>
-              <div className="size-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+              <LabeledProgressIndicator labels={['Configurando tu espacio...', 'Preparando dashboard...']} intervalMs={1000} />
             </div>
           )}
 

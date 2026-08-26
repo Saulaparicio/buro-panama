@@ -5,6 +5,7 @@ import { Member, Quote } from '../types';
 import { useTranslation } from 'react-i18next';
 import { useTenant } from '../contexts/TenantContext';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 const Home: React.FC = () => {
     const { t } = useTranslation();
@@ -48,7 +49,7 @@ const Home: React.FC = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-6">
-                <div className="size-12 border-4 border-stone-200 border-t-[var(--primary)] rounded-full animate-spin"></div>
+                <LabeledProgressIndicator labels={['Cargando tu espacio...', 'Obteniendo datos...']} intervalMs={1000} />
             </div>
         );
     }

@@ -4,6 +4,7 @@ import { useTenant } from '../../contexts/TenantContext';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 import { Icon } from '../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../components/ui/LabeledProgressIndicator';
 
 const Settings: React.FC = () => {
     const { tenant } = useTenant();
@@ -209,14 +210,7 @@ const Settings: React.FC = () => {
     if (loading) {
         return (
             <div className="py-48 flex flex-col items-center justify-center gap-12">
-                <div className="relative size-32">
-                    <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
-                    <div className="absolute inset-0 border-t-2 border-[var(--primary)] rounded-full animate-spin"></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <Icon name="settings" className="!text-4xl text-slate-200 animate-pulse" />
-                    </div>
-                </div>
-                <p className="text-sm font-bold text-slate-400 animate-pulse uppercase tracking-widest">Cargando Configuración Global</p>
+                <LabeledProgressIndicator labels={['Cargando Configuración Global...', 'Verificando preferencias...']} intervalMs={1200} />
             </div>
         );
     }

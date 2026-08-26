@@ -7,6 +7,7 @@ import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Icon } from '../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../components/ui/LabeledProgressIndicator';
 import {
   Award01Icon,
   Calendar04Icon,
@@ -662,7 +663,7 @@ const ManageQuotes: React.FC = () => {
 
         {loading ? (
           <div className="py-20 flex justify-center items-center">
-            <div className="size-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+            <LabeledProgressIndicator labels={['Buscando cotizaciones...']} intervalMs={1500} />
           </div>
         ) : filteredQuotes.length === 0 ? (
           <div className="py-20 text-center text-slate-400">

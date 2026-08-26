@@ -6,6 +6,7 @@ import { Payment, Membership, Member } from '../types';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 interface ProfileProps {
   role: UserRole;
@@ -249,7 +250,7 @@ const Profile: React.FC<ProfileProps> = ({ role, onRoleChange }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="size-16 border-2 border-[var(--outline-variant)] border-t-[var(--on-primary-fixed)] rounded-lg animate-spin"></div>
+        <LabeledProgressIndicator labels={['Cargando perfil...']} intervalMs={1500} />
       </div>
     );
   }

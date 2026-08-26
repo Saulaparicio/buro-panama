@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useTenant } from '../contexts/TenantContext';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 type UserRole = 'admin' | 'member' | 'staff';
 
@@ -281,7 +282,7 @@ const Reservations: React.FC<ReservationsProps> = ({ role }) => {
           <div className="lg:col-span-8">
             {loading ? (
               <div className="h-[600px] flex items-center justify-center card-workspace">
-                <div className="size-16 border-2 border-[var(--outline-variant)] border-t-[var(--on-primary-fixed)] rounded-full animate-spin"></div>
+                <LabeledProgressIndicator labels={['Buscando reservas...']} intervalMs={1500} />
               </div>
             ) : view === 'calendar' ? (
               renderCalendar()

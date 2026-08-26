@@ -4,6 +4,7 @@ import { supabase } from '../../../supabase';
 import { format, isToday, isTomorrow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Icon } from '../../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../../components/ui/LabeledProgressIndicator';
 
 export const DashboardTab: React.FC<{ profile: any; onNavigate: (tab: TabValue) => void }> = ({ profile, onNavigate }) => {
   const firstName = profile?.name?.split(' ')[0] || 'Miembro';
@@ -117,7 +118,7 @@ export const DashboardTab: React.FC<{ profile: any; onNavigate: (tab: TabValue) 
         
         {loading ? (
           <div className="bg-white border border-gray-100 p-5 rounded-[20px] shadow-sm flex items-center justify-center min-h-[120px]">
-            <span className="text-sm text-gray-400 font-bold uppercase tracking-widest animate-pulse">Cargando...</span>
+            <LabeledProgressIndicator labels={['Buscando reserva...']} intervalMs={1500} />
           </div>
         ) : nextReservation ? (
           <div className="bg-white border border-gray-100 p-5 rounded-[20px] shadow-sm space-y-4">

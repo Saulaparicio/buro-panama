@@ -4,6 +4,7 @@ import { useTenant } from '../contexts/TenantContext';
 import { toast } from 'react-hot-toast';
 import { supabase, sendRsvpEmail } from '../supabase';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 const Events: React.FC = () => {
     const { tenant } = useTenant();
@@ -140,9 +141,8 @@ const Events: React.FC = () => {
             <main className="mt-8">
                 <div className="max-w-[1400px] mx-auto">
                     {loading ? (
-                        <div className="py-40 text-center space-y-6">
-                            <div className="size-12 border-4 border-[var(--outline-variant)]/20 border-t-[var(--primary-container)] rounded-full animate-spin mx-auto"></div>
-                            <p className="label-md opacity-20">Syncing Matrix Core</p>
+                        <div className="py-40 flex flex-col items-center justify-center">
+                            <LabeledProgressIndicator labels={['Sincronizando eventos...']} intervalMs={1500} />
                         </div>
                     ) : filteredEvents.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">

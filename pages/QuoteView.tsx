@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { Quote } from '../types';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 // Helper to parse metadata
 const parseMetadata = (notes: string | null) => {
@@ -63,8 +64,7 @@ const QuoteView: React.FC = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50">
-                <div className="size-12 border-4 border-slate-200 border-t-indigo-600 rounded-full animate-spin mb-6"></div>
-                <p className="text-sm font-bold text-slate-400 uppercase tracking-widest animate-pulse">Cargando Propuesta</p>
+                <LabeledProgressIndicator labels={['Cargando Propuesta...', 'Preparando detalles...']} intervalMs={1500} />
             </div>
         );
     }

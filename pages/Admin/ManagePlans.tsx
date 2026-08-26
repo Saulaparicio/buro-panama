@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
 import { Icon } from '../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../components/ui/LabeledProgressIndicator';
 
 const ManagePlans: React.FC = () => {
     const { t } = useTranslation();
@@ -175,18 +176,9 @@ const ManagePlans: React.FC = () => {
             </div>
 
             {loading ? (
-                <div className="py-48 flex flex-col items-center justify-center gap-12">
-                    <div className="relative size-32">
-                        <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
-                        <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <Icon name="workspace_premium" className="!text-4xl text-slate-200 animate-pulse" />
-                        </div>
-                    </div>
-                    <div className="text-center space-y-4">
-                        <p className="text-sm font-bold text-slate-400 animate-pulse">Sincronizando Estructuras de Membresía</p>
-                    </div>
-                </div>
+        <div className="py-48 flex flex-col items-center justify-center gap-12">
+            <LabeledProgressIndicator labels={['Sincronizando Estructuras de Membresía...', 'Verificando beneficios...', 'Cargando planes...']} intervalMs={1200} />
+        </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {tiers.map((tier, idx) => {

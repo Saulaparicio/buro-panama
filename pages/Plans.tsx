@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 const Plans: React.FC = () => {
   const navigate = useNavigate();
@@ -81,7 +82,7 @@ const Plans: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="size-16 border-2 border-[var(--outline-variant)] border-t-[var(--on-primary-fixed)] rounded-full animate-spin"></div>
+        <LabeledProgressIndicator labels={['Cargando planes...']} intervalMs={1500} />
       </div>
     );
   }

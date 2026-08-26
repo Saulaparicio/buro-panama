@@ -3,6 +3,7 @@ import { Benefit } from '../types';
 import { useTenant } from '../contexts/TenantContext';
 import { supabase } from '../supabase';
 import { Icon } from '../components/ui/Icon';
+import { LabeledProgressIndicator } from '../components/ui/LabeledProgressIndicator';
 
 const Benefits: React.FC = () => {
   const { tenant } = useTenant();
@@ -68,9 +69,8 @@ const Benefits: React.FC = () => {
 
       <main className="mt-8">
         {loading ? (
-             <div className="py-40 text-center space-y-6">
-                <div className="size-12 border-4 border-[var(--outline-variant)]/20 border-t-[var(--primary-container)] rounded-full animate-spin mx-auto"></div>
-                <p className="label-md opacity-20">Syncing Alliance Protocols</p>
+             <div className="py-40 flex flex-col items-center justify-center">
+                <LabeledProgressIndicator labels={['Sincronizando beneficios...']} intervalMs={1500} />
              </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">

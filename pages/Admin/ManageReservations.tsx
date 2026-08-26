@@ -13,6 +13,7 @@ import { sendReservationEmail } from '../../supabase';
 import PremiumSelect from '../../components/ui/PremiumSelect';
 import { useTenant } from '../../contexts/TenantContext';
 import { Icon } from '../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../components/ui/LabeledProgressIndicator';
 
 const ManageReservations: React.FC = () => {
     const { tenant } = useTenant();
@@ -327,13 +328,10 @@ const ManageReservations: React.FC = () => {
 
             {loading ? (
                 <div className="py-48 flex flex-col items-center justify-center gap-12">
-                    <div className="relative size-32">
-                        <div className="absolute inset-0 border-t-2 border-[var(--primary)] rounded-full animate-spin-slow"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <Icon name="hourglass_empty" className="!text-4xl text-[var(--on-surface)]/10 animate-pulse" />
-                        </div>
-                    </div>
-                    <p className="label-md animate-pulse">Sincronizando Disponibilidad...</p>
+                    <LabeledProgressIndicator 
+                      labels={['Sincronizando Disponibilidad...', 'Consultando reservas...', 'Actualizando calendario...']} 
+                      intervalMs={1200} 
+                    />
                 </div>
             ) : viewMode === 'calendar' ? (
                 <div className="card-workspace group/calendar fc-theme-custom min-h-[900px] overflow-visible">

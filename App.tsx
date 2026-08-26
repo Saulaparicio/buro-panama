@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { useTenant } from './contexts/TenantContext';
 import { Toaster } from 'react-hot-toast';
 import { supabase } from './supabase';
 import { useTranslation } from 'react-i18next';
@@ -188,6 +189,7 @@ const MemberLayout: React.FC<{ children: React.ReactNode, role: UserRole, onRole
 
 const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode: boolean, toggleDarkMode: () => void, role: UserRole, onRoleChange: (role: UserRole) => void }> = ({ children, profile, darkMode, toggleDarkMode, role, onRoleChange }) => {
   const { t, i18n } = useTranslation();
+  const { tenant } = useTenant();
   const location = useLocation();
   const navigate = useNavigate();
   const [showQuickActions, setShowQuickActions] = useState(false);
@@ -245,24 +247,30 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
   return (
     <div className="min-h-screen bg-[#e9e9ec] flex selection:bg-[var(--primary-container)] selection:text-white overflow-hidden">
       {/* Sidebar Architectural Style */}
-      <aside className={`h-screen sticky top-0 bg-[#0f172a] text-slate-300 py-6 px-4 flex flex-col shrink-0 shadow-2xl transition-[width] duration-300 ease-in-out z-20 ${isCollapsed ? 'w-[88px]' : 'w-[280px]'}`}>
+      <aside className={`h-screen sticky top-0 bg-[#f1f3f2] text-slate-600 py-6 px-4 flex flex-col shrink-0 shadow-xl border-r border-slate-200/50 transition-[width] duration-300 ease-in-out z-20 ${isCollapsed ? 'w-[88px]' : 'w-[280px]'}`}>
          
          <div className="flex flex-col h-full overflow-hidden">
            {/* Header / Logo */}
            <div className="flex items-center justify-between px-2 mb-8 min-h-[40px]">
              <Link to="/" className={`flex items-center gap-3 overflow-hidden transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
-                <div className="flex-shrink-0 grid place-items-center size-10 bg-indigo-500 rounded-xl text-white shadow-md shadow-indigo-500/20">
-                  <Icon name="verified" className="!text-[22px]" />
-                </div>
+                {tenant?.logo_url ? (
+                  <div className="flex-shrink-0 grid place-items-center size-10 bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden p-1">
+                    <img src={tenant.logo_url} alt="Logo" className="w-full h-full object-contain" />
+                  </div>
+                ) : (
+                  <div className="flex-shrink-0 grid place-items-center size-10 bg-indigo-600 rounded-xl text-white shadow-md shadow-indigo-600/20">
+                    <Icon name="verified" className="!text-[22px]" />
+                  </div>
+                )}
                 <div className="flex flex-col">
-                    <span className="text-[15px] font-bold tracking-tight text-white leading-tight">Buró Panamá</span>
-                    <span className="text-[10px] font-medium text-slate-400">Panel de Control</span>
+                    <span className="text-[15px] font-bold tracking-tight text-slate-900 leading-tight whitespace-nowrap overflow-hidden text-ellipsis max-w-[170px]">{tenant?.name || 'Buró Panamá'}</span>
+                    <span className="text-[10px] font-medium text-slate-500">Panel de Control</span>
                 </div>
              </Link>
              
              <button 
                onClick={() => setIsCollapsed(!isCollapsed)}
-               className={`flex-shrink-0 grid place-items-center size-10 rounded-xl bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors border-none cursor-pointer ${isCollapsed ? 'mx-auto' : ''}`}
+               className={`flex-shrink-0 grid place-items-center size-10 rounded-xl bg-white shadow-sm text-slate-400 hover:text-indigo-600 hover:bg-slate-50 transition-colors border border-slate-200 cursor-pointer ${isCollapsed ? 'mx-auto' : ''}`}
                aria-label="Toggle sidebar"
              >
                <Icon name={isCollapsed ? 'menu' : 'panel_left'} className="!text-[20px]" />
@@ -270,14 +278,14 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
            </div>
 
            {/* Search */}
-           <div className={`relative flex items-center gap-2.5 h-[42px] px-3 mb-6 border border-slate-700/50 bg-slate-800/30 rounded-xl text-slate-400 transition-opacity duration-300 ${isCollapsed ? 'opacity-0 pointer-events-none hidden' : 'opacity-100'}`}>
+           <div className={`relative flex items-center gap-2.5 h-[42px] px-3 mb-6 border border-slate-200 bg-white rounded-xl text-slate-400 shadow-sm transition-opacity duration-300 ${isCollapsed ? 'opacity-0 pointer-events-none hidden' : 'opacity-100'}`}>
              <Icon name="search" className="!text-[18px]" />
              <input 
                type="text" 
                placeholder="Buscar..." 
                value={sidebarSearch}
                onChange={(e) => setSidebarSearch(e.target.value)}
-               className="flex-1 min-w-0 bg-transparent border-none outline-none text-[14px] text-white placeholder-slate-500" 
+               className="flex-1 min-w-0 bg-transparent border-none outline-none text-[14px] text-slate-900 placeholder-slate-400" 
              />
            </div>
 
@@ -299,9 +307,9 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
                               to={item.path}
                               onMouseEnter={() => prefetchRoute(item.path)}
                               title={isCollapsed ? t(item.labelKey, item.label) : undefined}
-                              className={`flex items-center gap-3.5 h-[44px] rounded-xl px-3 transition-colors duration-200 cursor-pointer group ${isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'} ${isCollapsed ? 'justify-center' : 'w-full'}`}
+                              className={`flex items-center gap-3.5 h-[44px] rounded-xl px-3 transition-colors duration-200 cursor-pointer group ${isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'text-slate-500 hover:bg-slate-200/50 hover:text-indigo-600'} ${isCollapsed ? 'justify-center' : 'w-full'}`}
                            >
-                              <Icon name={item.icon} className={`!text-[20px] flex-shrink-0 transition-colors ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+                              <Icon name={item.icon} className={`!text-[20px] flex-shrink-0 transition-colors ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-indigo-600'}`} />
                               <span className={`text-[13px] font-medium whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100 flex-1 overflow-hidden text-ellipsis'}`}>{t(item.labelKey, item.label)}</span>
                            </Link>
                        );
@@ -312,19 +320,19 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
            </nav>
 
            {/* Profile & Logout */}
-           <div className="mt-auto pt-4 border-t border-slate-800/50">
-             <div className={`flex items-center gap-3 p-2 rounded-xl transition-all duration-300 ${isCollapsed ? 'flex-col justify-center' : 'hover:bg-slate-800/60'}`}>
-                <Link to="/profile" className="flex-shrink-0 size-10 rounded-full overflow-hidden border border-slate-700">
+           <div className="mt-auto pt-4 border-t border-slate-200">
+             <div className={`flex items-center gap-3 p-2 rounded-xl transition-all duration-300 ${isCollapsed ? 'flex-col justify-center' : 'hover:bg-slate-200/50'}`}>
+                <Link to="/profile" className="flex-shrink-0 size-10 rounded-full overflow-hidden border border-slate-300">
                    <img src={profile?.avatar_url || placeholderAvatar('Admin')} className="w-full h-full object-cover rounded-full" alt="Admin" />
                 </Link>
                 <div className={`flex-1 min-w-0 transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
-                   <p className="text-[13px] font-semibold text-white truncate">{profile?.name?.split(' ')[0] || 'Admin'}</p>
-                   <p className="text-[11px] font-medium text-slate-400 truncate">Protocolo Adm</p>
+                   <p className="text-[13px] font-semibold text-slate-900 truncate">{profile?.name?.split(' ')[0] || 'Admin'}</p>
+                   <p className="text-[11px] font-medium text-slate-500 truncate">Protocolo Adm</p>
                 </div>
                 <button 
                   onClick={handleLogout}
                   title="Logout"
-                  className={`flex-shrink-0 grid place-items-center size-8 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors border-none bg-transparent cursor-pointer ${isCollapsed ? 'mt-2' : ''}`}
+                  className={`flex-shrink-0 grid place-items-center size-8 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors border-none bg-transparent cursor-pointer ${isCollapsed ? 'mt-2' : ''}`}
                 >
                    <Icon name="logout" className="!text-[20px]" />
                 </button>

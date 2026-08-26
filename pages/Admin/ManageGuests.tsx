@@ -4,6 +4,7 @@ import { Guest } from '../../types';
 import { toast } from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 import { Icon } from '../../components/ui/Icon';
+import { LabeledProgressIndicator } from '../../components/ui/LabeledProgressIndicator';
 
 const ManageGuests: React.FC = () => {
     const [guests, setGuests] = useState<Guest[]>([]);
@@ -122,16 +123,7 @@ const ManageGuests: React.FC = () => {
 
             {loading ? (
                 <div className="py-48 flex flex-col items-center justify-center gap-12">
-                    <div className="relative size-32">
-                        <div className="absolute inset-0 border-[1px] border-slate-100 rounded-full scale-150"></div>
-                        <div className="absolute inset-0 border-t-2 border-indigo-600 rounded-full animate-spin"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <Icon name="security" className="!text-4xl text-slate-200 animate-pulse" />
-                        </div>
-                    </div>
-                    <div className="text-center space-y-4">
-                        <p className="text-sm font-bold text-slate-400 animate-pulse">Sincronizando Bitácora de Acceso</p>
-                    </div>
+                    <LabeledProgressIndicator labels={['Sincronizando Bitácora de Acceso...', 'Obteniendo pases de acceso...']} intervalMs={1200} />
                 </div>
             ) : (
                 <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden animate-slide">
