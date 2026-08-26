@@ -203,18 +203,21 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
   };
 
   const navItems = [
-    { path: '/admin', labelKey: 'nav_dashboard', label: 'DASHBOARD', icon: 'dashboard', adminOnly: false },
-    { path: '/admin/reports', labelKey: 'nav_reports', label: 'ESTADÍSTICAS', icon: 'analytics', adminOnly: true },
-    { path: '/admin/reservations', labelKey: 'nav_reservations', label: 'RESERVAS', icon: 'calendar_month', adminOnly: false },
-    { path: '/admin/members', labelKey: 'nav_members', label: 'CLIENTES', icon: 'groups', adminOnly: false },
-    { path: '/admin/spaces', labelKey: 'nav_spaces', label: 'ESPACIOS', icon: 'other_houses', adminOnly: false },
-    { path: '/admin/plans', labelKey: 'nav_plans', label: 'PLANES', icon: 'card_membership', adminOnly: true },
-    { path: '/admin/events', labelKey: 'nav_events', label: 'EVENTOS', icon: 'local_activity', adminOnly: false },
-    { path: '/admin/quotes', labelKey: 'nav_quotes', label: 'COTIZACIONES', icon: 'request_quote', adminOnly: false },
-    { path: '/admin/settings', labelKey: 'nav_settings', label: 'CONFIGURACIÓN', icon: 'settings', adminOnly: true },
+    { path: '/admin', labelKey: 'nav_dashboard', label: 'DASHBOARD', icon: 'dashboard', adminOnly: false, category: 'PRINCIPAL' },
+    { path: '/admin/members', labelKey: 'nav_members', label: 'CLIENTES', icon: 'groups', adminOnly: false, category: 'COMUNIDAD' },
+    { path: '/admin/reservations', labelKey: 'nav_reservations', label: 'RESERVAS', icon: 'calendar_month', adminOnly: false, category: 'OPERACIONES' },
+    { path: '/admin/spaces', labelKey: 'nav_spaces', label: 'ESPACIOS', icon: 'other_houses', adminOnly: false, category: 'OPERACIONES' },
+    { path: '/admin/plans', labelKey: 'nav_plans', label: 'PLANES', icon: 'card_membership', adminOnly: true, category: 'OPERACIONES' },
+    { path: '/admin/events', labelKey: 'nav_events', label: 'EVENTOS', icon: 'local_activity', adminOnly: false, category: 'OPERACIONES' },
+    { path: '/admin/reports', labelKey: 'nav_reports', label: 'ESTADÍSTICAS', icon: 'analytics', adminOnly: true, category: 'ANÁLISIS Y CONFIGURACIÓN' },
+    { path: '/admin/quotes', labelKey: 'nav_quotes', label: 'COTIZACIONES', icon: 'request_quote', adminOnly: false, category: 'ANÁLISIS Y CONFIGURACIÓN' },
+    { path: '/admin/settings', labelKey: 'nav_settings', label: 'CONFIGURACIÓN', icon: 'settings', adminOnly: true, category: 'ANÁLISIS Y CONFIGURACIÓN' },
   ].filter(item => !item.adminOnly || role === 'admin');
 
   const filteredNavItems = navItems.filter(item => t(item.labelKey, item.label).toLowerCase().includes(sidebarSearch.toLowerCase()));
+
+  // Get unique categories for rendering
+  const categories = Array.from(new Set(filteredNavItems.map(item => item.category)));
 
   const getPageTitle = () => {
     const currentItem = navItems.find(item => isAdminActive(item.path));
@@ -240,25 +243,25 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
 
   return (
     <div className="min-h-screen bg-[#e9e9ec] flex selection:bg-[var(--primary-container)] selection:text-white overflow-hidden">
-      {/* Sidebar Architectural Style (Nolito sidebar-11) */}
-      <aside className={`h-screen sticky top-0 bg-white text-[#1c1c1e] py-6 px-2 flex flex-col shrink-0 shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-[width] duration-300 ease-in-out z-20 ${isCollapsed ? 'w-[80px]' : 'w-[320px] rounded-r-[16px]'}`}>
+      {/* Sidebar Architectural Style */}
+      <aside className={`h-screen sticky top-0 bg-[#0f172a] text-slate-300 py-6 px-4 flex flex-col shrink-0 shadow-2xl transition-[width] duration-300 ease-in-out z-20 ${isCollapsed ? 'w-[88px]' : 'w-[280px]'}`}>
          
          <div className="flex flex-col h-full overflow-hidden">
-           {/* Header */}
-           <div className="flex items-center justify-between px-3 mb-6 min-h-[34px]">
-             <Link to="/" className={`flex items-center gap-2 overflow-hidden transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
-                <div className="flex-shrink-0 grid place-items-center size-[34px]">
-                  <svg viewBox="0 0 32 32" aria-hidden="true" className="w-[26px] h-[26px]">
-                    <path d="M7 27 L16 6 L20.5 15 L12 27 Z" fill="#3b82f6" />
-                    <path d="M16.5 27 L24 9 L28 27 Z" fill="#1e3a8a" />
-                  </svg>
+           {/* Header / Logo */}
+           <div className="flex items-center justify-between px-2 mb-8 min-h-[40px]">
+             <Link to="/" className={`flex items-center gap-3 overflow-hidden transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
+                <div className="flex-shrink-0 grid place-items-center size-10 bg-indigo-500 rounded-xl text-white shadow-md shadow-indigo-500/20">
+                  <Icon name="verified" className="!text-[22px]" />
                 </div>
-                <span className="text-[22px] font-semibold tracking-[-0.02em] whitespace-nowrap">BURÓ<sup className="text-[10px] font-medium text-[#9b9ba3] ml-0.5">®</sup></span>
+                <div className="flex flex-col">
+                    <span className="text-[15px] font-bold tracking-tight text-white leading-tight">Buró Panamá</span>
+                    <span className="text-[10px] font-medium text-slate-400">Panel de Control</span>
+                </div>
              </Link>
              
              <button 
                onClick={() => setIsCollapsed(!isCollapsed)}
-               className={`flex-shrink-0 grid place-items-center size-12 rounded-[11px] bg-[#f5f5f7] text-[#6b6b73] hover:bg-[#eaeaec] transition-colors border-none cursor-pointer ${isCollapsed ? 'mx-auto' : ''}`}
+               className={`flex-shrink-0 grid place-items-center size-10 rounded-xl bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors border-none cursor-pointer ${isCollapsed ? 'mx-auto' : ''}`}
                aria-label="Toggle sidebar"
              >
                <Icon name={isCollapsed ? 'menu' : 'panel_left'} className="!text-[20px]" />
@@ -266,54 +269,61 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
            </div>
 
            {/* Search */}
-           <div className={`relative flex items-center gap-2.5 h-[46px] px-3.5 mb-4 mx-2 border border-[#c3c3c7] rounded-[13px] text-[#9b9ba3] transition-opacity duration-300 ${isCollapsed ? 'opacity-0 pointer-events-none hidden' : 'opacity-100'}`}>
-             <Icon name="search" className="!text-[20px]" />
+           <div className={`relative flex items-center gap-2.5 h-[42px] px-3 mb-6 border border-slate-700/50 bg-slate-800/30 rounded-xl text-slate-400 transition-opacity duration-300 ${isCollapsed ? 'opacity-0 pointer-events-none hidden' : 'opacity-100'}`}>
+             <Icon name="search" className="!text-[18px]" />
              <input 
                type="text" 
-               placeholder="Search" 
+               placeholder="Buscar..." 
                value={sidebarSearch}
                onChange={(e) => setSidebarSearch(e.target.value)}
-               className="flex-1 min-w-0 bg-transparent border-none outline-none text-[15px] text-[#1c1c1e] placeholder-[#9b9ba3]" 
+               className="flex-1 min-w-0 bg-transparent border-none outline-none text-[14px] text-white placeholder-slate-500" 
              />
-             <div className="grid place-items-center size-6 border border-[#c3c3c7] rounded-md text-[13px] text-[#9b9ba3]">/</div>
            </div>
 
            {/* Nav */}
-           <nav className="flex-1 overflow-y-auto overflow-x-hidden space-y-0.5 px-2">
-              {filteredNavItems.map((item) => {
-                 const isActive = isAdminActive(item.path);
-                 return (
-                     <Link
-                        key={item.path}
-                        to={item.path}
-                        onMouseEnter={() => prefetchRoute(item.path)}
-                        title={isCollapsed ? t(item.labelKey, item.label) : undefined}
-                        className={`flex items-center gap-3.5 h-[48px] rounded-[13px] px-3.5 transition-colors duration-200 cursor-pointer ${isActive ? 'bg-[#f5f5f7] text-[#1c1c1e]' : 'text-[#1c1c1e] hover:bg-[#f5f5f7]'} ${isCollapsed ? 'justify-center' : 'w-full'}`}
-                     >
-                        <Icon name={item.icon} className={`material-symbols-outlined !text-[20px] flex-shrink-0 ${isActive ? 'text-[#1c1c1e]' : 'text-[#6b6b73]'}`} />
-                        <span className={`text-[16px] font-medium whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100 flex-1 overflow-hidden text-ellipsis'}`}>{t(item.labelKey, item.label)}</span>
-                     </Link>
-                 );
-               })}
+           <nav className="flex-1 overflow-y-auto overflow-x-hidden pb-4 custom-scrollbar">
+              {categories.map(category => (
+                <div key={category} className="mb-6">
+                  {!isCollapsed && (
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3 px-3">
+                      {category}
+                    </h4>
+                  )}
+                  <div className="space-y-1">
+                    {filteredNavItems.filter(item => item.category === category).map((item) => {
+                       const isActive = isAdminActive(item.path);
+                       return (
+                           <Link
+                              key={item.path}
+                              to={item.path}
+                              onMouseEnter={() => prefetchRoute(item.path)}
+                              title={isCollapsed ? t(item.labelKey, item.label) : undefined}
+                              className={`flex items-center gap-3.5 h-[44px] rounded-xl px-3 transition-colors duration-200 cursor-pointer group ${isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'} ${isCollapsed ? 'justify-center' : 'w-full'}`}
+                           >
+                              <Icon name={item.icon} className={`!text-[20px] flex-shrink-0 transition-colors ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+                              <span className={`text-[13px] font-medium whitespace-nowrap transition-opacity duration-300 ${isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100 flex-1 overflow-hidden text-ellipsis'}`}>{t(item.labelKey, item.label)}</span>
+                           </Link>
+                       );
+                     })}
+                  </div>
+                </div>
+              ))}
            </nav>
 
-           {/* Divider */}
-           <hr className="h-px border-0 bg-[#ebebef] mx-3 my-2 flex-shrink-0" />
-
            {/* Profile & Logout */}
-           <div className="px-2 mt-auto pt-2">
-             <div className={`flex items-center gap-3 p-2 rounded-xl transition-all duration-300 ${isCollapsed ? 'flex-col justify-center' : 'hover:bg-[#f5f5f7]'}`}>
-                <Link to="/profile" className="flex-shrink-0 size-10 rounded-full overflow-hidden border border-[var(--outline-variant)]">
+           <div className="mt-auto pt-4 border-t border-slate-800/50">
+             <div className={`flex items-center gap-3 p-2 rounded-xl transition-all duration-300 ${isCollapsed ? 'flex-col justify-center' : 'hover:bg-slate-800/60'}`}>
+                <Link to="/profile" className="flex-shrink-0 size-10 rounded-full overflow-hidden border border-slate-700">
                    <img src={profile?.avatar_url || placeholderAvatar('Admin')} className="w-full h-full object-cover rounded-full" alt="Admin" />
                 </Link>
                 <div className={`flex-1 min-w-0 transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
-                   <p className="text-[14px] font-semibold text-[#1c1c1e] truncate">{profile?.name?.split(' ')[0] || 'Admin'}</p>
-                   <p className="text-[12px] font-medium text-[#9b9ba3] truncate">Protocolo Adm</p>
+                   <p className="text-[13px] font-semibold text-white truncate">{profile?.name?.split(' ')[0] || 'Admin'}</p>
+                   <p className="text-[11px] font-medium text-slate-400 truncate">Protocolo Adm</p>
                 </div>
                 <button 
                   onClick={handleLogout}
                   title="Logout"
-                  className={`flex-shrink-0 grid place-items-center size-8 rounded-lg text-[#6b6b73] hover:text-[#1c1c1e] hover:bg-[#eaeaec] transition-colors border-none bg-transparent cursor-pointer ${isCollapsed ? 'mt-2' : ''}`}
+                  className={`flex-shrink-0 grid place-items-center size-8 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors border-none bg-transparent cursor-pointer ${isCollapsed ? 'mt-2' : ''}`}
                 >
                    <Icon name="logout" className="!text-[20px]" />
                 </button>
