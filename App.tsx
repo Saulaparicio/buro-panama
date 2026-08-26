@@ -253,9 +253,9 @@ const AdminLayout: React.FC<{ children: React.ReactNode, profile: any, darkMode:
            {/* Header / Logo */}
            <div className="flex items-center justify-between px-2 mb-8 min-h-[40px]">
              <Link to="/" className={`flex items-center gap-3 overflow-hidden transition-opacity duration-300 ${isCollapsed ? 'hidden opacity-0' : 'opacity-100'}`}>
-                {tenant?.logo_url ? (
+                {(tenant as any)?.settings?.logo_url ? (
                   <div className="flex-shrink-0 grid place-items-center size-10 bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden p-1">
-                    <img src={tenant.logo_url} alt="Logo" className="w-full h-full object-contain" />
+                    <img src={(tenant as any).settings.logo_url} alt="Logo" className="w-full h-full object-contain" />
                   </div>
                 ) : (
                   <div className="flex-shrink-0 grid place-items-center size-10 bg-indigo-600 rounded-xl text-white shadow-md shadow-indigo-600/20">
