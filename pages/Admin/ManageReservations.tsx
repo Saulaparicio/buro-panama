@@ -303,21 +303,25 @@ const ManageReservations: React.FC = () => {
             </div>
 
             {/* KPI Analytics Strip */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                    { label: 'Volumen Total', value: stats.total, icon: 'receipt_long', color: 'bg-[#2563eb] text-white' },
-                    { label: 'Reservas Confirmadas', value: stats.confirmed, icon: 'verified', color: 'card-workspace' },
-                    { label: 'Reservas Pendientes', value: stats.pending, icon: 'pending', color: 'card-workspace' },
-                    { label: 'Areas en uso', value: stats.uniqueSpaces, icon: 'architecture', color: 'bg-[var(--primary-container)] text-[var(--secondary)]' },
+                    { label: 'Volumen Total', value: stats.total, icon: 'receipt_long', badge: '+12%', badgeColor: 'bg-green-100 text-green-700' },
+                    { label: 'Reservas Confirmadas', value: stats.confirmed, icon: 'verified', badge: '+5%', badgeColor: 'bg-green-100 text-green-700' },
+                    { label: 'Reservas Pendientes', value: stats.pending, icon: 'pending', badge: '+8%', badgeColor: 'bg-green-100 text-green-700' },
+                    { label: 'Areas en uso', value: stats.uniqueSpaces, icon: 'architecture', badge: '-0.5%', badgeColor: 'bg-red-100 text-red-700' },
                 ].map((stat, idx) => (
-                    <div key={idx} className={`${stat.color === 'card-workspace' ? 'card-workspace' : `${stat.color} p-10 rounded-3xl shadow-xl`} group hover:-translate-y-1 transition-all duration-500 relative overflow-hidden`}>
-                        <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
-                            <Icon name={stat.icon} className="!text-8xl scale-125" />
+                    <div key={idx} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+                        <div className="flex justify-between items-start mb-10">
+                            <div className="size-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-500">
+                                <Icon name={stat.icon} className="!text-[20px] font-light" />
+                            </div>
+                            <span className={`text-[9px] font-bold px-2 py-1 rounded-md ${stat.badgeColor}`}>
+                                {stat.badge}
+                            </span>
                         </div>
-                        <p className={`text-[9px] font-black uppercase tracking-[0.4em] mb-4 relative z-10 ${stat.color === 'card-workspace' ? 'text-[var(--on-surface-subtle)]' : 'opacity-60'}`}>{stat.label}</p>
-                        <p className="text-5xl font-black tracking-tighter relative z-10">{stat.value}</p>
-                        <div className={`mt-6 h-[1px] w-full relative overflow-hidden ${stat.color === 'card-workspace' ? 'bg-[var(--outline-variant)]/20' : 'bg-white/20'}`}>
-                            <div className="absolute inset-0 bg-current w-1/3 group-hover:translate-x-[200%] transition-transform duration-1000 opacity-40"></div>
+                        <div>
+                            <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 mb-2">{stat.label}</p>
+                            <p className="text-4xl font-black tracking-tighter text-slate-900">{stat.value}</p>
                         </div>
                     </div>
                 ))}
