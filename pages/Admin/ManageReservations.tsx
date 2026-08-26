@@ -305,23 +305,21 @@ const ManageReservations: React.FC = () => {
             {/* KPI Analytics Strip */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
-                    { label: 'Volumen Total', value: stats.total, icon: 'receipt_long', badge: '+12%', badgeColor: 'bg-green-100 text-green-700' },
-                    { label: 'Reservas Confirmadas', value: stats.confirmed, icon: 'verified', badge: '+5%', badgeColor: 'bg-green-100 text-green-700' },
-                    { label: 'Reservas Pendientes', value: stats.pending, icon: 'pending', badge: '+8%', badgeColor: 'bg-green-100 text-green-700' },
-                    { label: 'Areas en uso', value: stats.uniqueSpaces, icon: 'architecture', badge: '-0.5%', badgeColor: 'bg-red-100 text-red-700' },
+                    { label: 'Volumen Total', value: stats.total, icon: 'receipt_long', badge: '+12%', colorClass: 'bg-blue-600 shadow-blue-600/20' },
+                    { label: 'Reservas Confirmadas', value: stats.confirmed, icon: 'verified', badge: '+5%', colorClass: 'bg-rose-500 shadow-rose-500/20' },
+                    { label: 'Reservas Pendientes', value: stats.pending, icon: 'pending', badge: '+8%', colorClass: 'bg-orange-500 shadow-orange-500/20' },
+                    { label: 'Areas en uso', value: stats.uniqueSpaces, icon: 'architecture', badge: '-0.5%', colorClass: 'bg-emerald-500 shadow-emerald-500/20' },
                 ].map((stat, idx) => (
-                    <div key={idx} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
-                        <div className="flex justify-between items-start mb-10">
-                            <div className="size-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-500">
-                                <Icon name={stat.icon} className="!text-[20px] font-light" />
-                            </div>
-                            <span className={`text-[9px] font-bold px-2 py-1 rounded-md ${stat.badgeColor}`}>
+                    <div key={idx} className={`group relative overflow-hidden flex flex-col justify-center min-h-[160px] ${stat.colorClass.split(' ')[0]} text-white border-none shadow-lg ${stat.colorClass.split(' ')[1]} p-6 rounded-2xl`}>
+                        <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none">
+                            <Icon name={stat.icon} size={220} className="leading-none" />
+                        </div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">{stat.label}</p>
+                        <div className="relative z-10">
+                            <p className="text-5xl font-black tracking-tighter mb-3">{stat.value}</p>
+                            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white">
                                 {stat.badge}
                             </span>
-                        </div>
-                        <div>
-                            <p className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 mb-2">{stat.label}</p>
-                            <p className="text-4xl font-black tracking-tighter text-slate-900">{stat.value}</p>
                         </div>
                     </div>
                 ))}
