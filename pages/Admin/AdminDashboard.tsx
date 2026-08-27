@@ -121,15 +121,31 @@ const AdminDashboard: React.FC = () => {
       .map(r => {
         const space = spaces.find(s => s.id === r.space_id);
         const member = members.find(m => m.id === r.member_id);
+        
+        // Calculate countdown to start
+        const diffMinutes = moment(r.start_time).diff(now, 'minutes');
+        let startsInLabel = '';
+        if (diffMinutes < 60) {
+          startsInLabel = `En ${diffMinutes}m`;
+        } else if (diffMinutes < 24 * 60) {
+          const hours = Math.floor(diffMinutes / 60);
+          const mins = diffMinutes % 60;
+          startsInLabel = `En ${hours}h ${mins}m`;
+        } else {
+          const days = Math.floor(diffMinutes / (24 * 60));
+          startsInLabel = `En ${days}d`;
+        }
+
         return {
           id: r.id,
           timeLabel: moment(r.start_time).format('MMM D, hh:mm A'),
+          startsInLabel,
           spaceName: space ? space.name : 'Unknown Space',
           description: member ? `By: ${member.name}` : 'Reserved',
         };
       })
       .slice(0, 5);
-  }, [reservations, spaces, members]);
+  }, [reservations, spaces, members, timeTick]);
 
   const occupiedSpaces = useMemo(() => {
     const now = moment();
@@ -149,7 +165,8 @@ const AdminDashboard: React.FC = () => {
         return {
           id: r.id,
           spaceName: space ? space.name : 'Unknown Space',
-          untilLabel: `HASTA ${moment(r.end_time).format('HH:mm')} ${countdownLabel}`
+          untilLabel: `HASTA ${moment(r.end_time).format('HH:mm')}`,
+          countdownLabel
         };
       })
       .slice(0, 4);
@@ -527,8 +544,13 @@ const AdminDashboard: React.FC = () => {
           <div className="space-y-4">
             {upcomingReservations.length > 0 ? (
               upcomingReservations.map(r => (
-                <div key={r.id} className="p-4 rounded-xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] hover:shadow-[var(--neu-pressed-sm)] border-l-4 border-[var(--on-surface-subtle)] transition-all space-y-1">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">{r.timeLabel}</span>
+                <div key={r.id} className="p-4 rounded-xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] hover:shadow-[var(--neu-pressed-sm)] border-l-4 border-[var(--on-surface-subtle)] transition-all space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">{r.timeLabel}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md">
+                      {r.startsInLabel}
+                    </span>
+                  </div>
                   <h4 className="text-xs font-black uppercase tracking-tight text-[var(--on-surface)]">{r.spaceName}</h4>
                   <p className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">{r.description}</p>
                 </div>
@@ -555,7 +577,12 @@ const AdminDashboard: React.FC = () => {
                       <span className="size-2 bg-red-500 rounded-full animate-pulse"></span>
                       <span className="font-bold uppercase tracking-wider text-[var(--on-surface)] text-[10px]">{r.spaceName}</span>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">{r.untilLabel}</span>
+                    <div className="text-right">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)] block">{r.untilLabel}</span>
+                      <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-rose-50 text-rose-600 rounded-md inline-block mt-1">
+                        {r.countdownLabel.replace('(', '').replace(')', '')}
+                      </span>
+                    </div>
                   </div>
                 ))
               ) : (
