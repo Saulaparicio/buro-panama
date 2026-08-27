@@ -335,164 +335,165 @@ const ManageEvents: React.FC = () => {
 
             {/* Editorial Modal Overhaul */}
             {isModalOpen && (
-                <div className="modal-backdrop" role="dialog" aria-modal="true">
-                    <div className="modal-container max-w-5xl">
-                        <header className="modal-header">
-                            <div className="space-y-1">
-                                <p className="label-md text-[var(--primary)]">Asset Architecture</p>
-                                <h2 className="text-4xl font-black uppercase tracking-tighter text-[var(--on-surface)]">
-                                    {editingEvent?.id ? 'Redefinir' : 'Configurar'} <span className="opacity-30 text-[var(--primary)]">Evento</span>
-                                </h2>
+                <div className="modal-backdrop bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4 z-50 fixed inset-0" role="dialog" aria-modal="true">
+                    <div className="modal-container w-full max-w-5xl rounded-3xl overflow-hidden flex flex-col md:flex-row bg-white border border-[var(--outline-variant)] shadow-2xl animate-fade">
+                        
+                        {/* Left Pane - Image & Description */}
+                        <div className="w-full md:w-[60%] p-6 md:p-8 space-y-6 flex flex-col overflow-y-auto max-h-[85vh] custom-scrollbar">
+                            {/* Image Upload Area */}
+                            <div className="relative group/img h-64 md:h-80 rounded-2xl overflow-hidden bg-slate-100 shadow-md border border-slate-200 flex items-center justify-center transition-all cursor-pointer">
+                                {(imagePreview || editingEvent?.image_url) ? (
+                                    <>
+                                        <img
+                                            src={imagePreview || editingEvent?.image_url}
+                                            alt="Preview"
+                                            className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover/img:grayscale-0 group-hover/img:scale-105"
+                                        />
+                                        <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                            <span className="px-6 py-2.5 bg-white text-slate-900 font-black text-[10px] uppercase tracking-widest rounded-full shadow-xl">Cambiar Imagen</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="text-center space-y-4 opacity-40 group-hover/img:opacity-100 transition-all text-slate-500">
+                                        <Icon name="add_a_photo" className="!text-5xl" />
+                                        <p className="text-xs font-bold uppercase tracking-widest">Subir Imagen del Evento</p>
+                                    </div>
+                                )}
+                                <input
+                                    type="file"
+                                    className="absolute inset-0 opacity-0 cursor-pointer"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
                             </div>
-                            <button 
-                                onClick={() => setIsModalOpen(false)} 
-                                className="size-16 rounded-2xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--on-surface)] hover:shadow-[var(--neu-pressed-sm)] transition-all flex items-center justify-center group"
-                            >
-                                <Icon name="close" className="!text-3xl font-light group-hover:rotate-90 transition-transform" />
-                            </button>
-                        </header>
 
-                        <form onSubmit={handleSubmit} className="modal-body space-y-16">
-                            <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
-                                <div className="lg:col-span-3 space-y-12">
-                                    <div className="neu-input-wrapper">
-                                        <label className="neu-input-label">Título de la Narrativa</label>
+                            {/* Narrativa / Descripción */}
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Narrativa / Descripción</label>
+                                <textarea
+                                    className="w-full h-32 border border-slate-200 rounded-xl p-4 text-sm bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all resize-none"
+                                    placeholder="Describe la esencia de la experiencia..."
+                                    value={editingEvent?.description || ''}
+                                    onChange={e => setEditingEvent({ ...editingEvent, description: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Right Pane - Form & Actions */}
+                        <div className="w-full md:w-[40%] bg-slate-50 p-6 md:p-8 flex flex-col border-l border-slate-200 overflow-y-auto max-h-[85vh] custom-scrollbar">
+                            <form onSubmit={handleSubmit} className="flex flex-col h-full">
+                                
+                                {/* Header */}
+                                <div className="flex items-start justify-between mb-8">
+                                    <div>
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-1">Asset Architecture</p>
+                                        <h2 className="text-2xl font-black uppercase tracking-tight text-slate-900">
+                                            {editingEvent?.id ? 'Redefinir' : 'Configurar'} Evento
+                                        </h2>
+                                    </div>
+                                    <button 
+                                        type="button"
+                                        onClick={() => setIsModalOpen(false)} 
+                                        className="size-8 bg-slate-200/60 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors text-slate-600 border-none cursor-pointer"
+                                    >
+                                        <Icon name="close" className="!text-lg" />
+                                    </button>
+                                </div>
+
+                                {/* Form Fields */}
+                                <div className="space-y-5 flex-1">
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Título de la Narrativa</label>
                                         <input
                                             type="text"
                                             required
                                             placeholder="EJ. NETWORKING VERTICAL..."
-                                            className="neu-input text-xl uppercase tracking-tighter"
+                                            className="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white font-bold focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all uppercase"
                                             value={editingEvent?.title || ''}
                                             onChange={e => setEditingEvent({ ...editingEvent, title: e.target.value })}
                                         />
-                                        <p className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest px-4">Nombre público del evento para los miembros</p>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                        <div className="neu-input-wrapper">
-                                            <label className="neu-input-label">Cronología</label>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Cronología</label>
                                             <input
                                                 type="datetime-local"
                                                 required
-                                                className="neu-input !h-20"
+                                                className="w-full border border-slate-200 rounded-xl p-3 text-xs bg-white font-bold focus:border-indigo-500 outline-none transition-all"
                                                 value={editingEvent?.event_date ? new Date(editingEvent.event_date).toISOString().slice(0, 16) : ''}
                                                 onChange={e => setEditingEvent({ ...editingEvent, event_date: e.target.value })}
                                             />
-                                            <p className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest px-4">Fecha y hora de inicio</p>
                                         </div>
-                                        <div className="neu-input-wrapper">
-                                            <label className="neu-input-label">Aforo / Cupos</label>
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Aforo / Cupos</label>
                                             <input
                                                 type="number"
                                                 min="1"
                                                 placeholder="ILIMITADO"
-                                                className={`neu-input !h-20 text-xl ${(editingEvent?.capacity !== null && editingEvent?.capacity <= 0) ? 'border-rose-500 bg-rose-50' : ''}`}
+                                                className={`w-full border ${editingEvent?.capacity !== null && editingEvent?.capacity <= 0 ? 'border-rose-500 bg-rose-50 text-rose-600' : 'border-slate-200 bg-white'} rounded-xl p-3 text-sm font-bold focus:border-indigo-500 outline-none transition-all`}
                                                 value={editingEvent?.capacity ?? ''}
                                                 onChange={e => setEditingEvent({ ...editingEvent, capacity: e.target.value ? parseInt(e.target.value) : null })}
                                             />
-                                            <p className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest px-4">Límite de asistentes (dejar vacío si es libre)</p>
                                         </div>
                                     </div>
 
-                                    <div className="neu-input-wrapper">
-                                        <label className="neu-input-label">Ubicación Estratégica</label>
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Ubicación Estratégica</label>
                                         <input
                                             type="text"
                                             placeholder="SEDE PANAMÁ / SALA DE JUNTAS..."
-                                            className="neu-input text-xl uppercase tracking-tighter"
+                                            className="w-full border border-slate-200 rounded-xl p-3 text-sm bg-white font-bold focus:border-indigo-500 outline-none transition-all uppercase"
                                             value={editingEvent?.location || ''}
                                             onChange={e => setEditingEvent({ ...editingEvent, location: e.target.value })}
                                         />
-                                        <p className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest px-4">Lugar físico o sala asignada</p>
                                     </div>
-
-                                    <div className="neu-input-wrapper">
-                                        <label className="neu-input-label">Narrativa / Descripción</label>
-                                        <textarea
-                                            className="neu-input neu-textarea"
-                                            placeholder="Describe la esencia de la experiencia..."
-                                            value={editingEvent?.description || ''}
-                                            onChange={e => setEditingEvent({ ...editingEvent, description: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="lg:col-span-2 space-y-12">
-                                    <div className="space-y-6">
-                                        <div className="flex items-center justify-between">
-                                            <h3 className="label-md">Asset Visual</h3>
-                                            <p className="text-[9px] font-black text-[var(--on-surface-subtle)] uppercase tracking-widest">Ratio 4:5</p>
+                                    
+                                    {/* Estado Switch */}
+                                    <div className="pt-4 flex items-center justify-between border-t border-slate-200">
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-700">Estado de Exposición</p>
+                                            <p className="text-[9px] font-medium text-slate-400 uppercase tracking-widest">Visible en la app móvil</p>
                                         </div>
-                                        <div className="relative group/img aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-[var(--surface)] shadow-[var(--neu-flat)] border border-white/20 flex items-center justify-center transition-all hover:shadow-[var(--neu-pressed)] cursor-pointer">
-                                            {(imagePreview || editingEvent?.image_url) ? (
-                                                <>
-                                                    <img
-                                                        src={imagePreview || editingEvent?.image_url}
-                                                        alt="Preview"
-                                                        className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover/img:grayscale-0 group-hover/img:scale-110"
-                                                    />
-                                                    <div className="absolute inset-0 bg-[var(--secondary)]/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
-                                                        <span className="px-8 py-3 bg-[var(--primary)] text-[var(--secondary)] font-black text-[9px] uppercase tracking-[0.3em] rounded-full shadow-2xl">Cambiar Asset</span>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <div className="text-center space-y-4 opacity-20 group-hover/img:opacity-100 transition-all text-[var(--on-surface)]">
-                                                    <Icon name="photo_camera" className="!text-6xl font-thin" />
-                                                    <p className="label-md">Inyectar Material</p>
-                                                </div>
-                                            )}
-                                            <input
-                                                type="file"
-                                                className="absolute inset-0 opacity-0 cursor-pointer"
-                                                accept="image/*"
-                                                onChange={handleImageChange}
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input 
+                                                type="checkbox" 
+                                                className="sr-only peer"
+                                                checked={editingEvent?.is_active ?? true}
+                                                onChange={e => setEditingEvent({ ...editingEvent, is_active: e.target.checked })}
                                             />
-                                        </div>
-                                    <div className="p-8 bg-[var(--surface)] rounded-[2rem] shadow-[var(--neu-flat-sm)] space-y-6">
-                                        <div className="flex items-center justify-between">
-                                            <div className="space-y-1">
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface)]">Estado de Exposición</p>
-                                                <p className="text-[9px] font-medium text-[var(--on-surface-subtle)] uppercase tracking-widest">Define si el evento es visible</p>
-                                            </div>
-                                            <label className="relative inline-flex items-center cursor-pointer">
-                                                <input 
-                                                    type="checkbox" 
-                                                    className="sr-only peer"
-                                                    checked={editingEvent?.is_active ?? true}
-                                                    onChange={e => setEditingEvent({ ...editingEvent, is_active: e.target.checked })}
-                                                />
-                                                <div className="w-14 h-7 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary)]"></div>
-                                            </label>
-                                        </div>
+                                            <div className="w-12 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                                        </label>
                                     </div>
                                 </div>
-                            </div>
+
+                                {/* Action Buttons */}
+                                <div className="space-y-3 pt-8 mt-auto">
+                                    <button
+                                        type="submit"
+                                        disabled={uploading || !editingEvent?.title || !editingEvent?.event_date}
+                                        className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition-colors border-none cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {uploading ? (
+                                            <div className="size-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                                        ) : (
+                                            <>
+                                                {editingEvent?.id ? 'Actualizar Evento' : 'Publicar Experiencia'}
+                                                <Icon name="send" className="!text-base" />
+                                            </>
+                                        )}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="w-full py-4 bg-white hover:bg-slate-100 text-slate-600 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center transition-colors border border-slate-200 cursor-pointer"
+                                    >
+                                        Descartar
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
-                            <footer className="modal-footer !p-0 !bg-transparent flex items-center gap-4 pt-4">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="flex-1 h-16 bg-slate-50 text-slate-400 rounded-2xl font-black text-[10px] uppercase tracking-[0.4em] hover:bg-slate-100 hover:text-slate-600 transition-all border-none cursor-pointer"
-                                >
-                                    DESCARTAR
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={uploading || !editingEvent?.title || !editingEvent?.event_date}
-                                    className="flex-[2] h-16 btn-brand-yellow rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-4 shadow-xl shadow-yellow-500/10 group/btn border-none cursor-pointer"
-                                >
-                                    {uploading ? (
-                                        <div className="size-5 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
-                                    ) : (
-                                        <>
-                                            <span>{editingEvent?.id ? 'ACTUALIZAR EVENTO' : 'PUBLICAR EXPERIENCIA'}</span>
-                                            <Icon name="send" className="!text-2xl group-hover:translate-x-2 transition-transform" />
-                                        </>
-                                    )}
-                                </button>
-                            </footer>
-                        </form>
                     </div>
                 </div>
             )}
