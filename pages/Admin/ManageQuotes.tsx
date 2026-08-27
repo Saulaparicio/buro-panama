@@ -501,71 +501,63 @@ const ManageQuotes: React.FC = () => {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex items-center justify-between">
-          <div className="space-y-3">
-            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Total Propuestas</span>
-            <span className="text-3xl font-black text-slate-900 tracking-tight block">
-              {totalQuotesCount || 148}
-            </span>
+        
+        {/* Total Propuestas */}
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-blue-600 text-white border-none shadow-lg shadow-blue-600/20 !p-6">
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none text-white">
+            <HugeiconsIcon icon={NoteIcon} size={220} strokeWidth={1} className="leading-none" />
           </div>
-          <div className="text-right flex flex-col items-end gap-1">
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 flex items-center gap-0.5">
-              +12% <Icon name="trending_up" className="!text-[10px]" />
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">Total Propuestas</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">{totalQuotesCount || 148}</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white flex items-center gap-1 w-fit">
+              +12% <Icon name="trending_up" className="!text-[12px]" />
             </span>
-            <div className="size-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
-              <HugeiconsIcon icon={NoteIcon} size={20} strokeWidth={1.5} />
-            </div>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex items-center justify-between">
-          <div className="space-y-3">
-            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Pendientes</span>
-            <span className="text-3xl font-black text-slate-900 tracking-tight block">
-              {pendingCount || 24}
-            </span>
+        {/* Pendientes */}
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-rose-500 text-white border-none shadow-lg shadow-rose-500/20 !p-6">
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none text-white">
+            <HugeiconsIcon icon={Calendar04Icon} size={220} strokeWidth={1} className="leading-none" />
           </div>
-          <div className="text-right flex flex-col items-end gap-1">
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 flex items-center gap-0.5">
-              -2% <Icon name="trending_down" className="!text-[10px]" />
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">Pendientes</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">{pendingCount || 24}</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white flex items-center gap-1 w-fit">
+              -2% <Icon name="trending_down" className="!text-[12px]" />
             </span>
-            <div className="size-10 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600">
-              <HugeiconsIcon icon={Calendar04Icon} size={20} strokeWidth={1.5} />
-            </div>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex items-center justify-between">
-          <div className="space-y-3">
-            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Ganadas (Mes)</span>
-            <span className="text-3xl font-black text-slate-900 tracking-tight block">
-              {acceptedCount || 42}
-            </span>
+        {/* Ganadas */}
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-emerald-500 text-white border-none shadow-lg shadow-emerald-500/20 !p-6">
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none text-white">
+            <HugeiconsIcon icon={Award01Icon} size={220} strokeWidth={1} className="leading-none" />
           </div>
-          <div className="text-right flex flex-col items-end gap-1">
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 flex items-center gap-0.5">
-              +8% <Icon name="trending_up" className="!text-[10px]" />
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">Ganadas (Mes)</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">{acceptedCount || 42}</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white flex items-center gap-1 w-fit">
+              +8% <Icon name="trending_up" className="!text-[12px]" />
             </span>
-            <div className="size-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
-              <HugeiconsIcon icon={Award01Icon} size={20} strokeWidth={1.5} />
-            </div>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex items-center justify-between">
-          <div className="space-y-3">
-            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Tasa Conversión</span>
-            <span className="text-3xl font-black text-slate-900 tracking-tight block">
-              {conversionRate === '0' ? '58.4%' : `${conversionRate}%`}
+        {/* Tasa de Conversión */}
+        <div className="card-workspace group relative overflow-hidden flex flex-col justify-center min-h-[160px] bg-purple-600 text-white border-none shadow-lg shadow-purple-600/20 !p-6">
+          <div className="absolute -right-8 top-1/2 -translate-y-1/2 opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none text-white">
+            <HugeiconsIcon icon={Flag02Icon} size={220} strokeWidth={1} className="leading-none" />
+          </div>
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80 relative z-10 mb-2">Tasa Conversión</p>
+          <div className="relative z-10">
+            <p className="text-5xl font-black tracking-tighter mb-3">{conversionRate === '0' ? '58.4%' : `${conversionRate}%`}</p>
+            <span className="text-[10px] font-bold px-3 py-1.5 rounded-md bg-white/20 text-white flex items-center gap-1 w-fit">
+              Meta: 60%
             </span>
           </div>
-          <div className="text-right flex flex-col items-end gap-1">
-            <span className="text-[10px] font-medium text-slate-400">Meta: 60%</span>
-            <div className="size-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600">
-              <HugeiconsIcon icon={Flag02Icon} size={20} strokeWidth={1.5} />
-            </div>
-          </div>
         </div>
+
       </div>
 
       {/* Plantillas Rápidas */}

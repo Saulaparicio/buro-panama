@@ -88,6 +88,7 @@ const AdminDashboard: React.FC = () => {
   // New Reservation State
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [dashboardEvents, setDashboardEvents] = useState<any[]>([]);
   const [newReservation, setNewReservation] = useState({
       memberId: '',
       spaceId: '',
@@ -224,10 +225,11 @@ const AdminDashboard: React.FC = () => {
     if (!tenant?.id) return;
     setResLoading(true);
     try {
-      const [resRes, memRes, spaRes] = await Promise.all([
+      const [resRes, memRes, spaRes, eventsRes] = await Promise.all([
         supabase.from('reservations').select('*').eq('tenant_id', tenant.id).order('start_time', { ascending: false }),
         supabase.from('profiles').select('*').eq('tenant_id', tenant.id),
-        supabase.from('spaces').select('*').eq('tenant_id', tenant.id)
+        supabase.from('spaces').select('*').eq('tenant_id', tenant.id),
+        supabase.from('events').select('*').eq('tenant_id', tenant.id).gte('event_date', new Date().toISOString()).order('event_date', { ascending: true }).limit(3)
       ]);
 
       if (resRes.data && resRes.data.length > 0) {
@@ -237,6 +239,7 @@ const AdminDashboard: React.FC = () => {
       }
       if (memRes.data) setMembers(memRes.data as Member[]);
       if (spaRes.data) setSpaces(spaRes.data as Space[]);
+      if (eventsRes.data) setDashboardEvents(eventsRes.data);
     } catch (err) {
       console.error("Error fetching reservation management data:", err);
     } finally {
@@ -568,24 +571,23 @@ const AdminDashboard: React.FC = () => {
               <h2 className="text-base font-black uppercase tracking-tight text-[var(--on-surface)]">{t('next_events', "Next Events")}</h2>
             </div>
             <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="size-10 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--secondary)] rounded-xl flex items-center justify-center">
-                  <Icon name="restaurant" className="!text-xl" />
-                </div>
-                <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-wider text-[var(--on-surface)]">Member Lunch</h4>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">Today, 2:00 PM</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="size-10 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--primary)] rounded-xl flex items-center justify-center">
-                  <Icon name="campaign" className="!text-xl" />
-                </div>
-                <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-wider text-[var(--on-surface)]">VC Pitch Day</h4>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">Tomorrow, 10:00 AM</p>
-                </div>
-              </div>
+              {dashboardEvents.length > 0 ? (
+                dashboardEvents.map(evt => {
+                    return (
+                        <div key={evt.id} className="flex items-center gap-3">
+                            <div className="size-10 bg-[var(--surface)] shadow-[var(--neu-flat-sm)] text-[var(--secondary)] rounded-xl flex items-center justify-center">
+                                <Icon name="event" className="!text-xl" />
+                            </div>
+                            <div>
+                                <h4 className="text-[11px] font-black uppercase tracking-wider text-[var(--on-surface)] line-clamp-1">{evt.title}</h4>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">{moment(evt.event_date).format('MMM D, h:mm A')}</p>
+                            </div>
+                        </div>
+                    );
+                })
+              ) : (
+                <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">No hay eventos próximos</p>
+              )}
             </div>
           </div>
         </div>
