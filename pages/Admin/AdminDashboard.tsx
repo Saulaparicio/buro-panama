@@ -99,20 +99,52 @@ const AdminDashboard: React.FC = () => {
 
   const todayReservations = useMemo(() => {
     const todayStr = moment().format('YYYY-MM-DD');
+    const now = moment();
     return reservations
       .filter(r => moment(r.start_time).format('YYYY-MM-DD') === todayStr)
       .map(r => {
         const space = spaces.find(s => s.id === r.space_id);
         const member = members.find(m => m.id === r.member_id);
+        
+        let statusBadge = '';
+        let badgeColor = '';
+        
+        if (now.isBefore(moment(r.start_time))) {
+            const diffMins = moment(r.start_time).diff(now, 'minutes');
+            if (diffMins < 60) {
+                statusBadge = `En ${diffMins}m`;
+            } else {
+                const h = Math.floor(diffMins / 60);
+                const m = diffMins % 60;
+                statusBadge = `En ${h}h ${m}m`;
+            }
+            badgeColor = 'bg-indigo-50 text-indigo-600';
+        } else if (now.isAfter(moment(r.end_time))) {
+            statusBadge = 'Finalizada';
+            badgeColor = 'bg-slate-100 text-slate-500';
+        } else {
+            const diffMins = moment(r.end_time).diff(now, 'minutes');
+            if (diffMins < 60) {
+                statusBadge = `Quedan ${diffMins}m`;
+            } else {
+                const h = Math.floor(diffMins / 60);
+                const m = diffMins % 60;
+                statusBadge = `Quedan ${h}h ${m}m`;
+            }
+            badgeColor = 'bg-emerald-50 text-emerald-600 animate-pulse';
+        }
+
         return {
           id: r.id,
           timeRange: `${moment(r.start_time).format('HH:mm')} - ${moment(r.end_time).format('HH:mm')}`,
           spaceName: space ? space.name : 'Unknown Space',
           memberName: member ? member.name : 'Unknown Member',
+          statusBadge,
+          badgeColor
         };
       })
       .slice(0, 5);
-  }, [reservations, spaces, members]);
+  }, [reservations, spaces, members, timeTick]);
 
   const upcomingReservations = useMemo(() => {
     const now = moment();
@@ -520,8 +552,13 @@ const AdminDashboard: React.FC = () => {
           <div className="space-y-4">
             {todayReservations.length > 0 ? (
               todayReservations.map(r => (
-                <div key={r.id} className="p-4 rounded-xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] hover:shadow-[var(--neu-pressed-sm)] border-l-4 border-[var(--primary)] transition-all space-y-1">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[var(--primary)]">{r.timeRange}</span>
+                <div key={r.id} className="p-4 rounded-xl bg-[var(--surface)] shadow-[var(--neu-flat-sm)] hover:shadow-[var(--neu-pressed-sm)] border-l-4 border-[var(--primary)] transition-all space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--primary)]">{r.timeRange}</span>
+                    <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${r.badgeColor}`}>
+                      {r.statusBadge}
+                    </span>
+                  </div>
                   <h4 className="text-xs font-black uppercase tracking-tight text-[var(--on-surface)]">{r.spaceName}</h4>
                   <p className="text-[10px] font-black uppercase tracking-widest text-[var(--on-surface-subtle)]">By: {r.memberName}</p>
                 </div>
